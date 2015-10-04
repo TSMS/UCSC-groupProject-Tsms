@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
-<meta charset="UTF-8">
+<meta charset="UTF-8">      
+      <title>TSMS login page</title>
+      <link rel="stylesheet" href="style/css/reset.css">
+      <link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900|RobotoDraft:400,100,300,500,700,900'>
+      <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+      <link rel="stylesheet" href="style/css/style.css">
 </head>
 <body>
 <div class="pen-title" id="box">
@@ -45,5 +50,8 @@
         </div>
       </div>
 </div>
+</script>
+<script src='style/js/jquery.min.js'></script> 
+<script src="style/js/index.js"></script>
 </body>
 </html>
