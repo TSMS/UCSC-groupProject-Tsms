@@ -1,6 +1,6 @@
 <?php
 require_once 'core/init.php';
-
+/* zjvs
 if(isset($_POST['btn-login']))
 {
   if(Input::exists()){
