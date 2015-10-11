@@ -1,4 +1,4 @@
-How to use it this basic classes
+## How to use this basic classes
 
 Basic files
 Classes(DB.php,User.php,Config.php,Cookie.php,Crud.php,Hash.php,Input.php,Redirect.php,Session.php,Token.php,Validation.php,View.php)
@@ -9,13 +9,13 @@ index.php
 
 
 Get new instance like this
-
+```php
 <?php
 require 'Db.php';
 $db = new Db( 'mysql', 'hostName', 'databaseName', 'databaseUser'[, 'databaseUserPassword'] );
-
+```
 Or set config
-
+```php
 <?php
 require 'Db.php';
 Db::config( 'driver',   'mysql' );
@@ -23,14 +23,14 @@ Db::config( 'host',     'hostName' );
 Db::config( 'database', 'databaseName' );
 Db::config( 'user',     'databaseUser' );
 Db::config( 'password', 'databaseUserPassword' );
-
+```
 And later get instance easily
-
+```php
 <?php
 $db = Db::instance();
-
-Basic methods
-
+```
+### Basic methods
+```php
 <?php
 $db->raw( 'SELECT * FROM Table' ); // Execute raw SQL query (don't forget to secure your SQL)
 
@@ -52,8 +52,9 @@ $db->select( 'Table', '*', array( // Complex select where N.B: you can't mix ? a
     )
 ) );
 
-CRUD methods
-
+```
+### CRUD methods
+```php
 <?php
 $db->create( 'Table', array( 'field' => 'data' ) ); // Insert into Table
 
@@ -67,9 +68,9 @@ $db->update( 'Table', $data, 'test', 'data' ) // Update field(s) containing 'dat
 
 $db->delete( 'Table', 1 ) // Delete Table row where primary key = 1
 $db->delete( 'Table', 'test', 'field' ) // Delete Table row where field = 'test'
-
-Fetch methods
-
+```
+### Fetch methods
+```php
 <?php
 $db->read( 'Table', 1 )->fetch(); // fetch returns objects (stdClass by default)
 $db->read( 'Table', 1 )->fetch( 'Class' ); // But you can specify a class
@@ -85,19 +86,18 @@ $db->select( 'Table' )->all(); // all returns all rows (as ArrayObject)
 $db->select( 'Table' )->all( 'Class' ); // You also can specify row class
 
 $db->select( 'Table', 'id' )->column( 'id' ); // column returns only values (as an array)
-
-Various methods
-
+```
+### Various methods
+```php
 <?php
 $db->key( 'Table' ); // Get Table primary key (id)
 $db->quote( $value ); // Get quote protected value
 $db->create( 'Table', array( 'field' => 'data' ) ); // Add a row, then
 $db->id(); // Get last inserted id
-
-Config tricks
-
+```
+### Config tricks
 Db::config method is a getter and a setter
-
+```php
 <?php
 Db::config( 'host', 'hostName' ); // Two argument -> setter
 Db::config( array(    // One array argument -> setter
@@ -106,9 +106,9 @@ Db::config( array(    // One array argument -> setter
 ) );
 
 Db::config( 'host' ); // One argument -> getter
-
+```
 You can store what you want in config (only driver, host, database, user, password & fetch are reserved)
-
+```php
 <?php
 Db::config( 'salt', 'p*d5h|zpor7spm#i' ); // set a salt to reuse it later
 $user = array(
@@ -116,21 +116,22 @@ $user = array(
   , 'password' => md5( Db::config( 'salt' ) . $password ) //  Hash password
 );
 $userId = $db->create( 'User', $user )->id(); // Save new user
-
+```
 By default fetch method return stdClass, but you can customize globaly
-
+```php
 <?php
 Db::config( 'fetch', 'Class' ); // Set class to use for object
 $db->read( 'Table', 1 )->fetch(); // Methods fetch and all now return Class object(s)
 $db->select( 'Table' )->all();
 $db->read( 'Table', 1 )->fetch( 'OtherClass' ); // You still can override it
-
-Read, update and delete methods automatically guess which primary key to use, but you can set/override it manually
-
+```
+Read, update and delete methods automatically guess which primary key to use,
+but you can set/override it manually
+```php
 <?php
 Db::config( 'databaseName.Table:PK', 'field' ); // Manually set 'primary' key of table to field
 $db->read( 'Table', 'test' ); // Now, this select from Table where field = 'test'
-
+```
 
 
 
