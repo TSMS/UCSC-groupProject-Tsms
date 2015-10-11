@@ -1,11 +1,35 @@
 ## How to use this basic classes
 
-Basic files
-Classes(DB.php,User.php,Config.php,Cookie.php,Crud.php,Hash.php,Input.php,Redirect.php,Session.php,Token.php,Validation.php,View.php)
-Core(init.php)
-include(errors)
-function(genaral.php, sanitize.php)
-index.php
+Basic files{
+    Classes(
+        DB.php,
+        User.php,
+        Config.php,
+        Cookie.php,
+        Crud.php,
+        Hash.php,
+        Input.php,
+        Redirect.php,
+        Session.php,
+        Token.php,
+        Validation.php,
+        View.php)
+    Core(
+        init.php
+        )
+    include->errors(
+        error.php
+        )
+    function(
+        genaral.php,
+        sanitize.php)
+    index.php
+    login.php
+    register.php
+    delete.php
+    logout.php
+    update.php
+}
 
 
 Get new instance like this
