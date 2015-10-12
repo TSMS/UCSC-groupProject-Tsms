@@ -34,11 +34,18 @@ if(Input::exists()){
 
             try{
                 $user->create(array(
+                    //left side into database    right side get input field name="username"
                     'username'  => Input::get('username'),
-                    'password'  => Hash::make(Input::get('password'), $salt),
+                    'password'  =>  Hash::make(Input::get('password'), $salt),
                     'salt'      => $salt,
+                    'email'     => Input::get('email'),
                     'name'      => Input::get('name'),
-                    'groups'    => 1
+                    'nic'       => Input::get('nic'),
+                    'joined'    => date("Y-m-d H:i:s"),
+                    'gender'    => Input::get('gender'),
+                    'phone'     => Input::get('phone'),
+                    'groups'    => 1,
+                    'user_approved'  => 1
                 ));
             }catch (Exception $e){
                 die($e->getMessage());
@@ -55,6 +62,10 @@ if(Input::exists()){
 ?>
 <form action="" method="post">
     <div class="field">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" value="<?php echo escape(Input::get('name')); ?>" autocomplete="off"/>
+    </div>
+    <div class="field">
         <label for="username">Username</label>
         <input type="text" name="username" id="username" value="<?php echo escape(Input::get('username')); ?>" autocomplete="off"/>
     </div>
@@ -68,13 +79,28 @@ if(Input::exists()){
         <label for="password_again">Retype Password</label>
         <input type="password" name="password_again" id="password_again" value="" autocomplete="off"/>
     </div>
-
     <div class="field">
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name" value="<?php echo escape(Input::get('name')); ?>" autocomplete="off"/>
+        <label for="email">Enter your email</label>
+        <input type="text" name="email" id="email" value="<?php echo escape(Input::get('email')); ?>" autocomplete="off"/>
+    </div>
+    <div class="field">
+        <label for="nic">NIC</label>
+        <input type="text" name="nic" id="nic" value="<?php echo escape(Input::get('nic')); ?>" autocomplete="off"/>
+    </div>
+    <div class="field">
+        <label for="gender">Gender</label>
+        <select name="gender" placeholder="Gender">
+                <option> -- -- </option>
+                <option value="Male"> Male</option>
+                <option value="Female">Female</option>
+        </select>
+    </div>
+    <div class="field">
+        <label for="phone">Phone Number</label>
+        <input type="text" name="phone" id="phone" value="<?php echo escape(Input::get('phone')); ?>" autocomplete="off"/>
     </div>
 
-    <input type="text" name="token" value="<?php echo Token::generate(); ?>"/>
+    <input type="hidden" name="token" value="<?php echo Token::generate(); ?>"/>
 
     <input type="submit" value="Register"/>
 </form>

@@ -114,6 +114,21 @@ class User {
         return (!empty($this->_data)) ? true : false;
     }
 
+    public function apprved_user($key){
+        $apprve = $this->_db->get('user_approved', array('id', '=', $this->data()->user_approved));
+        if($apprve->count()){
+            $approvedd = json_decode($apprve->first()->approvedd, true);
+
+            if(isset($approvedd[$key])){
+                if($approvedd[$key] == 1){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public function hasPermission($key){
         $group = $this->_db->get('groups', array('id', '=', $this->data()->groups));
         if($group->count()){

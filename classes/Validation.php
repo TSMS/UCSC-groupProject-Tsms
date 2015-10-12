@@ -43,6 +43,8 @@ class Validation {
                                 $this->addError("{$item} already exists.");
                             }
                             break;
+                   //     case 'nic':
+                      //      if(strlen($value))
                     }
                 }
             }

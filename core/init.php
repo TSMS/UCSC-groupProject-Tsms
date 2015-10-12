@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Nirmal
- * Date: 2/23/2015
- * Time: 3:48 PM
- */
 
 session_start();
 
