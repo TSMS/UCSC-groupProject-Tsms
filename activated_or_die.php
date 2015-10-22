@@ -7,10 +7,10 @@ $type = $_GET['type'];
 
 if($type=='2'){
 	DB::getInstance()->query("UPDATE users SET user_approved=1 WHERE id=$u_id");
-	Redirect::to('index.php?type=user');
+	Redirect::to('index.php');
 }else if($type=='1'){
 	DB::getInstance()->query("UPDATE users SET user_approved=2 WHERE id=$u_id");
-	Redirect::to('index.php?type=user');
+	Redirect::to('index.php');
 }
 
 

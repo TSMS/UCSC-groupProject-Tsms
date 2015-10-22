@@ -25,7 +25,7 @@ body {
   background: #ffffff;
   max-width: 320px;
   width: 100%;
-  border-top: 5px solid #34495e;
+  border-top: 5px solid #16a085;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
   margin: 0 auto;
 }
@@ -34,7 +34,7 @@ body {
   position: absolute;
   top: -0;
   right: -0;
-  background: #34495e;
+  background: #16a085;
   width: 30px;
   height: 30px;
   margin: -5px 0 0;
@@ -74,7 +74,7 @@ body {
 }
 .form-module h2 {
   margin: 0 0 20px;
-  color: #34495e;
+  color: #16a085;
   font-size: 18px;
   font-weight: 400;
   line-height: 1;
@@ -92,7 +92,7 @@ body {
   transition: 0.3s ease;
 }
 .form-module input:focus {
-  border: 1px solid #34495e;
+  border: 1px solid #16a085;
   color: #333333;
 }
 .form-module button {
