@@ -201,16 +201,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <section class="sidebar">
 
           <!-- Sidebar user panel (optional) -->
-          <div class="user-panel">
-            <div class="pull-left image">
-              <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-            </div>
-            <div class="pull-left info">
-              <p>Alexander Pierce</p>
-              <!-- Status -->
-              <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-            </div>
-          </div>
 
           <!-- search form (Optional) -->
           <form action="#" method="get" class="sidebar-form">
@@ -303,7 +293,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </section>
 
         <!-- Main content -->
-        <section id="content" class="content">
+        <div id="content" class="content">
 
           <!-- Your Page Content Here -->
           <!-- Small boxes (Stat box) -->
@@ -312,7 +302,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
 
-        </section><!-- /.content -->
+        </div><!-- /.content -->
       </div><!-- /.content-wrapper -->
 
       <!-- Main Footer -->

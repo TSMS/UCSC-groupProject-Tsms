@@ -1,6 +1,5 @@
-<h2 class="page-header">AdminLTE Custom Tabs</h2>
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-md-12">
       <!-- Custom Tabs (Pulled to the right) -->
       <div class="nav-tabs-custom">
         <ul class="nav nav-tabs pull-right">
