@@ -1,0 +1,39 @@
+<div id="nav-wrapper">
+    <ul id="nav"
+        data-ng-controller="NavCtrl"
+        data-collapse-nav
+        data-slim-scroll
+        data-highlight-active>
+        <li><a href="#/dashboard"> <i class="fa fa-dashboard"><span class="icon-bg bg-danger"></span></i><span data-i18n="Dashboard"></span> </a></li>
+        <li>
+            <a href="#/message/inbox"><i class="fa fa-envelope-o"><span class="icon-bg bg-success"></span></i><span data-i18n="Message"></span></a>
+        <li>
+            <a href="#/update"><i class="fa fa-table"><span class="icon-bg bg-success"></span></i><span data-i18n="Daily update"></span></a>
+        </li>
+        <li>
+            <a href="#/supplier"><i class="fa fa-pencil"><span class="icon-bg bg-success"></span></i><span data-i18n="Supplier"></span></a>
+            <ul class="sub-nav">
+                <li><a href="#/view"><i class="fa fa-caret-right"></i><span data-i18n="View"></span></a></li>
+            </ul>
+            <ul class="sub-nav">
+                <li><a href="#/wizard"><i class="fa fa-caret-right"></i><span data-i18n="Supplier Registation"></span></a></li>
+            </ul>
+            <ul class="sub-nav">
+                <li><a href="#/edit"><i class="fa fa-casigninret-right"></i><span data-i18n="Edit"></span></a></li>
+            </ul>
+        </li>
+        <li class="nav-task">
+            <a href="#/tasks">
+                <i class="fa fa-tasks"><span class="icon-bg bg-info"></span></i><span data-i18n="Summery"></span>
+                <span class="badge badge-danger main-badge"
+                      data-ng-show="taskRemainingCount > 0">{{taskRemainingCount}}</span>
+            </a>
+        </li>
+        <li>
+            <a href="#/charts"><i class="fa fa-bar-chart-o"><span class="icon-bg bg-success"></span></i>Reports</a>
+        </li>
+        <li>
+            <a href="#/pages"><i class="fa fa-file-text-o"><span class="icon-bg bg-success"></span></i><span data-i18n="Web Dashboad"></span></a>
+        </li>
+    </ul>
+</div>
