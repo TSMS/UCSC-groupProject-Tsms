@@ -144,55 +144,11 @@ class DB {
         return $this;
     }
 
-    static protected function _is_plain($data){
-        if ( ! is_scalar($data))
-            return false;
-        return is_string($data)? ! preg_match( '/\W/i',$data) : true;
-    }
-
     static protected function _is_list(array $array){
         foreach ( array_keys($array) as $key)
             if ( ! is_int($key))
                 return false;
         return true;
-    }
-    /* Remove all (inline & multiline bloc) comments from SQL query
-     * @param  string $sql SQL query string
-     * @return string SQL query string without comments
-     */
-    static protected function _uncomment ( $sql ) {
-        /* '@
-        (([\'"`]).*?[^\\\]\2) # $1 : Skip single & double quoted expressions
-        |(                    # $3 : Match comments
-          (?:\#|--).*?$       # - Single line comments
-          |                   # - Multi line (nested) comments
-          /\*                 #   . comment open marker
-            (?: [^/*]         #   . non comment-marker characters
-              |/(?!\*)        #   . ! not a comment open
-              |\*(?!/)        #   . ! not a comment close
-              |(?R)           #   . recursive case
-            )*                #   . repeat eventually
-          \*\/                #   . comment close marker
-        )\s*                  # Trim after comments
-        |(?<=;)\s+            # Trim after semi-colon
-        @msx' */
-        return trim( preg_replace( '@(([\'"`]).*?[^\\\]\2)|((?:\#|--).*?$|/\*(?:[^/*]|/(?!\*)|\*(?!/)|(?R))*\*\/)\s*|(?<=;)\s+@ms', '$1', $sql ) );
-    }
-
-    /**
-     * Format query parameters
-     * @uses   self::_escape
-     * @param  string|array $data     Data to format
-     * @param  string       $operator [Optional] 
-     * @param  string       $glue     [Optional] 
-     * @return string       SQL params query chunk
-     * @todo   Handle integer keys like in self::_conditions
-     */
-    static protected function _params ( $data, $operator = '=', $glue = ', ' ) {
-        $params = is_string( $data) ? array( $data ) : array_keys( (array) $data );
-        foreach ( $params as &$param )
-            $param = implode( ' ', array( self::_escape( $param ), $operator, ':' . $param ) );
-        return implode( $glue, $params );
     }
 
     public function error(){
@@ -207,19 +163,20 @@ class DB {
         return $this->_results;
     }
 
-    public function first(){
-        return $this->results()[0];
+    public function db_fetch( $data ) {
+        if ( $this->use_pdo() )
+            return $data->fetch();
+        else
+            return mysqli_fetch_array( $data );
+    }
+
+    public function first($n = 0){
+        return $this->results()[$n];
     }
 
     public function pre(){
         echo '<pre>';
         var_dump($this);
-        echo '</pre>';
-    }
-
-    public function simple(){
-        echo '<pre>';
-        print_r($this);
         echo '</pre>';
     }
 

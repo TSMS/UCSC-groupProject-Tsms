@@ -30,7 +30,7 @@ class Supplier {
     // find and set users data to _data
     public function find($view = null){
         if($view){
-            $field = (is_numeric($view)) ? 'id' : 'username';
+            $field = (is_numeric($view)) ? 'id' : 'supplier_code';
             $data = $this->_fdb->get('suppliers', array($field, '=', $user));
 
             if($data->count()){
@@ -49,4 +49,17 @@ class Supplier {
     public function exists(){
         return (!empty($this->_fdata)) ? true : false;
     }
+
+    public function search($same, $keyword, $field){
+        $search = DB::getInstance()->query("SELECT * FROM suppliers WHERE $same = '$keyword'");
+        foreach($search->results() as $s) {
+          return $s->$field;
+        }
+    }
+
+
+        // $sd = 't001';
+        // echo $supplier->search('supplier_code', $sd, 'f_name');
+
+
 } 
