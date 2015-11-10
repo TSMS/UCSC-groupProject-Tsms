@@ -1,0 +1,377 @@
+<?php
+   require_once 'core/init.php';
+   
+   if(Session::exists('success')){
+       echo Session::flash('success');
+   }
+   
+   $user = new User();
+   
+   $x = escape($user->data()->name);
+   if($user->isLoggedIn()){
+   if(Input::exists()){
+        if(true){
+            $validate = new Validation();
+            $validation = $validate->check($_POST, array(
+
+                'supplier_code' => array(
+                    'required' => true,
+                    'min' => 3,
+                    'max' => 4,
+                    'unique' => 'suppliers'
+                ),
+
+                'mobile_no' => array(
+                    'min' => 10,
+                    'max' => 10,
+                    'num' => $_POST
+                ),
+                'nic_no' => array(
+                    'min' => 10,
+                    'max' => 10
+                ),
+                'f_name' => array(
+                    'min' => 3,
+                    'max' => 20
+                ),
+                'l_name' => array(
+                    'min' => 3,
+                    'max' => 20
+                )
+
+
+            ));
+
+        if ($validation->passed()) {
+         $supplier = new Supplier();
+         try{
+             $supplier->create(array(
+                 'supplier_code'  => Input::get('supplier_code'),
+                 'f_name'         => Input::get('f_name'),
+                 'l_name'         => Input::get('l_name'),
+                 'address_1'      => Input::get('address_1'),
+                 'nic_no'         => Input::get('nic_no'),
+                 'mobile_no'      => Input::get('mobile_no'),
+                 'e_mail'         => Input::get('e_mail'),
+               //'birth_day'      => Input::get('birthday'),
+                 'Gender'         => Input::get('Gender'),
+                 'estate_name'    => 'NULL',
+                 'reg_no'         => 'NULL',
+                 'size_of_estate' => 'NULL',
+                 'address_of_estate' => 'NULL',
+                 'account_name'   => 'NULL',
+                 'account_no'     => 'NULL',
+                 'bank'           => 'HSBC',
+                 'branch'         => 'Deniyaya',
+                 'last_edit_date' => date("Y-m-d H:i:s"),
+                 'e_mail_send'    => '0',
+                 'sms_send'       => '1',
+                 'editor'         => $x
+             ));
+             }catch (Exception $e){
+                   die($e->getMessage());
+                }
+
+                Session::flash('success');
+               Redirect::to('supplier_view.php');
+            
+            }else{
+              foreach ($validation->errors() as $key) {
+
+                //$msg=$msg.$key."\n";
+                echo '<script type="text/javascript">alert("'.$key.'")</script>';
+              }
+              
+        }
+    }
+}   
+?>
+<?php include 'includes/head.php';?>
+<body class="hold-transition skin-blue sidebar-mini">
+   <div class="wrapper">
+      <!-- Main Header -->
+      <?php include 'top_nav.php';?>
+      <!-- Left side column. contains the logo and sidebar -->
+      <?php include 'includes/left_nav.php';?>
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+         <!-- Content Header (Page header) -->
+         <section class="content-header">
+            <h1>
+               Supplier
+               <small>Optional description</small>
+            </h1>
+            <ol class="breadcrumb">
+               <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+               <li class="active">Registation</li>
+            </ol>
+         </section>
+         <!-- Main content -->
+         <div id="content" class="content">
+            <!-- Your Page Content Here -->
+
+
+
+            <?php
+               if(isset($_GET['inserted']))
+               {
+                 ?>
+            <div class="col-md-offset-2 col-xs-7">
+                <div class="alert alert-success">
+                Supplier Successefully added to the Factory database!
+                </div>
+            </div>
+            <?php
+               }
+               ?>
+            <!-- Small boxes (Stat box) -->
+            <div class="container">
+
+              <script>
+                function checkAvailability() {
+                  $("#loaderIcon").show();
+                  jQuery.ajax({
+                  url: "check_availability.php",
+                  data:'username='+$("#username").val(),
+                  type: "POST",
+                  success:function(data){
+                    $("#user-availability-status").html(data);
+                    $("#loaderIcon").hide();
+                  },
+                  error:function (){}
+                  });
+                }
+                </script>
+               <!-- if you neeed offset col-md-offset-1 -->
+               <div class="stepwizard col-md-offset-2">
+                  <div class="stepwizard-row setup-panel">
+                     <div class="stepwizard-step">
+                        <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
+                        <p>Step 1</p>
+                     </div>
+                     <div class="stepwizard-step">
+                        <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                        <p>Step 2</p>
+                     </div>
+                     <div class="stepwizard-step">
+                        <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+                        <p>Step 3</p>
+                     </div>
+                  </div>
+               </div>
+               <form role="form" action="" method="post">
+                  <div class="row setup-content" id="step-1">
+                     <div class="col-xs-6 col-md-offset-2">
+                        <div class="col-md-12">
+                           <h3> Person</h3>
+
+                           <div id="frmCheckUsername" class="form-group">
+                              <label class="control-label">Supplier Code</label>
+                              <input class="form-control" required="required" autocomplete="off" type="text" maxlength="4" name="username" value="<?php echo escape(Input::get('supplier_code')); ?>" id="username" placeholder="Supplier Code" onBlur="checkAvailability()"><span id="user-availability-status"></span>  
+                           </div>
+                           <p><img src="LoaderIcon.gif" id="loaderIcon" style="display:none" /></p>
+                           <div class="form-group">
+                              <label class="control-label">First Name</label>
+                              <input maxlength="14" type="text" required="required" class="form-control" placeholder="Enter First Name" name="f_name" value="<?php echo escape(Input::get('f_name')); ?>" autocomplete="off">
+                           </div>
+                           <div class="form-group">
+                              <label class="control-label">Last Name</label>
+                              <input maxlength="17" type="text" class="form-control" placeholder="Enter Last Name" name="l_name" value="<?php echo escape(Input::get('l_name')); ?>" autocomplete="off">
+                           </div>
+                           <div class="form-group">
+                              <label for="nic-id" class="control-label">NIC</label>              
+                              <input class="form-control" name="nic_no" id="nic_no" placeholder="NIC" type="text" value="<?php echo escape(Input::get('nic_no')); ?>">
+                           </div>
+                           <div class="form-group">
+                              <label for="gender" class="col-sm-2">Gender</label>
+                              <label class="radio-inline">
+                              <input name="Gender" id="male" value="male" type="radio"> Male
+                              </label>
+                              <label class="radio-inline">
+                              <input name="Gender" id="female" value="female" type="radio"> Female
+                              </label>
+                           </div>
+                           <!-- <div class="form_group">
+                              <label for="dob" class="control-label">Date of Birth</label>                             
+                              <input class="form-control" name="birthday" id="dob" value="Y-m-d" placeholder="Y-m-d" required="" type="text">
+                              </div> -->
+                           <br><br>
+                           <button class="btn bg-navy btn-flat nextBtn pull-right" type="button">Next</button>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row setup-content" id="step-2">
+                     <div class="col-xs-6 col-md-offset-2">
+                        <div class="col-md-12">
+                           <h3> Address</h3>
+                           <div class="form-group">
+                              <label class="control-label">Address</label>
+                              <input type="text" name="address_1" value="<?php echo escape(Input::get('address_1')); ?>" autocomplete="off" required="required" class="form-control" placeholder="Enter your address">
+                           </div>
+                           <div class="form-group">
+                              <label class="control-label">Phone number</label>
+                              <input maxlength="10" type="text" name="mobile_no" value="<?php echo escape(Input::get('mobile_no')); ?>" autocomplete="off" class="form-control"placeholder="Enter Phone Number" />
+                           </div>
+                           <div class="form-group">
+                              <label class="control-label">Email Address</label>
+                              <input maxlength="20" type="e_mail"name="e_mail" value="<?php echo escape(Input::get('e_mail')); ?>" autocomplete="off" class="form-control"placeholder="Email Adress"  />
+                           </div>
+                           <button class="btn bg-navy btn-flat nextBtn pull-right" type="button">Next</button>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row setup-content" id="step-3">
+                     <div class="col-xs-6 col-md-offset-2">
+                        <div class="col-md-12">
+                           <h3> Step 3</h3>
+                           <br><br><br>
+                           <center>Are You Sure? If you add wrong details to System<br>
+                              it could be problem.<br>
+                           </center>
+                           <br><br>
+                           <center>
+                              <input type="hidden" name="token" value="<?php echo Token::generate(); ?>"/>
+                              <button class="btn btn-success btn-flat" type="submit">Submit</button>
+                           </center>
+                        </div>
+                     </div>
+                  </div>
+               </form>
+            </div>
+            <style type="text/css">
+                .status-not-available{
+                  color: red;
+                }
+                .status-available{
+                  color: green;
+                }
+               .stepwizard-step p {
+               margin-top: 10px;
+               }
+               .stepwizard-row {
+               display: table-row;
+               }
+               .stepwizard {
+               display: table;
+               width: 50%;
+               position: relative;
+               }
+               .stepwizard-step button[disabled] {
+               opacity: 1 !important;
+               filter: alpha(opacity=100) !important;
+               }
+               .stepwizard-row:before {
+               top: 14px;
+               bottom: 0;
+               position: absolute;
+               content: " ";
+               width: 100%;
+               height: 1px;
+               background-color: #ccc;
+               z-order: 0;
+               }
+               .stepwizard-step {
+               display: table-cell;
+               text-align: center;
+               position: relative;
+               }
+               .btn-circle {
+               width: 30px;
+               height: 30px;
+               text-align: center;
+               padding: 6px 0;
+               font-size: 12px;
+               line-height: 1.428571429;
+               border-radius: 15px;
+               }
+            </style>
+         </div>
+         <!-- /.content -->
+      </div>
+      <!-- /.content-wrapper -->
+      <!-- Main Footer -->
+      <?php include 'includes/main_footer.php';?>
+      <!-- Control Sidebar -->
+      <?php include 'includes/right_bar.php';?>
+      <!-- /.control-sidebar -->
+      <!-- Add the sidebar's background. This div must be placed
+         immediately after the control sidebar -->
+      <div class="control-sidebar-bg"></div>
+   </div>
+   <!-- ./wrapper -->
+   <!-- REQUIRED JS SCRIPTS -->
+   <?php include 'includes/footer.php';?>
+   <script type="text/javascript">
+      $(document).ready(function () {
+        var navListItems = $('div.setup-panel div a'),
+                allWells = $('.setup-content'),
+                allNextBtn = $('.nextBtn'),
+              allPrevBtn = $('.prevBtn');
+      
+        allWells.hide();
+      
+        navListItems.click(function (e) {
+            e.preventDefault();
+            var $target = $($(this).attr('href')),
+                    $item = $(this);
+      
+            if (!$item.hasClass('disabled')) {
+                navListItems.removeClass('btn-primary').addClass('btn-default');
+                $item.addClass('btn-primary');
+                allWells.hide();
+                $target.show();
+                $target.find('input:eq(0)').focus();
+            }
+        });
+        
+        allPrevBtn.click(function(){
+            var curStep = $(this).closest(".setup-content"),
+                curStepBtn = curStep.attr("id"),
+                prevStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().prev().children("a");
+      
+                prevStepWizard.removeAttr('disabled').trigger('click');
+        });
+      
+        allNextBtn.click(function(){
+            var curStep = $(this).closest(".setup-content"),
+                curStepBtn = curStep.attr("id"),
+                nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
+                curInputs = curStep.find("input[type='text'],input[type='url']"),
+                isValid = true;
+      
+            $(".form-group").removeClass("has-error");
+            for(var i=0; i<curInputs.length; i++){
+                if (!curInputs[i].validity.valid){
+                    isValid = false;
+                    $(curInputs[i]).closest(".form-group").addClass("has-error");
+                }
+            }
+      
+            if (isValid)
+                nextStepWizard.removeAttr('disabled').trigger('click');
+        });
+      
+        $('div.setup-panel div a.btn-primary').trigger('click');
+      });
+   </script>
+
+<script type="text/javascript">
+<!--
+ 
+$(document).ready(function () {
+ 
+window.setTimeout(function() {
+    $(".alert").fadeTo(1500, 0).slideUp(500, function(){
+        $(this).remove(); 
+    });
+}, 5000);
+ 
+});
+//-->
+</script>
+
+<?php
+}else{
+    Redirect::to('404.php');
+}
+?>
