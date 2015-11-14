@@ -1,1 +1,0 @@
-<HEAD>Mr Daily Update EDIT</HEAD>

@@ -2,9 +2,9 @@
 require_once 'core/init.php';
 
 
-if(isset($_POST['getname']))
-{ 
-    $code = $_POST['getname'];
+if(Input::exists()){
+    
+    $code = Input::get('getname');
     $name = DB::getInstance()->get('suppliers', array('supplier_code', '=', $code)); //use getall('users') to get all data into table
 
 ?>

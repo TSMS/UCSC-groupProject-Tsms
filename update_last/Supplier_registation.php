@@ -7,84 +7,7 @@
    
    $user = new User();
    
-   $x = escape($user->data()->name);
-   if($user->isLoggedIn()){
-   if(Input::exists()){
-        if(true){
-            $validate = new Validation();
-            $validation = $validate->check($_POST, array(
-
-                'supplier_code' => array(
-                    'required' => true,
-                    'min' => 3,
-                    'max' => 4,
-                    'unique' => 'suppliers'
-                ),
-
-                'mobile_no' => array(
-                    'min' => 10,
-                    'max' => 10,
-                    'num' => $_POST
-                ),
-                'nic_no' => array(
-                    'min' => 10,
-                    'max' => 10
-                ),
-                'f_name' => array(
-                    'min' => 3,
-                    'max' => 20
-                ),
-                'l_name' => array(
-                    'min' => 3,
-                    'max' => 20
-                )
-
-
-            ));
-
-        if ($validation->passed()) {
-         $supplier = new Supplier();
-         try{
-             $supplier->create(array(
-                 'supplier_code'  => Input::get('supplier_code'),
-                 'f_name'         => Input::get('f_name'),
-                 'l_name'         => Input::get('l_name'),
-                 'address_1'      => Input::get('address_1'),
-                 'nic_no'         => Input::get('nic_no'),
-                 'mobile_no'      => Input::get('mobile_no'),
-                 'e_mail'         => Input::get('e_mail'),
-               //'birth_day'      => Input::get('birthday'),
-                 'Gender'         => Input::get('Gender'),
-                 'estate_name'    => 'NULL',
-                 'reg_no'         => 'NULL',
-                 'size_of_estate' => 'NULL',
-                 'address_of_estate' => 'NULL',
-                 'account_name'   => 'NULL',
-                 'account_no'     => 'NULL',
-                 'bank'           => 'HSBC',
-                 'branch'         => 'Deniyaya',
-                 'last_edit_date' => date("Y-m-d H:i:s"),
-                 'e_mail_send'    => '0',
-                 'sms_send'       => '1',
-                 'editor'         => $x
-             ));
-             }catch (Exception $e){
-                   die($e->getMessage());
-                }
-
-                Session::flash('success');
-               Redirect::to('supplier_view.php');
-            
-            }else{
-              foreach ($validation->errors() as $key) {
-
-                //$msg=$msg.$key."\n";
-                echo '<script type="text/javascript">alert("'.$key.'")</script>';
-              }
-              
-        }
-    }
-}   
+if($user->isLoggedIn()){
 ?>
 <?php include 'includes/head.php';?>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -107,35 +30,68 @@
             </ol>
          </section>
          <!-- Main content -->
+
+          <script type="text/javascript">
+              function get(){
+                 $.post('add_supplier.php', { supplier_code: supplier_form.supplier_code.value } , 
+                    function(output){
+                       $('#content').html(output).show();
+                    });
+              }
+           </script>
+
          <div id="content" class="content">
             <!-- Your Page Content Here -->
 
-
-
-            <?php
-               if(isset($_GET['inserted']))
-               {
-                 ?>
-            <div class="col-md-offset-2 col-xs-7">
-                <div class="alert alert-success">
-                Supplier Successefully added to the Factory database!
-                </div>
-            </div>
-            <?php
-               }
-               ?>
             <!-- Small boxes (Stat box) -->
             <div class="container">
 
               <script>
+              // <input value="" onkeypress="return isNumberKey(event)">
+                function isNumberKey(evt) {
+                    var charCode = (evt.which) ? evt.which : event.keyCode;
+                    if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+                        return false;
+                    } else {
+                        return true;
+                    }      
+                }
                 function checkAvailability() {
                   $("#loaderIcon").show();
                   jQuery.ajax({
                   url: "check_availability.php",
-                  data:'username='+$("#username").val(),
+                  data:'sup_code='+$("#supplier_code").val(),
                   type: "POST",
                   success:function(data){
                     $("#user-availability-status").html(data);
+                    $("#loaderIcon").hide();
+                  },
+                  error:function (){}
+                  });
+                }
+
+                function checknic() {
+                  $("#loaderIcon").show();
+                  jQuery.ajax({
+                  url: "check_availability.php",
+                  data:'nic_no='+$("#nic").val(),
+                  type: "POST",
+                  success:function(data){
+                    $("#nic-number").html(data);
+                    $("#loaderIcon").hide();
+                  },
+                  error:function (){}
+                  });
+                }
+
+                function checkname() {
+                  $("#loaderIcon").show();
+                  jQuery.ajax({
+                  url: "check_availability.php",
+                  data:'name='+$("#l_name").val(),
+                  type: "POST",
+                  success:function(data){
+                    $("#name-ck").html(data);
                     $("#loaderIcon").hide();
                   },
                   error:function (){}
@@ -159,7 +115,7 @@
                      </div>
                   </div>
                </div>
-               <form role="form" action="" method="post">
+               <form role="form" name="supplier_form" action="" method="post">
                   <div class="row setup-content" id="step-1">
                      <div class="col-xs-6 col-md-offset-2">
                         <div class="col-md-12">
@@ -167,7 +123,7 @@
 
                            <div id="frmCheckUsername" class="form-group">
                               <label class="control-label">Supplier Code</label>
-                              <input class="form-control" required="required" autocomplete="off" type="text" maxlength="4" name="username" value="<?php echo escape(Input::get('supplier_code')); ?>" id="username" placeholder="Supplier Code" onBlur="checkAvailability()"><span id="user-availability-status"></span>  
+                              <input class="form-control" required="required" autocomplete="off" type="text" maxlength="4" name="suppleir_code" value="<?php echo escape(Input::get('supplier_code')); ?>" id="supplier_code" placeholder="Supplier Code" onBlur="checkAvailability()"><span id="user-availability-status"></span>  
                            </div>
                            <p><img src="LoaderIcon.gif" id="loaderIcon" style="display:none" /></p>
                            <div class="form-group">
@@ -176,11 +132,11 @@
                            </div>
                            <div class="form-group">
                               <label class="control-label">Last Name</label>
-                              <input maxlength="17" type="text" class="form-control" placeholder="Enter Last Name" name="l_name" value="<?php echo escape(Input::get('l_name')); ?>" autocomplete="off">
+                              <input class="form-control" required="required" autocomplete="off" type="text" maxlength="16" name="l_name" value="<?php echo escape(Input::get('l_name')); ?>" id="l_name" placeholder="Last Name" onBlur="checkname()"><span id="name-ck"></span>
                            </div>
                            <div class="form-group">
-                              <label for="nic-id" class="control-label">NIC</label>              
-                              <input class="form-control" name="nic_no" id="nic_no" placeholder="NIC" type="text" value="<?php echo escape(Input::get('nic_no')); ?>">
+                              <label for="nic-id" class="control-label">NIC</label>
+                              <input class="form-control" required="required" autocomplete="off" type="text" maxlength="12" name="nic" value="<?php echo escape(Input::get('nic_no')); ?>" id="nic" placeholder="Nic number" onBlur="checknic()"><span id="nic-number"></span>              
                            </div>
                            <div class="form-group">
                               <label for="gender" class="col-sm-2">Gender</label>
@@ -210,7 +166,7 @@
                            </div>
                            <div class="form-group">
                               <label class="control-label">Phone number</label>
-                              <input maxlength="10" type="text" name="mobile_no" value="<?php echo escape(Input::get('mobile_no')); ?>" autocomplete="off" class="form-control"placeholder="Enter Phone Number" />
+                              <input onkeypress="return isNumberKey(event)" maxlength="10" type="text" name="mobile_no" value="<?php echo escape(Input::get('mobile_no')); ?>" autocomplete="off" class="form-control"placeholder="Enter Phone Number" />
                            </div>
                            <div class="form-group">
                               <label class="control-label">Email Address</label>
@@ -231,7 +187,7 @@
                            <br><br>
                            <center>
                               <input type="hidden" name="token" value="<?php echo Token::generate(); ?>"/>
-                              <button class="btn btn-success btn-flat" type="submit">Submit</button>
+                              <button onClick="get();" class="btn btn-success btn-flat" type="submit">Submit</button>
                            </center>
                         </div>
                      </div>

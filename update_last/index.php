@@ -23,7 +23,7 @@ require_once 'core/init.php';
       <div class="module form-module">
          <div class="toggle">
             <i class="fa fa-times fa-pencil"></i>
-            <div class="tooltip">Click Me</div>
+            <div class="tooltip">Sign up</div>
          </div>
          <div class="form">
             <h2>Login to your account</h2>
@@ -101,13 +101,44 @@ if(isset($_POST['btn-signup']))
             echo 'alert("Success! You have successfully registered.")';
             echo '</script>';
 }
-?>
+?>  
+                <script>
+                  function checkAvailability() {
+                    $("#loaderIcon").show();
+                    jQuery.ajax({
+                    url: "check_availability.php",
+                    data:'username='+$("#username1").val(),
+                    type: "POST",
+                    success:function(data){
+                      $("#user-availability-status").html(data);
+                      $("#loaderIcon").hide();
+                    },
+                    error:function (){}
+                    });
+                  }
+                  function checknic() {
+                  $("#loaderIcon").show();
+                  jQuery.ajax({
+                  url: "check_availability.php",
+                  data:'nic_no='+$("#nic").val(),
+                  type: "POST",
+                  success:function(data){
+                    $("#nic-number").html(data);
+                    $("#loaderIcon").hide();
+                  },
+                  error:function (){}
+                  });
+                }
+                </script>
           <form action="" method="POST">
-            <input maxlength="100" required="required" type="text" class="form-control" name="username1" placeholder="Enter Username" value="<?php echo escape(Input::get('username1')); ?>" autocomplete="off"/>
+            <span id="user-availability-status"></span> 
+            <input class="form-control" required="required" autocomplete="off" type="text" maxlength="14" name="username1" value="<?php echo escape(Input::get('supplier_code')); ?>" id="username1" placeholder="Supplier Code" onBlur="checkAvailability()">
             <input type="password" class="form-control" name="password1" placeholder="Enter Password" value="" required autocomplete="off"/>
             <input type="password" class="form-control" name="password_again" id="password_again" placeholder="Enter Password again" value="" required autocomplete="off"/>
             <input type="email" class="form-control" name="reg_email" placeholder="Enter E-Mail ID" value="<?php echo escape(Input::get('reg_email')); ?>" required autocomplete="off"/>
             <input type="text" class="form-control" name="name" placeholder="Enter Name" value="<?php echo escape(Input::get('name')); ?>" required autocomplete="off"/>
+            <span id="nic-number"></span>
+            <input class="form-control" required="required" autocomplete="off" type="text" maxlength="10" name="nic" value="<?php echo escape(Input::get('nic_no')); ?>" id="nic" placeholder="Nic number" onBlur="checknic()">
             <select type="text" name="gender" class="form-control k" placeholder="Gender" value="<?php echo escape(Input::get('gender')); ?>" autocomplete="off">
                 <option> -- -- </option>
                 <option value="Male"> Male</option>
