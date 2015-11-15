@@ -1,28 +1,73 @@
 <?php
-require_once("dbcontroller.php");
-$db_handle = new DBController();
+require_once 'core/init.php';
 
+$supplier = new Supplier();
+$update = new Update();
 
-if(!empty($_POST["code"])) {  
-  $query = mysql_query("SELECT * FROM suppliers WHERE supplier_code like '".$_POST["code"]."'");
-  if (mysql_num_rows($query)){
-    while($row = mysql_fetch_assoc($query)){
-      $col =  $row['f_name']." ".$row['l_name'];
-      echo "<span class='status-available'> ".$col."</span>";
-    }
+if(!empty($_POST["search"])){ 
+  require_once 'db/dbdailysupply.php';
+  $dailysupply = new DBDailySupply();
+
+  $supplier_code = $_POST["search"];
+  $name = DB::getInstance()->get('suppliers', array('supplier_code', '=', $_POST["search"]));
+  if(!$name->count()){
+     echo "<span class='status-not-available'> No supplier.</span>";
   }else{
-    echo "<span class='status-not-available'> no supplier.</span>";
+    $code = $_POST["search"];
+  }
+
+  $arr = $dailysupply->myTotalSupplyOf6Months($supplier_code);
+  $todaydate = date('Y-m-d');
+  $todaydate = substr($todaydate,5, 7); // 2015-11-11
+
+  $datemonth = date('Y-m-d');
+  $datemonth = substr($datemonth, 0,8);
+  $datemonth = $datemonth."01";//2015-11-02
+  $sup_name  = $supplier->search('supplier_code', $supplier_code, 'f_name')." ".$supplier->search('supplier_code', $supplier_code, 'l_name');
+  $aprate    = $update->search('settings', 'date', $datemonth, 'approx_rate');
+  $thismonthkgs = DB::getInstance()->Getsum('approved_kgs','daily_supply',$supplier_code);
+    echo '
+    <dl class="dl-horizontal example1">
+       <p>Supplier details<p>
+       <dt>Code: </dt>
+       <dd>'.$code.'</dd>
+       <dt>Name: </dt>
+       <dd>'.$sup_name.'</dd>
+       <dt>NIC NO: </dt>
+       <dd>'.$supplier->search('supplier_code', $supplier_code, 'nic_no').'</dd>
+       <dt>Approximate tea Rate: </dt>
+       <dd>Rs '.$aprate.'</dd>
+       <dt>Supply kgs: </dt>
+       <dd>'.$thismonthkgs.' Kg</dd>
+       <dt>Total income: </dt>
+       <dd>Rs '.$aprate*$thismonthkgs.'</dd>
+       <dt>Paid: </dt>
+       <dd>---</dd>
+       <dt>remain balance: </dt>
+       <dd>---</dd>
+    </dl>
+    ';
+}
+
+
+if(!empty($_POST["code"])) {
+  $name = DB::getInstance()->get('suppliers', array('supplier_code', '=', $_POST["code"]));
+  if(!$name->count()){
+     echo "<span class='status-not-available'> no supplier.</span>";
+ }else{
+     foreach ($name->results() as $tag){
+      $col =  $tag->f_name." ".$tag->l_name;
+      echo "<span class='status-available'> ".$col."</span>";
+     }
   }
 } 
 
 if(!empty($_POST["sup_code"])) {
-  $result = mysql_query("SELECT count(*) FROM suppliers WHERE supplier_code='" . $_POST["sup_code"] . "'");
-  $row = mysql_fetch_row($result);
-  $user_count = $row[0];
-  if($user_count>0) {
-      echo "<span class='status-not-available'> Supplier Code Not Available.</span>";
+  $name = DB::getInstance()->get('suppliers', array('supplier_code', '=', $_POST["sup_code"]));
+  if($name->count()){
+     echo "<span class='status-not-available'> Supplier Already exists in system.</span>";
   }else{
-      echo "<span class='status-available'> Supplier Code is Available.</span>";
+    echo "<span class='status-available'> Supplier Code is Available.</span>";
   }
 }
 
@@ -48,13 +93,11 @@ if(!empty($_POST["name"]) && is_numeric($_POST["name"])) {
 }
 
 if(!empty($_POST["username"])) {
-  $result = mysql_query("SELECT count(*) FROM users WHERE username='" . $_POST["username"] . "'");
-  $row = mysql_fetch_row($result);
-  $user_count = $row[0];
-  if($user_count>0) {
-      echo "<span class='status-not-available'> Username Not Available.</span>";
+  $name = DB::getInstance()->get('users', array('username', '=', $_POST["username"]));
+  if($name->count()){
+     echo "<span class='status-not-available'> Username Not Available.</span>";
   }else{
-      echo "<span class='status-available'> Username is Available.</span>";
+     echo "<span class='status-available'> Username is Available.</span>";
   }
 }
 ?>

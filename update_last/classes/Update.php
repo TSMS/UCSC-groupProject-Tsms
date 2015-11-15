@@ -60,7 +60,7 @@ class Update {
     public function search($table, $same, $keyword, $field){
         $search = DB::getInstance()->query("SELECT * FROM $table WHERE $same = '$keyword'");
         if(!$search->count()){
-            echo '<p class="alert text-yellow">There is no '.$field.' data to retrive</p>';
+            echo '';
         }else{
             foreach($search->results() as $s) {
                 return $s->$field;

@@ -210,13 +210,97 @@ if($user->isLoggedIn()){
 
                   </div><!-- /.tab-pane -->
                   <div class="tab-pane" id="tab_2-2">
-                    The European languages are members of the same family. Their separate existence is a myth.
-                    For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ
-                    in their grammar, their pronunciation and their most common words. Everyone realizes why a
-                    new common language would be desirable: one could refuse to pay expensive translators. To
-                    achieve this, it would be necessary to have uniform grammar, pronunciation and more common
-                    words. If several languages coalesce, the grammar of the resulting language is more simple
-                    and regular than that of the individual languages.
+                                        <!-- http://www.johnmorrisonline.com/a-php-script-to-search-a-mysql-database/    http://www.vaaah.com/php/view/Search/29/How-to-search-and-retrieve-data-from-MySQL-database-using-PHP -->                    
+                    <?php
+                    $msg_id       = Input::get('id');
+                    $supplier_code= $update->search('message_temp', 'message_id', $msg_id, 'supplier_code');
+                    
+                    require_once 'db/dbdailysupply.php';
+
+                    $dailysupply = new DBDailySupply();
+
+                    $arr = $dailysupply->myTotalSupplyOf6Months($supplier_code);
+                    $todaydate = date('Y-m-d');
+                    $todaydate = substr($todaydate,5, 7); // 2015-11-11
+
+                       $sup_name     = $supplier->search('supplier_code', $supplier_code, 'f_name')." ".$supplier->search('supplier_code', $supplier_code, 'l_name');
+                       $view         = DB::getInstance()->getall("message_temp");
+                       $datemonth    = date('Y-m-d');
+                       $datemonth    = substr($datemonth, 0,8);
+                       $datemonth    = $datemonth."01";//2015-11-02
+                       $thismonthkgs = DB::getInstance()->Getsum('approved_kgs','daily_supply',$supplier_code);
+                       $code         = $supplier_code;
+                       $reqval       = $update->search('message_temp', 'message_id', $msg_id, 'value');
+                       $reqqnt       = $update->search('message_temp', 'message_id', $msg_id, 'quantity');
+                       $reqcat       = $update->search('message_temp', 'message_id', $msg_id, 'category');
+                       $aprate       = $update->search('settings', 'date', $datemonth, 'approx_rate');
+                       $acti         = $update->search('message_temp', 'message_id', $msg_id, 'message_code');
+                    ?>
+
+                    <!-- Supplier details for search result -->
+                        <div class="row">
+                           <div class="col-md-6">
+                              <div class="box box-solid">
+                                 <div class="box-header with-border">
+                                    <i class="fa fa-text-width"></i>
+                                    <h3 class="box-title">Supplier Description</h3>
+                                    <!-- search form (Optional) -->
+                                    <script type="text/javascript">
+                                        function getsupplier(){
+                                           $.post('check_availability.php', { search: search.code.value} , 
+                                              function(output){
+                                                 $('#search_rr').html(output).show();
+                                              });
+                                        }
+                                     </script>
+                                    <form name="search">
+                                        <div class="input-group col-sm-5 pull-right">
+                                          <input maxlength="4" type="search" name="code" class="form-control" placeholder="Search...">
+                                          <span class="input-group-btn">
+                                            <button type="button" name="search" onClick="getsupplier();" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                                          </span>
+                                        </div>
+                                    </form>
+                                 </div>
+                                 <!-- /.box-header -->
+                                 <div class="box-body" id="search_rr">
+                                    <dl class="dl-horizontal example1">
+                                       <p>Request message
+                                       <p>
+                                       <dt>Message id: </dt>
+                                       <dd><?php echo $msg_id;?></dd>
+                                       <dt>ammount: </dt>
+                                       <dd><?php echo $reqval;?></dd>
+                                       <dt>Quantity: </dt>
+                                       <dd><?php echo $reqqnt;?></dd>
+                                       <dt>category: </dt>
+                                       <dd><?php echo $reqcat;?></dd>
+                                       <p>Supplier details
+                                       <p>
+                                       <dt>Code: </dt>
+                                       <dd><?php echo $supplier_code;?></dd>
+                                       <dt>Name: </dt>
+                                       <dd><?php echo $sup_name;?></dd>
+                                       <dt>NIC NO: </dt>
+                                       <dd><?php echo $supplier->search('supplier_code', $supplier_code, 'nic_no')?></dd>
+                                       <dt>Approximate tea Rate: </dt>
+                                       <dd>Rs <?php echo $aprate;?></dd>
+                                       <dt>Supply kgs: </dt>
+                                       <dd><?php echo $thismonthkgs;?> Kg</dd>
+                                       <dt>Total income: </dt>
+                                       <dd>Rs <?php echo $aprate*$thismonthkgs;?></dd>
+                                       <dt>Paid: </dt>
+                                       <dd>---</dd>
+                                       <dt>remain balance: </dt>
+                                       <dd>---</dd>
+                                    </dl>
+                                 </div>
+                                 <!-- /.box-body -->
+                              </div>
+                              <!-- /.box -->
+                           </div>
+                        </div><!-- end of row -->
+
                   </div><!-- /.tab-pane -->
                   <div class="tab-pane" id="tab_3-2">
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry.
