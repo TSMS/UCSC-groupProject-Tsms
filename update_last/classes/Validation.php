@@ -46,7 +46,7 @@ class Validation {
                         case 'notmatch':
                             $check = $this->_db->get($rule_value, array($item, '=', $value));
                             if(!$check->count()){
-                                $this->addError("{$item} not registered in our system.");
+                                $this->addError("{$item}".' '.'not registered in our system. <a href="supplier_registation.php"><i class="fa fa-user-plus"></i>  Add Suppliers</a>');
                             }
                             break;
                         case 'num':
@@ -82,3 +82,5 @@ class Validation {
     }
 
 } 
+
+?> 

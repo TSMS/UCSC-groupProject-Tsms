@@ -41,11 +41,25 @@ if($user->isLoggedIn()){
                   <li class="active"><a href="#tab_1-1" data-toggle="tab">Daily Supply</a></li>
                   <li><a href="#tab_2-2" data-toggle="tab">Service update</a></li>
                   <li><a href="#tab_3-2" data-toggle="tab">Edit data</a></li>
-                  <li class="pull-right header"><i class="fa fa-refresh"></i></li>
+                  <li class="pull-right header"><a href="supply_update.php"><i class="fa fa-refresh"></i></a></li>
                 </ul>
                 <div class="tab-content">
                   <div class="tab-pane active" id="tab_1-1">
 
+                    <!-- get data to update.php -->
+                    <script type="text/javascript">
+                      function get(){
+                         $.post('update.php', { 
+                          supplier_code: update_form.supplier_code.value,
+                          approved_kgs: update_form.approved_kgs.value,
+                          supplied_kgs: update_form.supplied_kgs.value,
+                          units: update_form.units.value
+                           } , 
+                            function(output){
+                               $('#update').html(output).show();
+                            });
+                      }
+                   </script>
 
                     <!-- tab-1-1 in here-->
                     <section class="content">
@@ -58,44 +72,45 @@ if($user->isLoggedIn()){
                                     <div class="row">
                                        <div class="form-group">
                                           <div class="callout">
-                                             <p>Date is: <?php echo date("Y-m-d h:i:sa");?></p>
-                                          </div>
-                                      <?php
-                                         if(isset($_GET['inserted']))
-                                         {
-
-                                           ?>
-                                      <div class="col-md-offset-2 col-xs-7">
-                                          <div class="alert alert-success">
-                                          Supplier Update Successefully added to the Factory database!
-                                          </div>
-                                      </div>
-                                      <?php
-                                         }
-                                          ?>
-                                         
+                                             <p>Date is: <?php echo date('Y-m-d H:i:s');?></p>
+                                           </div>
+                                           <div id="update"></div>
                                        </div>
                                     </div>
                                     <!-- HERE IS UPDATE ALERT IN HERE -->
-
+                                    <script type="text/javascript">
+                                      function checkAvailability() {
+                                        $("#loaderIcon").show();
+                                        jQuery.ajax({
+                                        url: "check_availability.php",
+                                        data:'code='+$("#supplier_code").val(),
+                                        type: "POST",
+                                        success:function(data){
+                                          $("#user-availability-status").html(data);
+                                          $("#loaderIcon").hide();
+                                        },
+                                        error:function (){}
+                                        });
+                                      }
+                                    </script>
                                     <div class="row">
-                                       <form action="" method="post">
+                                       <form action="" name="update_form" method="post">
                                           <div class="box-body">
                                             <div class="row">
                                                <div class="col-xs-2">
                                                   <label>Date: </label>
-                                                  <input type="date" name="date" class="form-control">
+                                                  <input type="date" name="date" class="form-control" value="<?php echo date("Y-m-d");?>">
                                                </div>
-                                               <div class="col-xs-2">
-                                                  <label>Supplier name: </label>
-                                                  <input class="form-control" placeholder="sup_name" type="text" readonly="">
+                                               <div class="col-xs-3">
+                                                  <label>Supplier name: </label><br>
+                                                  <span  class="form-control" id="user-availability-status"></span>
                                               </div>
                                             </div>
                                             <br>
                                             <div class="row">
-                                              <div class="col-xs-2">
-                                                  <label>Supplier Code: </label>
-                                                  <input maxlength="4" class="form-control" name="supplier_code" placeholder="Sup-code" type="search" required>
+                                              <div id="frmCheckUsername" class="col-xs-2">
+                                                <label class="control-label">Supplier Code</label>
+                                              <input class="form-control" required="required" autocomplete="off" type="text" maxlength="4" name="suppleir_code" value="<?php echo escape(Input::get('supplier_code')); ?>" id="supplier_code" placeholder="Supplier Code" onBlur="checkAvailability()">  
                                               </div>
                                               <div class="col-xs-2">
                                                   <label>Quantity: </label>
@@ -111,7 +126,7 @@ if($user->isLoggedIn()){
                                               </div>
                                               <div class="col-xs-2">
                                                   <br>
-                                                  <button type="submit" name="submit" class="btn bg-navy btn-flat">Submit</button>
+                                                  <button onClick="get();" type="button" name="submit" class="btn bg-navy btn-flat">Submit</button>
                                               </div>
                                             </div>
                                           </div><!-- /.box-body -->

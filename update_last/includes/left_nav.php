@@ -10,7 +10,7 @@
               function get(){
                  $.post('supplier_search.php', { getname: form.name.value} , 
                     function(output){
-                       $('#content').html(output).show();
+                       $('#search_r').html(output).show();
                     });
               }
            </script>
@@ -42,13 +42,7 @@
             <li class="treeview">
               <a href="supply_update.php">
                 <i class="fa fa-edit"></i> <span>Update</span>
-                <i class="fa fa-angle-left pull-right"></i>
               </a>
-              <ul class="treeview-menu">
-                <li><a href="supply_update.php"><i class="fa fa-circle-o"></i> Supply</a></li>
-                <li><a href="#"><i class="fa fa-circle-o"></i> Service</a></li>
-                <li><a href="#"><i class="fa fa-circle-o"></i> Edit</a></li>
-              </ul>
             </li>
             <li class="treeview">
               <a href="#">

@@ -18,24 +18,6 @@ if(Input::exists()){
                 'max' => 4,
                 'unique' => 'suppliers'
             )
-            // ,
-            // 'mobile_no' => array(
-            //     'min' => 10,
-            //     'max' => 10,
-            //     'num' => $_POST
-            // ),
-            // 'nic_no' => array(
-            //     'min' => 10,
-            //     'max' => 10
-            // ),
-            // 'f_name' => array(
-            //     'min' => 3,
-            //     'max' => 20
-            // ),
-            // 'l_name' => array(
-            //     'min' => 3,
-            //     'max' => 20
-            // )
         ));
 
     if ($validation->passed()) {
@@ -44,13 +26,13 @@ if(Input::exists()){
          $supplier->create(array(
              'supplier_code'  => Input::get('supplier_code'),
              'f_name'         => Input::get('f_name'),
-           //   'l_name'         => Input::get('l_name'),
-           //   'address_1'      => Input::get('address_1'),
-           //   'nic_no'         => Input::get('nic_no'),
-           //   'mobile_no'      => Input::get('mobile_no'),
-           //   'e_mail'         => Input::get('e_mail'),
-           // //'birth_day'      => Input::get('birthday'),
-           //   'Gender'         => Input::get('Gender'),
+             'l_name'         => Input::get('l_name'),
+             'address_1'      => Input::get('address_1'),
+             'nic_no'         => Input::get('nic_no'),
+             'mobile_no'      => Input::get('mobile_no'),
+             'e_mail'         => Input::get('e_mail'),
+             'joined'         => date("Y-m-d H:i:s"),
+             'Gender'         => Input::get('Gender'),
              'estate_name'    => 'NULL',
              'reg_no'         => 'NULL',
              'size_of_estate' => 'NULL',
@@ -68,14 +50,32 @@ if(Input::exists()){
                die($e->getMessage());
             }
 
-           //  Session::flash('success');
-           // Redirect::to('supplier_view.php');
-         echo '<div class="col-md-offset-2 col-xs-7">
+           Session::flash('success');
+          Redirect::to('Supply_update.php');
+
+         echo '<div col-md-offset-2 col-md-6>
+                <a href="#" class="btn btn-app">
+                    <i class="fa fa-edit"></i> Edit
+                  </a>
+                  <a class="btn btn-app">
+                    <i class="fa fa-user-plus"></i> Add Suppliers
+                  </a>
+                  <a class="btn btn-app">
+                    <span class="badge bg-purple">891</span>
+                    <i class="fa fa-users"></i> View Suppliers
+                  </a>
+                  <a href="#" class="btn btn-app">
+                    <span class="badge bg-red">1</span>
+                    <i class="fa fa-trash"></i> DELETE
+                  </a>
+         </div>
+            <div class="col-md-6">
                 <div class="alert alert-success">
                 Supplier Successefully added!
                 </div>
             </div>';
-        
+
+
         }else{
           foreach ($validation->errors() as $key) {
 

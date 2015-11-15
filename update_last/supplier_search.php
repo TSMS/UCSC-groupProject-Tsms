@@ -18,7 +18,6 @@ if(Input::exists()){
         ?>
 <table>
     <tr>
-        <th>id</th>
         <th>Supplier Code</th>
         <th>Name</th>
         <th>Address</th>
@@ -26,12 +25,12 @@ if(Input::exists()){
         <th>Mobile</th>
         <th>Gender</th>
         <th>Joined</th>
+        <th>Bank</th>
     </tr>
         <?php
         foreach ($name->results() as $name){
         ?>
             <tr>
-                <td><?php echo $name->id?></td>
                 <td><?php echo $name->supplier_code?></td>
                 <td><?php echo $name->f_name." ".$name->l_name?></td>
                 <td><?php echo $name->address_1?></td>
@@ -39,6 +38,7 @@ if(Input::exists()){
                 <td><?php echo $name->mobile_no?></td>
                 <td><?php echo $name->gender?></td>
                 <td><?php echo $name->joined?></td>
+                <td><?php echo $name->bank." ".$name->account_no?></td>
             </tr>
         <?php
         }

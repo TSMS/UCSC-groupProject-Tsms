@@ -31,6 +31,8 @@
          </section>
          <!-- Main content -->
          <div id="content" class="content">
+          <div id="search_r"></div>
+          <br>
             <!-- Your Page Content Here -->
             <!-- Brief status  -->
             <div class="row">
@@ -98,24 +100,25 @@
                     </div><!-- /.box-footer-->
                </div>
                <!-- End Read area -->
-
                <div class="col-md-7">
-                  <div class="box box-primary direct-chat direct-chat-info">
-                    <div class="box-header with-border">
-                      <h3 class="box-title">Request Messages</h3>
-                      <div class="box-tools pull-right">
-                        <span data-toggle="tooltip" title="3 New Messages" class="badge bg-blue">3</span>
-                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                        <!-- In box-tools add this button if you intend to use the contacts pane -->
-                        <button class="btn btn-box-tool" data-toggle="tooltip" title="Contacts" data-widget="chat-pane-toggle"><i class="fa fa-comments"></i></button>
-                        <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                      </div>
-                    </div><!-- /.box-header -->
-                    <div class="box-body">
-                      <!-- Conversations are loaded here -->
-                      <div class="direct-chat-messages">
-
-                        <?php
+               <!-- TO DO List -->
+                <div class="box box-primary">
+                  <div class="box-header">
+                    <i class="ion ion-clipboard"></i>
+                    <h3 class="box-title">Request Messages</h3>
+                    <div class="box-tools pull-right">
+                      <ul class="pagination pagination-sm inline">
+                        <li><a href="#">&laquo;</a></li>
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">&raquo;</a></li>
+                      </ul>
+                    </div>
+                  </div><!-- /.box-header -->
+                  <div class="box-body">
+                    <ul class="todo-list">
+                      <?php
                            // $supplier = DB::getInstance()->getall("suppliers");
                            //  echo '<h1>'.$supplier->first()->f_name.'</h1>';
                            $view = DB::getInstance()->getall("message_temp");
@@ -130,53 +133,51 @@
                                 $msg = $tag->value." ".$tag->quantity." ".$tag->category;
                                $type = $tag->message_code;
                                $reqtype  = $supplier->msgtype('message_code', $type, 'request');
-                        ?>
 
-                        <!-- Message. Default to the left -->
-                        <div class="direct-chat-msg">
-                          </div><!-- /.direct-chat-info -->
-                          <h4 class="direct-chat-img"><?php echo $tag->id;?></h4><!-- /.direct-chat-img -->
-                          <a href="message.php?<?php echo "id=".$tag->message_id;?>">
-                           <div class="direct-chat-text">
-                            <?php echo $tag->supplier_code." - ".$txt." requesting <b>".$reqtype."</b>";?>
-                              <span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
-                           </div><!-- /.direct-chat-msg -->
-                          </a>
-                        <?php
+                               switch ($type) {
+                                 case 'fer':
+                                   $lable = 'info';
+                                   break;
+                                 case 'adv':
+                                   $lable = 'warning';
+                                   break;
+                                 default:
+                                   $lable = 'success';
+                                   break;
+                               }
+
+
+
+                        ?>
+                      <li>
+                        <!-- drag handle -->
+                        <span class="handle">
+                          <i class="fa fa-ellipsis-v"></i>
+                          <?php echo $tag->id;?>
+                          <i class="fa fa-ellipsis-v"></i>
+                        </span>
+                        <!-- checkbox -->
+                        <input type="checkbox" value="" name="chacked">
+                        <!-- todo text -->
+                        <span class="text"><a href="message.php?<?php echo "id=".$tag->message_id;?>">
+                            <?php echo $tag->supplier_code." - ".$txt." requesting <b></b>";?>
+                          </a></span><h6 class="direct-chat-timestamp pull-right">23 Nov 2:00 am</h6>
+                        <!-- Emphasis label -->
+                        <small class="label label-<?php echo $lable;?>"><?php echo $reqtype;?></small> 
+                        <!-- /info/warning/success/primary/default -->
+                        <!-- General tools such as edit or delete-->
+                        <div class="tools">
+                          <i class="fa fa-edit"></i>
+                          <i class="fa fa-trash-o"></i>
+                        </div>
+                      </li>
+                      <?php
                            }
                         }
                         ?>
-                        <div class="direct-chat-msg right">
-                          <div class="direct-chat-info clearfix">
-                            <span class="direct-chat-name pull-right">supplier</span>
-                            <span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span>
-                          </div><!-- /.direct-chat-info -->
-                          <h4 class="direct-chat-img">(00)</h4>
-                          <div class="direct-chat-text">
-                            You better believe it!
-                          </div><!-- /.direct-chat-text -->
-                        </div><!-- /.direct-chat-msg -->
-                      </div><!--/.direct-chat-messages-->
-
-                      <!-- Contacts are loaded here -->
-                      <div class="direct-chat-contacts">
-                        <ul class="contacts-list">
-                          <li>
-                            <a href="#">
-                              <h4 class="contacts-list-img"></h4>
-                              <div class="contacts-list-info">
-                                <span class="contacts-list-name">
-                                  Count Dracula
-                                  <small class="contacts-list-date pull-right">2/28/2015</small>
-                                </span>
-                                <span class="contacts-list-msg">How have you been? I was...</span>
-                              </div><!-- /.contacts-list-info -->
-                            </a>
-                          </li><!-- End Contact Item -->
-                        </ul><!-- /.contatcts-list -->
-                      </div><!-- /.direct-chat-pane -->
-                    </div><!-- /.box-body -->
-                  </div><!--/.direct-chat -->
+                    </ul>
+                  </div><!-- /.box-body -->
+                </div><!-- /.box -->
                </div>
             </div
 

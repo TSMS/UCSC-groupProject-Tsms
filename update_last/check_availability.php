@@ -3,6 +3,18 @@ require_once("dbcontroller.php");
 $db_handle = new DBController();
 
 
+if(!empty($_POST["code"])) {  
+  $query = mysql_query("SELECT * FROM suppliers WHERE supplier_code like '".$_POST["code"]."'");
+  if (mysql_num_rows($query)){
+    while($row = mysql_fetch_assoc($query)){
+      $col =  $row['f_name']." ".$row['l_name'];
+      echo "<span class='status-available'> ".$col."</span>";
+    }
+  }else{
+    echo "<span class='status-not-available'> no supplier.</span>";
+  }
+} 
+
 if(!empty($_POST["sup_code"])) {
   $result = mysql_query("SELECT count(*) FROM suppliers WHERE supplier_code='" . $_POST["sup_code"] . "'");
   $row = mysql_fetch_row($result);

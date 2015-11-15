@@ -30,22 +30,30 @@ if($user->isLoggedIn()){
             </ol>
          </section>
          <!-- Main content -->
-
+<!-- get data to add_supplier.php -->
           <script type="text/javascript">
               function get(){
-                 $.post('add_supplier.php', { supplier_code: supplier_form.supplier_code.value } , 
+                 $.post('add_supplier.php', { 
+                  supplier_code: supplier_form.supplier_code.value,
+                  f_name: supplier_form.f_name.value,
+                  l_name: supplier_form.l_name.value,
+                  address_1: supplier_form.address_1.value,
+                  nic_no: supplier_form.nic_no.value,
+                  mobile_no: supplier_form.mobile_no.value,
+                  e_mail: supplier_form.e_mail.value,
+                  Gender: supplier_form.Gender.value
+                   } , 
                     function(output){
                        $('#content').html(output).show();
                     });
               }
            </script>
 
-         <div id="content" class="content">
+         <div class="content" id="content">
             <!-- Your Page Content Here -->
 
             <!-- Small boxes (Stat box) -->
             <div class="container">
-
               <script>
               // <input value="" onkeypress="return isNumberKey(event)">
                 function isNumberKey(evt) {
@@ -136,7 +144,7 @@ if($user->isLoggedIn()){
                            </div>
                            <div class="form-group">
                               <label for="nic-id" class="control-label">NIC</label>
-                              <input class="form-control" required="required" autocomplete="off" type="text" maxlength="12" name="nic" value="<?php echo escape(Input::get('nic_no')); ?>" id="nic" placeholder="Nic number" onBlur="checknic()"><span id="nic-number"></span>              
+                              <input class="form-control" required="required" autocomplete="off" type="text" maxlength="12" name="nic_no" value="<?php echo escape(Input::get('nic_no')); ?>" id="nic" placeholder="Nic number" onBlur="checknic()"><span id="nic-number"></span>              
                            </div>
                            <div class="form-group">
                               <label for="gender" class="col-sm-2">Gender</label>
@@ -187,7 +195,7 @@ if($user->isLoggedIn()){
                            <br><br>
                            <center>
                               <input type="hidden" name="token" value="<?php echo Token::generate(); ?>"/>
-                              <button onClick="get();" class="btn btn-success btn-flat" type="submit">Submit</button>
+                              <button onClick="get();" class="btn btn-success btn-flat" type="button" name="update">Submit</button>
                            </center>
                         </div>
                      </div>
