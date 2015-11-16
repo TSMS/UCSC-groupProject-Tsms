@@ -90,14 +90,34 @@
                          </div>
                       </div>
                   </div>
-                  <div class="box-footer">
+                    <script type="text/javascript">
+                      function gett(){
+                         $.post('test.php', { 
+                          number: xxxx.number.value,
+                          send_message: xxxx.message.value
+                           } , 
+                            function(output){
+                               $('#update').html(output).show();
+                            });
+                      }
+                   </script>
+                   <form action="" name="xxxx" method="post">
+                      <div class="box-footer">
+                      <div class="col-md-3">
+                        <input  class="form-control" name="number" placeholder="sup-kgs" type="text">
+                      </div>
                       <div class="input-group">
                         <input type="text" name="message" placeholder="Type Message ..." class="form-control">
                         <span class="input-group-btn">
-                          <button type="button" class="btn bg-navy btn-flat">Send</button>
+                          <button onClick="gett();" type="button" name="submit" class="btn bg-navy btn-flat">Send</button>
                         </span>
                       </div>
                     </div><!-- /.box-footer-->
+                  </form>
+                  <div id="update"></div>
+
+
+
                </div>
                <!-- End Read area -->
                <div class="col-md-7">
@@ -141,6 +161,12 @@
                                  case 'adv':
                                    $lable = 'warning';
                                    break;
+                                 case 'bil':
+                                   $lable = 'default';
+                                   break;
+                                 case 'lon':
+                                   $lable = 'primary';
+                                   break;
                                  default:
                                    $lable = 'success';
                                    break;
@@ -153,7 +179,7 @@
                         <!-- drag handle -->
                         <span class="handle">
                           <i class="fa fa-ellipsis-v"></i>
-                          <?php echo $tag->id;?>
+                          <?php echo $tag->message_id;?>
                           <i class="fa fa-ellipsis-v"></i>
                         </span>
                         <!-- checkbox -->

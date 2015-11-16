@@ -22,8 +22,6 @@
               </span>
             </div>
           </form>
-          <!-- /.search form -->
-
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul id="nav" class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
@@ -56,7 +54,7 @@
               </ul>
             </li>
             <li class="treeview">
-              <a href="invoice.php">
+              <a href="report.php">
                 <i class="fa fa-print"></i> <span>Report</span>
               </a>
             </li>

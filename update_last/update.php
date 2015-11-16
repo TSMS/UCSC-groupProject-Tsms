@@ -61,7 +61,7 @@ if($user->isLoggedIn())
 	                   die($e->getMessage());
 	                }
 
-            		// Session::flash('success');
+            		Session::flash('success');
            			// Redirect::to('supply_update.php);
 						echo '<div class="pull-left">
                 <a href="supply_update.php" class="btn btn-app">
