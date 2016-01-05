@@ -4743,3 +4743,9 @@ table.text-center th {
 .thalapalakanada {
   text-shadow: 0 0 1px #000, 0 0 2px #000;
 }
+
+.textcenter {
+  text-align: center;
+  padding-left: 10%;
+  padding-right: 10%;
+}
