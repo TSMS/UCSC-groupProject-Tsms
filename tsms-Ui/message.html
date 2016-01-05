@@ -242,8 +242,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
          
           <section class="content">
             <div class="row">
+              <div class="col-md-3">
+                <div class="box-body">
+                  <p>Send Message to Suppliers</p>
+                  <button type="button" name="accept" class="btn bg-navy btn-flat"><i class="fa fa-envelope"></i> Compose</button>
+                </div>
+              </div>
+            </div>
+            <div class="row">
               <div class="col-md-6">
-                <div class="box box-primary">
+                <div class="box box-navy">
                   <div class="box-header with-border">
                     <h3 class="box-title">Inbox</h3>
                     <div class="box-tools pull-right">
@@ -339,9 +347,105 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </div>
                 </div><!-- /. box -->
               </div><!-- /.col -->
+              <div class="col-md-6">
+                <div class="box box-navy">
+                  <div class="box-header with-border">
+                    <h3 class="box-title"> View Message</h3>
+                    <div class="box-body">
+                      <dl class="dl-horizontal example1">
+                         <p>Request message
+                         <p>
+                         <dt>Supplier Code: </dt>
+                         <dd>supplier_code</dd>
+                         <dt>Supplier Name: </dt>
+                         <dd>txt</dd>
+                         <dt>ammount: </dt>
+                         <dd>value</dd>
+                         <dt>Quantity: </dt>
+                         <dd>quantity;</dd>
+                         <dt>category: </dt>
+                         <dd>reqtype</dd>
+
+                         <div class="supplier-ditails">
+                            <!-- Bar Chart Start -->
+                              <div class="box box-success">
+                                <div class="box-header with-border">
+                                  <h3 class="box-title">Supply of last 6 month</h3>
+                                  <div class="box-tools pull-right">
+                                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                  </div>
+                                </div>
+                                <div class="box-body">
+                                  <div class="chart">
+                                    <canvas id="income" width="500" height="230"></canvas>
+                                  </div>
+                                </div><!-- /.box-body -->
+                              </div><!-- /.box -->
+                              <!-- Bar Chart End -->
+                             <!-- line Chart Start -->
+                              <div class="box box-success">
+                                <div class="box-header with-border">
+                                  <h3 class="box-title">Income vs payment</h3>
+                                  <div class="box-tools pull-right">
+                                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                  </div>
+                                </div>
+                                <div class="box-body">
+                                  <div class="chart">
+                                    <canvas id="c" width="500" height="230"></canvas>
+                                  </div>
+                                </div><!-- /.box-body -->
+                              </div><!-- /.box -->
+                              <!-- Line Chart End -->
+                         </div>
+                         <div class="is-accept">
+                          <!-- here you can get idea about are you going to give this or not -->
+                          <div class="col-md-6">
+                            <div class="info-box bg-green">
+                              <span class="info-box-icon"><i class="fa fa-thumbs-o-up"></i></span>
+                              <div class="info-box-content">
+                                <span class="info-box-text">Likes</span>
+                                <span class="info-box-number">41,410</span>
+                                <div class="progress">
+                                  <div class="progress-bar" style="width: 70%"></div>
+                                </div>
+                                <span class="progress-description">
+                                  70% Increase in 30 Days
+                                </span>
+                              </div><!-- /.info-box-content -->
+                            </div><!-- /.info-box -->
+                          </div><!-- /.col -->
+                          <!-- if this mark apear then that means you can not offer anything to the supplier -->
+                          <div class="col-md-6">
+                            <div class="info-box bg-red">
+                              <span class="info-box-icon"><i class="fa fa-thumbs-o-down"></i></span>
+                              <div class="info-box-content">
+                                <span class="info-box-text">Likes</span>
+                                <span class="info-box-number">41,410</span>
+                                <div class="progress">
+                                  <div class="progress-bar" style="width: 30%"></div>
+                                </div>
+                                <span class="progress-description">
+                                  70% Increase in 30 Days
+                                </span>
+                              </div><!-- /.info-box-content -->
+                            </div><!-- /.info-box -->
+                          </div><!-- /.col -->
+                       </div>
+                       <div class="input-group">
+                         <span class="input-group-btn">
+                            <button type="button" name="accept" class="btn bg-navy btn-flat pull-right">Accept</button>                
+                            <button type="reset" name="Reject" class="btn bg-denger btn-flat ">Reject</button>
+                         </span>
+                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
-
          </div> <!-- /.content -->
       </div>
 
@@ -370,7 +474,101 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="dist/js/app.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="dist/js/demo.js"></script>
+    <!-- iCheck -->
+    <script src="plugins/iCheck/icheck.min.js"></script>
      <!-- chartjs Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+    <!-- Page Script -->
+    <script>
+      $(function () {
+        //Enable iCheck plugin for checkboxes
+        //iCheck for checkbox and radio inputs
+        $('.mailbox-messages input[type="checkbox"]').iCheck({
+          checkboxClass: 'icheckbox_flat-blue',
+          radioClass: 'iradio_flat-blue'
+        });
+
+        //Enable check and uncheck all functionality
+        $(".checkbox-toggle").click(function () {
+          var clicks = $(this).data('clicks');
+          if (clicks) {
+            //Uncheck all checkboxes
+            $(".mailbox-messages input[type='checkbox']").iCheck("uncheck");
+            $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
+          } else {
+            //Check all checkboxes
+            $(".mailbox-messages input[type='checkbox']").iCheck("check");
+            $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
+          }
+          $(this).data("clicks", !clicks);
+        });
+
+        //Handle starring for glyphicon and font awesome
+        $(".mailbox-star").click(function (e) {
+          e.preventDefault();
+          //detect type
+          var $this = $(this).find("a > i");
+          var glyph = $this.hasClass("glyphicon");
+          var fa = $this.hasClass("fa");
+
+          //Switch states
+          if (glyph) {
+            $this.toggleClass("glyphicon-star");
+            $this.toggleClass("glyphicon-star-empty");
+          }
+
+          if (fa) {
+            $this.toggleClass("fa-star");
+            $this.toggleClass("fa-star-o");
+          }
+        });
+      });
+    </script>
+    <!-- Charts javaScript -->
+      <script>
+      var ctx = document.getElementById("c").getContext("2d");
+      var data = {
+        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        datasets: [{
+          label: "My First dataset",
+          fillColor: "rgba(220,220,220,0.2)",
+          strokeColor: "rgba(220,220,220,1)",
+          pointColor: "rgba(220,220,220,1)",
+          pointStrokeColor: "#fff",
+          pointHighlightFill: "#fff",
+          pointHighlightStroke: "rgba(220,220,220,1)",
+          data: [65, 59, 80, 81, 56, 55, 40]
+        }, {
+          label: "My Second dataset",
+          fillColor: "rgba(151,187,205,0.2)",
+          strokeColor: "rgba(151,187,205,1)",
+          pointColor: "rgba(151,187,205,1)",
+          pointStrokeColor: "#fff",
+          pointHighlightFill: "#fff",
+          pointHighlightStroke: "rgba(151,187,205,1)",
+          data: [28, 48, 40, 19, 86, 27, 90]
+        }]
+      };
+      var MyNewChart = new Chart(ctx).Line(data);
+    </script>
+    <!-- Line Chart JavaScript End -->
+    <!-- Bar Chart JavaScript Start -->
+    <script type="text/javascript">
+      var barData = {
+                labels : ["January","February","March","April","May","June"],
+                datasets : [
+                    {
+                        fillColor : "#48A497",
+                        strokeColor : "#48A4D1",
+                        data : [456,479,324,569,702,600]
+                    }
+                ]
+            }
+            // get bar chart canvas
+            var income = document.getElementById("income").getContext("2d");
+            // draw bar chart
+            new Chart(income).Bar(barData);
+    </script>
+    <!-- Charts Ends -->
   </body>
 </html>
