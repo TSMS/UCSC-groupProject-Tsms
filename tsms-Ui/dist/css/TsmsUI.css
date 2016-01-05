@@ -531,7 +531,7 @@ a:focus {
   margin-right: 5px;
 }
 .sidebar-menu li.header {
-  padding: 10px 25px 10px 15px;
+  padding-left: 10px;
   font-size: 12px;
 }
 .sidebar-menu li > a > .fa-angle-left {
