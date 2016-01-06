@@ -1,93 +1,88 @@
-<!DOCTYPE HTML>
-<html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+  <div class="row">
+    <div class="col-md-6">
+      <!-- Bar Chart Start -->
+      <div class="box box-success">
+         <div class="box-header with-border">
+            <h3 class="box-title">Supply of last 6 month</h3>
+            <div class="box-tools pull-right">
+               <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+               <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+            </div>
+         </div>
+         <div class="box-body">
+            <div class="chart">
+               <canvas id="income" width="500" height="230"></canvas>
+            </div>
+         </div>
+         <!-- /.box-body -->
+      </div><!-- /.box -->
+      <!-- Bar Chart End -->
+    </div>
+    <div class="col-md-6">
+      <!-- line Chart Start -->
+      <div class="box box-success">
+         <div class="box-header with-border">
+            <h3 class="box-title">Income vs payment</h3>
+            <div class="box-tools pull-right">
+               <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+               <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+            </div>
+         </div>
+         <div class="box-body">
+            <div class="chart">
+               <canvas id="c" width="500" height="230"></canvas>
+            </div>
+         </div>
+         <!-- /.box-body -->
+      </div><!-- /.box -->
+      <!-- Line Chart End -->
+    </div>
+  </div>
 
-<head></head>
-
-<body>
-  <canvas id="c" width="500" height="500"></canvas>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
-        <!-- line chart canvas element -->
-        <canvas id="buyers" width="600" height="400"></canvas>
-        <!-- pie chart canvas element -->
-        <canvas id="countries" width="600" height="400"></canvas>
-        <!-- bar chart canvas element -->
-        <canvas id="income" width="600" height="400"></canvas>
-        <script>
-            // line chart data
-            var buyerData  = {
-                labels: ["January", "February", "March", "April", "May", "June", "July"],
-                datasets: [
-                    {
-                        label: "My First dataset",
-                        fillColor: "rgba(220,220,220,0.5)",
-                        strokeColor: "rgba(220,220,220,0.8)",
-                        highlightFill: "rgba(220,220,220,0.75)",
-                        highlightStroke: "rgba(220,220,220,1)",
-                        data: [65, 59, 80, 81, 56, 55, 40]
-                    },
-                    {
-                        label: "My Second dataset",
-                        fillColor: "rgba(151,187,205,0.5)",
-                        strokeColor: "rgba(151,187,205,0.8)",
-                        highlightFill: "rgba(151,187,205,0.75)",
-                        highlightStroke: "rgba(151,187,205,1)",
-                        data: [28, 48, 40, 19, 86, 27, 90]
-                    }
-                ]
-            }
-            // get line chart canvas
-            var buyers = document.getElementById('buyers').getContext('2d');
-            // draw line chart
-            new Chart(buyers).Line(buyerData);
-            // pie chart data
-            var pieData = [
-                {
-                    value: 20,
-                    color:"#878BB6"
-                },
-                {
-                    value : 40,
-                    color : "#4ACAB4"
-                },
-                {
-                    value : 10,
-                    color : "#FF8153"
-                },
-                {
-                    value : 30,
-                    color : "#FFEA88"
-                }
-            ];
-            // pie chart options
-            var pieOptions = {
-                 segmentShowStroke : false,
-                 animateScale : true
-            }
-            // get pie chart canvas
-            var countries= document.getElementById("countries").getContext("2d");
-            // draw pie chart
-            new Chart(countries).Pie(pieData, pieOptions);
-            // bar chart data
-            var barData = {
-                labels : ["January","February","March","April","May","June"],
-                datasets : [
-                    {
-                        fillColor : "#48A497",
-                        strokeColor : "#48A4D1",
-                        data : [456,479,324,569,702,600]
-                    },
-                    {
-                        fillColor : "rgba(73,188,170,0.4)",
-                        strokeColor : "rgba(72,174,209,0.4)",
-                        data : [364,504,605,400,345,320]
-                    }
-                ]
-            }
-            // get bar chart canvas
-            var income = document.getElementById("income").getContext("2d");
-            // draw bar chart
-            new Chart(income).Bar(barData);
-        </script>
-    </body>
-</html>
+  <!-- Charts javaScript -->
+  <script>
+     var ctx = document.getElementById("c").getContext("2d");
+     var data = {
+       labels: ["January", "February", "March", "April", "May", "June", "July"],
+       datasets: [{
+         label: "My First dataset",
+         fillColor: "rgba(220,220,220,0.2)",
+         strokeColor: "rgba(220,220,220,1)",
+         pointColor: "rgba(220,220,220,1)",
+         pointStrokeColor: "#fff",
+         pointHighlightFill: "#fff",
+         pointHighlightStroke: "rgba(220,220,220,1)",
+         data: [65, 59, 80, 81, 56, 55, 40]
+       }, {
+         label: "My Second dataset",
+         fillColor: "rgba(151,187,205,0.2)",
+         strokeColor: "rgba(151,187,205,1)",
+         pointColor: "rgba(151,187,205,1)",
+         pointStrokeColor: "#fff",
+         pointHighlightFill: "#fff",
+         pointHighlightStroke: "rgba(151,187,205,1)",
+         data: [28, 48, 40, 19, 86, 27, 90]
+       }]
+     };
+     var MyNewChart = new Chart(ctx).Line(data);
+  </script>
+  <!-- Line Chart JavaScript End -->
+  <!-- Bar Chart JavaScript Start -->
+  <script type="text/javascript">
+     var barData = {
+               labels : ["January","February","March","April","May","June"],
+               datasets : [
+                   {
+                       fillColor : "#48A497",
+                       strokeColor : "#48A4D1",
+                       data : [456,479,324,569,702,600]
+                   }
+               ]
+           }
+           // get bar chart canvas
+           var income = document.getElementById("income").getContext("2d");
+           // draw bar chart
+           new Chart(income).Bar(barData);
+  </script>
+  <!-- Charts Ends -->

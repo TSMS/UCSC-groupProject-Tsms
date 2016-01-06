@@ -4755,3 +4755,7 @@ table.text-center th {
 .date-tab {
   padding-bottom: 5%;
 }
+
+.get-top {
+  z-index: 100;
+}
