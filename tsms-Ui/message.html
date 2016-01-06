@@ -241,11 +241,75 @@ scratch. This page gets rid of all links and provides the needed markup only.
          <div id="content" class="content">
          
           <section class="content">
+            <style>
+             .login-dialog .modal-dialog {
+                  width: 400px;
+              }
+          </style>
+            <!-- Modal For Send message -->
+            <div id="myModal" class="login-dialog modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Send message</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form">
+                              <!-- text input -->
+                              <div class="form-group">
+                                <label>Mobile Number</label>
+                                <input type="text" class="form-control" placeholder="Enter Mobile number like 0772376512.">
+                              </div>
+                              <!-- textarea -->
+                              <div class="form-group">
+                                <label>Textarea</label>
+                                <textarea class="form-control" rows="3" placeholder="Enter your message in here"></textarea>
+                              </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn bg-navy btn-flat">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal For Reply message -->
+            <div id="reply" class="login-dialog modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Reply message</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form">
+                              <!-- text input -->
+                              <div class="form-group">
+                                <label>Mobile Number</label>
+                                <input type="text" class="form-control" placeholder="Enter Mobile number like 0772376512.">
+                              </div>
+                              <!-- textarea -->
+                              <div class="form-group">
+                                <label>Textarea</label>
+                                <textarea class="form-control" rows="3" placeholder="Enter your message in here"></textarea>
+                              </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn bg-navy btn-flat">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
               <div class="col-md-3">
                 <div class="box-body">
                   <p>Send Message to Suppliers</p>
-                  <button type="button" name="accept" class="btn bg-navy btn-flat"><i class="fa fa-envelope"></i> Compose</button>
+                  <!-- Button HTML (to Trigger Modal) -->
+            <a href="#myModal" role="button" class="btn bg-navy btn-flat" data-toggle="modal"><i class="fa fa-envelope"></i>  Compose</a>
                 </div>
               </div>
             </div>
@@ -267,11 +331,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       <button class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
                       <div class="btn-group">
                         <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-                        <button class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
-                        <button class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
+                        <a href="#reply" role="button" class="btn btn-default btn-sm" data-toggle="modal"><i class="fa fa-reply"></i></a>
                       </div><!-- /.btn-group -->
                       <button class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
-                      <div class="pull-right">
+                      <div class="pull-right"><i class="fa fa-reply"></i>
                         1-50/200
                         <div class="btn-group">
                           <button class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
@@ -332,8 +395,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       <button class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
                       <div class="btn-group">
                         <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-                        <button class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
-                        <button class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
+                        <a href="#reply" role="button" class="btn btn-default btn-sm" data-toggle="modal"><i class="fa fa-reply"></i></a>
                       </div><!-- /.btn-group -->
                       <button class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
                       <div class="pull-right">
