@@ -5,71 +5,185 @@ $user_login = new USER();
 
 if($user_login->is_logged_in()!="")
 {
-	$user_login->redirect('home.php');
+  $user_login->redirect('home.php');
 }
 
 if(isset($_POST['btn-login']))
 {
-	$email = trim($_POST['txtemail']);
-	$upass = trim($_POST['txtupass']);
-	
-	if($user_login->login($email,$upass))
-	{
-		$user_login->redirect('home.php');
-	}
+  $email = trim($_POST['txtemail']);
+  $upass = trim($_POST['txtupass']);
+  
+  if($user_login->login($email,$upass))
+  {
+    $user_login->redirect('home.php');
+  }
 }
 ?>
-
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Login | Coding Cage</title>
-    <!-- Bootstrap -->
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
-    <link href="assets/styles.css" rel="stylesheet" media="screen">
-     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Tsms | Log in</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/TsmsUI.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
   </head>
-  <body id="login">
-    <div class="container">
-		<?php 
-		if(isset($_GET['inactive']))
-		{
-			?>
-      <div class='alert alert-error'>
-				<button class='close' data-dismiss='alert'>&times;</button>
-				<strong>Sorry!</strong> This Account is not Activated Go to your Inbox and Activate it. 
-			</div>
-            <?php
-		}
-		?>
-        <form class="form-signin" method="post">
-        <?php
+  <body class="hold-transition login-page">
+      <br>
+    <div class="row">
+      <div class="col-xs-10">
+        <h4 class="pull-right"><a href="thalapalakanada.lk"><b>Vist Us</b></a></h4>
+      </div>
+    </div>
+    <!-- alert display in here! -->
+    <div class="col-md-offset-3 col-md-6">
+          <?php 
+    if(isset($_GET['inactive']))
+    {
+      ?>
+       <div class="alert alert-warning alert-dismissable">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <h4><i class="icon fa fa-ban"></i> Sorry!</h4>
+           This Account is not Activated Go to your Inbox and Activate it. 
+      </div>
+      <!-- <div class='alert alert-error'>
+        <button class='close' data-dismiss='alert'>&times;</button>
+        <strong>Sorry!</strong> This Account is not Activated Go to your Inbox and Activate it. 
+      </div> -->
+      <?php
+    }
         if(isset($_GET['error']))
-		{
-			?>
-            <div class='alert alert-success'>
-				<button class='close' data-dismiss='alert'>&times;</button>
-				<strong>Wrong Details!</strong> 
-			</div>
-            <?php
-		}
-		?>
-        <h2 class="form-signin-heading">Sign In.</h2><hr />
-        <input type="email" class="input-block-level" placeholder="Email address" name="txtemail" required />
-        <input type="password" class="input-block-level" placeholder="Password" name="txtupass" required />
-     	<hr />
-        <button class="btn btn-large btn-primary" type="submit" name="btn-login">Sign in</button>
-        <a href="signup.php" style="float:right;" class="btn btn-large">Sign Up</a><hr />
-        <a href="fpass.php">Lost your Password ? </a>
-      </form>
+    {
+      ?>
+      <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <h4>  <i class="icon fa fa-check"></i> Wrong Details!</h4>
+        Please enter the correct details.
+      </div>
+      <!-- <div class='alert alert-success'>
+        <button class='close' data-dismiss='alert'>&times;</button>
+        <strong>Wrong Details!</strong> 
+      </div> -->
+    <?php
+    }
+    ?>
+    </div>  
+    <div class="row">
+      <div class="col-md-5">
+        <div class="login-box">
+          <div class="login-logo">
+            <br>
+            <a href="login.html"><img src="dist/Llogo.png"></a>
+          </div><!-- /.login-logo -->
+          <div class="login-box-body">
+            <p class="login-box-msg">Sign in to the system in here</p>
+            <form class="form-signin" method="post">
+              <div class="form-group has-feedback">
+                <input type="email" class="form-control" placeholder="Email address" name="txtemail" required>
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+              </div>
+              <div class="form-group has-feedback">
+                <input type="password" class="form-control" placeholder="Password" name="txtupass" required>
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+              </div>
+              <div class="row">
+                <div class="col-xs-8">
+                  <div class="checkbox icheck">
+                    <label>
+                      <input type="checkbox"> Remember Me
+                    </label>
+                  </div>
+                </div><!-- /.col -->
+                <div class="col-xs-4">
+                  <button type="submit" class="btn btn-primary btn-block btn-flat" name="btn-login">Sign In</button>
+                </div><!-- /.col -->
+              </div>
+            </form>
 
-    </div> <!-- /container -->
-    <script src="bootstrap/js/jquery-1.9.1.min.js"></script>
+            <div class="social-auth-links text-center">
+              <p>- OR -</p>
+              <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using Facebook</a>
+              <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using Google+</a>
+            </div><!-- /.social-auth-links -->
+
+            <a href="fpass.php">I forgot my password</a><br>
+            <a href="signup.php" class="text-center">Register a new membership</a>
+
+          </div><!-- /.login-box-body -->
+        </div><!-- /.login-box -->
+      </div>
+      <div class="row">
+        <div class="">
+          <div class="col-md-6">
+                <br>
+                <div class="box-body">
+                  <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                      <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                      <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>
+                      <li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>
+                    </ol>
+                    <div class="carousel-inner">
+                      <div class="item active">
+                        <img src="dist/img/image1.png" alt="First slide">
+                        <div class="carousel-caption">
+                          First Slide
+                        </div>
+                      </div>
+                      <div class="item">
+                        <img src="dist/img/image2.png" alt="Second slide">
+                        <div class="carousel-caption">
+                          Second Slide
+                        </div>
+                      </div>
+                      <div class="item">
+                        <img src="dist/img/image3.png" alt="Third slide">
+                        <div class="carousel-caption">
+                          Third Slide
+                        </div>
+                      </div>
+                    </div>
+                    <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                      <span class="fa fa-angle-left"></span>
+                    </a>
+                    <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                      <span class="fa fa-angle-right"></span>
+                    </a>
+                  </div>
+                </div><!-- /.box-body -->
+            </div><!-- /.col -->
+          <div class="col-md-6 textcenter">
+            <h1><span class="thalapalakanada"><b>THALAPALAKANADA</b></span></h1>
+            <h3>Tea Factory</h3>
+            <h5>This is Thalapalakanada tea factory official web site if you have no account Please <a class="link" href="register.html">Register!</a> in here</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- jQuery 2.1.4 -->
+    <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <!-- Bootstrap 3.3.5 -->
     <script src="bootstrap/js/bootstrap.min.js"></script>
+    <!-- iCheck -->
+    <script src="plugins/iCheck/icheck.min.js"></script>
+    <script>
+      $(function () {
+        $('input').iCheck({
+          checkboxClass: 'icheckbox_square-blue',
+          radioClass: 'iradio_square-blue',
+          increaseArea: '20%' // optional
+        });
+      });
+    </script>
   </body>
 </html>
