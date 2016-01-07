@@ -1,0 +1,33 @@
+{
+  "name": "Tsms",
+  "homepage": "http://tsms.lk",
+  "authors": [
+    "Abdullah Almsaeed <support@4it.lk>"
+  ],
+  "description": "Admin dashboard and control panel ui",
+  "main": [
+    "index2.html",
+    "dist/css/TsmsUI.css",
+    "dist/js/app.js",
+    "build/less/TsmsUI.less"
+  ],
+  "keywords": [
+    "css",
+    "js",
+    "html",
+    "template",
+    "admin",
+    "bootstrap",
+    "theme",
+    "backend",
+    "responsive"
+  ],
+  "license": "4iT",
+  "ignore": [
+    "/.*",
+    "node_modules",
+    "bower_components",
+    "composer.json",
+    "documentation"
+  ]
+}

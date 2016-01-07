@@ -1,0 +1,26 @@
+{
+  "name": "almasaeed2010/adminlte",
+  "description": "Tea supply management system - Admin Ui",
+  "homepage": "http://tsms.lk",
+  "keywords": [
+    "css",
+    "js",
+    "less",
+    "responsive",
+    "back-end",
+    "template",
+    "theme",
+    "web",
+    "admin"
+  ],
+  "authors": [
+    {
+      "name": "Group 5",
+      "email": "support@4it.lk"
+    }
+  ],
+  "license": "4iT",
+  "support": {
+    "issues": "https://github.com/TSMS/UCSC-groupProject-Tsms"
+  }
+}
