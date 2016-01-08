@@ -1,7 +1,4 @@
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic);
-/* */
-
-/* green - #12502c  light - #2ecc71*/
 
 html,
 body {
@@ -4758,4 +4755,8 @@ table.text-center th {
 
 .get-top {
   z-index: 100;
+}
+
+.rbox {
+  padding-top: 10%; 
 }

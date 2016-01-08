@@ -106,6 +106,23 @@ class USER
 		session_destroy();
 		$_SESSION['userSession'] = false;
 	}
+
+	public function hasPermission($key){
+		$stmt = $this->conn->prepare("SELECT * FROM tbl_users WHERE groups=:id");
+			$stmt->execute(array("id"=>$key));
+			$userRow=$stmt->fetch(PDO::FETCH_ASSOC);
+			
+			if($stmt->rowCount() == 1)
+			{
+				if($userRow['groups']=="1")
+				{
+	
+					return true;	
+				}
+			}
+			return false;		
+
+    }
 	
 	function send_mail($email,$message,$subject)
 	{						

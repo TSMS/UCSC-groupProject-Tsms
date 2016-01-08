@@ -3,7 +3,7 @@ class Database
 {
      
     private $host = "localhost";
-    private $db_name = "loginmail";
+    private $db_name = "tsms";
     private $username = "root";
     private $password = "";
     public $conn;

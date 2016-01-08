@@ -16,6 +16,9 @@ if(isset($_POST['btn-signup']))
   $email = trim($_POST['txtemail']);
   $upass = trim($_POST['txtpass']);
   $code = md5(uniqid(rand()));
+  $name_f=trim($_POST['fname']);
+  $name_l=trim($_POST['lname']);
+  $name=$name_f." ".$name_l;
   
   $stmt = $reg_user->runQuery("SELECT * FROM tbl_users WHERE userEmail=:email_id");
   $stmt->execute(array(":email_id"=>$email));
@@ -37,7 +40,7 @@ if(isset($_POST['btn-signup']))
   }
   else
   {
-    if($reg_user->register($uname,$email,$upass,$code))
+    if($reg_user->register($uname,$email,$upass,$code,$name))
     {     
       $id = $reg_user->lasdID();    
       $key = base64_encode($id);
@@ -49,18 +52,18 @@ if(isset($_POST['btn-signup']))
             Welcome to THALAPALAKANADA TEA factory!<br/>
             To complete your registration  please , just click following link.<br/>you can login to the system after admin approved you.<br/>
             <br /><br />
-            <a href='http://localhost/MVC-php/signup-email-verification/verify.php?id=$id&code=$code'>Click HERE to Activate :)</a>
+            <a href='http://localhost/tsms/verify.php?id=$id&code=$code'>Click HERE to Activate :)</a>
             <br /><br />
             Thanks,";
             
       $subject = "Confirm Registration";
             
       $reg_user->send_mail($email,$message,$subject);
-      $msg ='<div class="alert alert-success alert-dismissable">
+      $msg ='<div class="col-md-offset-3 col-md-6"><div class="alert alert-success alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <h4>  <i class="icon fa fa-check"></i> Success!</h4>
                     We have sent an email to '.$email.' Please click on the confirmation link in the email to create your account.
-                  </div>'; 
+                  </div></div>'; 
       // $msg = "
       //     <div class='alert alert-success'>
       //       <button class='close' data-dismiss='alert'>&times;</button>
