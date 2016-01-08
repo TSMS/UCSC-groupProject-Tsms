@@ -1,60 +1,9 @@
 <?php
 session_start();
 require_once 'classes/class.user.php';
+require_once 'DB/DBsettings.php';
+$dbsettings=new DBsettings();
 $user_home = new USER();
-
-require_once 'DB/dbdashboard.php';
-$dbdashboard=new DBDashboard();
-
-//dashboard square 1
-$str=$dbdashboard->getDashboardTeaRate(); 
-$rest1 = substr($str, 0, -3);
-$rest2 = substr($str, -3,3);
-//dashboard square 2
-$res3=$dbdashboard->thisMonthSupplyPrecentage();
-//dashboard square 3
-$res4=$dbdashboard->unReadSMScount();
-//dashboard square 4
-$res5=$dbdashboard->todayCurSupplyPrecentage();
-
-//chart - barchart
-$resarray1=$dbdashboard->factoryTotalSupplyOf6Months();
-$strbarchartvalues="[".$resarray1[5].",".$resarray1[4].",".$resarray1[3].",".$resarray1[2].",".$resarray1[1].",".$resarray1[0]."]";
-$formateddate=date("Y-m-d");
-$curmonth=substr($formateddate,5,7);
-$curmonth=($curmonth*1)-5;
-if($curmonth<0){
-	$curmonth=$curmonth+12;
-}
-$strbarchartlabels="[";
-for($i=0;$i<6;$i++){
-	switch($curmonth){
-		case 1:$strbarchartlabels=$strbarchartlabels.'"January",';$curmonth=$curmonth+1;break;
-		case 2:$strbarchartlabels=$strbarchartlabels.'"February",';$curmonth=$curmonth+1;break;
-		case 3:$strbarchartlabels=$strbarchartlabels.'"March",';$curmonth=$curmonth+1;break;
-		case 4:$strbarchartlabels=$strbarchartlabels.'"April",';$curmonth=$curmonth+1;break;
-		case 5:$strbarchartlabels=$strbarchartlabels.'"May",';$curmonth=$curmonth+1;break;
-		case 6:$strbarchartlabels=$strbarchartlabels.'"June",';$curmonth=$curmonth+1;break;
-		case 7:$strbarchartlabels=$strbarchartlabels.'"July",';$curmonth=$curmonth+1;break;
-		case 8:$strbarchartlabels=$strbarchartlabels.'"August",';$curmonth=$curmonth+1;break;
-		case 9:$strbarchartlabels=$strbarchartlabels.'"September",';$curmonth=$curmonth+1;break;
-		case 10:$strbarchartlabels=$strbarchartlabels.'"October",';$curmonth=$curmonth+1;break;
-		case 11:$strbarchartlabels=$strbarchartlabels.'"November",';$curmonth=$curmonth+1;break;
-		case 12:$strbarchartlabels=$strbarchartlabels.'"December",';$curmonth=$curmonth+1;break;
-		default:$strbarchartlabels=$strbarchartlabels.'"January",';$curmonth=2;break;
-	}
-}
-$strbarchartlabels=substr($strbarchartlabels,0,-1);
-$strbarchartlabels=$strbarchartlabels."]";
-
-//CHARTs  - line charts
-$arrRes1=$dbdashboard->realTeaRatesOfLast6Months();
-$arrRes2=$dbdashboard->approxTeaRatesOfLast6Months();
-$strlinechartRealTRate="[".$arrRes1[5].",".$arrRes1[4].",".$arrRes1[3].",".$arrRes1[2].",".$arrRes1[1].",".$arrRes1[0]."]";
-$strlinechartAppTRate="[".$arrRes2[5].",".$arrRes2[4].",".$arrRes2[3].",".$arrRes2[2].",".$arrRes2[1].",".$arrRes2[0]."]";
-
-
-
 
 if(!$user_home->is_logged_in())
 {
@@ -146,15 +95,14 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
          <section class="content-header">
             <h1>
                Dashboad
-               <small></small>
+               <small>Optional description</small>
             </h1>
             <ol class="breadcrumb">
                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
                <li class="active">Dashboad</li>
             </ol>
          </section>
-         <!-- Main content -->                                     <!-- 4 .....................BOXes.................................. -->
-		 
+         <!-- Main content -->
          <div id="content" class="content">
             <div id="search_r"></div>
             <!-- Brief status  -->
@@ -163,7 +111,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                   <!-- small box -->
                   <div class="small-box bg-teal">
                      <div class="inner">
-                        <h3>Rs.<?php  echo($rest1);?><sub style="font-size: 15px"><?php echo($rest2);?></sub></h3>
+                        <h3><?php echo($dbsettings->getDashboardTeaRate()); ?></h3>
                         <p>Tea rate</p>
                      </div>
                      <div class="icon">
@@ -179,8 +127,8 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                   <!-- small box -->
                   <div class="small-box bg-green">
                      <div class="inner">
-                        <h3><?php echo($res3); ?><sub style="font-size: 20px">%</sub></h3>
-                        <p>Supply Rate:This Month</p>
+                        <h3>53<sup style="font-size: 20px">%</sup></h3>
+                        <p>Tea Rate</p>
                      </div>
                      <div class="icon">
                         <i class="fa fa-leaf"></i>
@@ -194,12 +142,12 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                <div class="col-lg-3 col-xs-6">
                   <!-- small box -->
                   <div class="small-box bg-olive">
-					<div class="inner">
-                        <h3><?php echo($res5); ?><sub style="font-size: 20px">%</sub></h3>
-                        <p>Supply Rate:Today</p>
+                     <div class="inner">
+                        <h3>63<sup style="font-size: 20px">%</sup></h3>
+                        <p>Supplier Request</p>
                      </div>
-					 <div class="icon">
-                        <i class="fa fa-circle-o-notch"></i>
+                     <div class="icon">
+                        <i class="fa fa-envelope"></i>
                      </div>
                      <a href="message.php" class="small-box-footer">
                      More info <i class="fa fa-arrow-circle-right"></i>
@@ -211,11 +159,11 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                   <!-- small box -->
                   <div class="small-box bg-blue">
                      <div class="inner">
-                        <h3><?php echo($res4);?><sup style="font-size: 20px"></sup></h3>
-                        <p>Supplier Requests</p>
+                        <h3>65</h3>
+                        <p>Outcome</p>
                      </div>
                      <div class="icon">
-                        <i class="fa fa-envelope"></i>
+                        <i class="fa fa-circle-o-notch"></i>
                      </div>
                      <a href="report.php" class="small-box-footer">
                      More info <i class="fa fa-arrow-circle-right"></i>
@@ -225,31 +173,13 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
             </div><!-- /.row -->
             <!-- Brief status END-->
 
-            <!-- Suppliy rates charts -->                                               <!-- 4 .....................CHARTs.................................. -->
-            <div class="col-md-6">
-                <!-- Bar Chart Start -->
-                <div class="box box-success">
-                  <div class="box-header with-border">
-                    <h3 class="box-title">Supply of Last 6 Months (kg)</h3>
-                    <div class="box-tools pull-right">
-                      <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                      <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                    </div>
-                  </div>
-                  <div class="box-body">
-                    <div class="chart">
-                      <canvas id="income" width="500" height="230"></canvas>
-                    </div>
-                  </div><!-- /.box-body -->
-                </div><!-- /.box -->
-                <!-- Bar Chart End -->
-              </div>
-			<div class="row">
+            <!-- Suppliy rates charts -->
+            <div class="row">
               <div class="col-md-6">
                 <!-- line Chart Start -->
                 <div class="box box-success">
                   <div class="box-header with-border">
-                    <h3 class="box-title">Tea Rates of Last 6 Months (Rs)</h3>
+                    <h3 class="box-title">Line Charts</h3>
                     <div class="box-tools pull-right">
                       <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                       <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -262,6 +192,24 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                   </div><!-- /.box-body -->
                 </div><!-- /.box -->
                 <!-- Line Chart End -->
+              </div>
+              <div class="col-md-6">
+                <!-- Bar Chart Start -->
+                <div class="box box-success">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">Bar Charts</h3>
+                    <div class="box-tools pull-right">
+                      <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                      <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                  </div>
+                  <div class="box-body">
+                    <div class="chart">
+                      <canvas id="income" width="500" height="230"></canvas>
+                    </div>
+                  </div><!-- /.box-body -->
+                </div><!-- /.box -->
+                <!-- Bar Chart End -->
               </div>
             </div>
             <!-- Supply rates charts END -->
@@ -316,16 +264,48 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
     <script src="dist/js/demo.js"></script>
      <!-- chartjs Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
-	
-	<!-- Bar Chart JavaScript Start -->
+    <!-- Line Chart JavaScript -->
+    <script>
+      var ctx = document.getElementById("c").getContext("2d");
+      var data = {
+        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        datasets: [{
+          label: "My First dataset",
+          fillColor: "rgba(220,220,220,0.2)",
+          strokeColor: "rgba(220,220,220,1)",
+          pointColor: "rgba(220,220,220,1)",
+          pointStrokeColor: "#fff",
+          pointHighlightFill: "#fff",
+          pointHighlightStroke: "rgba(220,220,220,1)",
+          data: [65, 59, 80, 81, 56, 55, 40]
+        }, {
+          label: "My Second dataset",
+          fillColor: "rgba(151,187,205,0.2)",
+          strokeColor: "rgba(151,187,205,1)",
+          pointColor: "rgba(151,187,205,1)",
+          pointStrokeColor: "#fff",
+          pointHighlightFill: "#fff",
+          pointHighlightStroke: "rgba(151,187,205,1)",
+          data: [28, 48, 40, 19, 86, 27, 90]
+        }]
+      };
+      var MyNewChart = new Chart(ctx).Line(data);
+    </script>
+    <!-- Line Chart JavaScript End -->
+    <!-- Bar Chart JavaScript Start -->
     <script type="text/javascript">
       var barData = {
-                labels : <?php echo($strbarchartlabels); ?>,
+                labels : ["January","February","March","April","May","June"],
                 datasets : [
                     {
                         fillColor : "#48A497",
                         strokeColor : "#48A4D1",
-                        data : <?php echo($strbarchartvalues); ?>
+                        data : [456,479,324,569,702,600]
+                    },
+                    {
+                        fillColor : "rgba(73,188,170,0.4)",
+                        strokeColor : "rgba(72,174,209,0.4)",
+                        data : [364,504,605,400,345,320]
                     }
                 ]
             }
@@ -335,35 +315,5 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
             new Chart(income).Bar(barData);
     </script>
     <!-- bar Chart JavaScript End -->
-    <!-- Line Chart JavaScript -->
-    <script>
-      var ctx = document.getElementById("c").getContext("2d");
-      var data = {
-		labels: <?php echo($strbarchartlabels); ?>,
-        
-        datasets: [{
-          label: "My First dataset",
-          fillColor: "rgba(220,220,220,0.2)",
-          strokeColor: "rgba(220,220,220,1)",
-          pointColor: "rgba(220,220,220,1)",
-          pointStrokeColor: "#fff",
-          pointHighlightFill: "#fff",
-          pointHighlightStroke: "rgba(220,220,220,1)",
-          data: <?php echo($strlinechartAppTRate); ?>
-        }, {
-          label: "My Second dataset",
-          fillColor: "rgba(151,187,205,0.2)",
-          strokeColor: "rgba(151,187,205,1)",
-          pointColor: "rgba(151,187,205,1)",
-          pointStrokeColor: "#fff",
-          pointHighlightFill: "#fff",
-          pointHighlightStroke: "rgba(151,187,205,1)",
-          data: <?php echo($strlinechartRealTRate); ?>
-        }]
-      };
-      var MyNewChart = new Chart(ctx).Line(data);
-    </script>
-    <!-- Line Chart JavaScript End -->
-    
   </body>
 </html>
