@@ -20,7 +20,7 @@ if(isset($_POST['btn-signup']))
   $name_l=trim($_POST['lname']);
   $name=$name_f." ".$name_l;
   
-  $stmt = $reg_user->runQuery("SELECT * FROM tbl_users WHERE userEmail=:email_id");
+  $stmt = $reg_user->runQuery("SELECT * FROM users WHERE email=:email_id");
   $stmt->execute(array(":email_id"=>$email));
   $row = $stmt->fetch(PDO::FETCH_ASSOC);
   

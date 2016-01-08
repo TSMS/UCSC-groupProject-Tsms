@@ -26,17 +26,18 @@ class USER
 		return $stmt;
 	}
 	
-	public function register($uname,$email,$upass,$code)
+	public function register($uname,$email,$upass,$code,$name)
 	{
 		try
 		{							
 			$password = md5($upass);
-			$stmt = $this->conn->prepare("INSERT INTO tbl_users(userName,userEmail,userPass,tokenCode) 
-			                                             VALUES(:user_name, :user_mail, :user_pass, :active_code)");
+			$stmt = $this->conn->prepare("INSERT INTO users(id,username,password,email,name,nic,joined, token_code) 
+			                                         VALUES('',:user_name,:user_pass,:user_mail,:name,'',NOW(),:active_code)");
 			$stmt->bindparam(":user_name",$uname);
 			$stmt->bindparam(":user_mail",$email);
 			$stmt->bindparam(":user_pass",$password);
 			$stmt->bindparam(":active_code",$code);
+			$stmt->bindparam(":name",$name);
 			$stmt->execute();	
 			return $stmt;
 		}
@@ -50,17 +51,17 @@ class USER
 	{
 		try
 		{
-			$stmt = $this->conn->prepare("SELECT * FROM tbl_users WHERE userEmail=:email_id");
+			$stmt = $this->conn->prepare("SELECT * FROM users WHERE email=:email_id");
 			$stmt->execute(array(":email_id"=>$email));
 			$userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 			
 			if($stmt->rowCount() == 1)
 			{
-				if($userRow['userStatus']=="Y")
+				if($userRow['user_approved']=="Y")
 				{
-					if($userRow['userPass']==md5($upass))
+					if($userRow['password']==md5($upass))
 					{
-						$_SESSION['userSession'] = $userRow['userID'];
+						$_SESSION['userSession'] = $userRow['id'];
 						return true;
 					}
 					else
@@ -106,23 +107,6 @@ class USER
 		session_destroy();
 		$_SESSION['userSession'] = false;
 	}
-
-	public function hasPermission($key){
-		$stmt = $this->conn->prepare("SELECT * FROM tbl_users WHERE groups=:id");
-			$stmt->execute(array("id"=>$key));
-			$userRow=$stmt->fetch(PDO::FETCH_ASSOC);
-			
-			if($stmt->rowCount() == 1)
-			{
-				if($userRow['groups']=="1")
-				{
-	
-					return true;	
-				}
-			}
-			return false;		
-
-    }
 	
 	function send_mail($email,$message,$subject)
 	{						
@@ -142,5 +126,7 @@ class USER
 		$mail->Subject    = $subject;
 		$mail->MsgHTML($message);
 		$mail->Send();
-	}	
+	}
+
+		
 }

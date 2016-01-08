@@ -1,159 +1,30 @@
+<?php
+session_start();
+require_once 'classes/class.user.php';
+$user_home = new USER();
+
+if(!$user_home->is_logged_in())
+{
+  $user_home->redirect('index.php');
+}
+
+$stmt = $user_home->runQuery("SELECT * FROM users WHERE id=:uid");
+$stmt->execute(array(":uid"=>$_SESSION['userSession']));
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if(!empty($_GET["id"])){
+  $id = $_GET["id"];
+} 
+
+?>
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>TsmsUI 2 | Starter</title>
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <!-- Bootstrap 3.3.5 -->
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/TsmsUI.css">
-
-    <link rel="stylesheet" href="dist/css/skins/skin.css">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="plugins/iCheck/flat/blue.css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-  <body class="hold-transition skin-blue sidebar-mini">
+<title>Message</title>
+<?php include "include/head.php" ?>
+  
     <div class="wrapper">
 
-      <!-- Main Header -->
-      <header class="main-header">
-
-        <!-- Logo -->
-        <a href="index2.html" class="logo">
-          <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini"><b>T</b>SMS</span>
-          <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><img src="dist/logo.png"></span>
-        </a>
-
-        <!-- Header Navbar -->
-        <nav class="navbar navbar-static-top" role="navigation">
-          <!-- Sidebar toggle button-->
-          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-            <span class="sr-only">Toggle navigation</span>
-          </a>
-          <!-- Navbar Right Menu -->
-          <div class="navbar-custom-menu">
-            <ul class="nav navbar-nav">
-              <!-- Messages: style can be found in dropdown.less-->
-              <li class="dropdown messages-menu">
-                <!-- Menu toggle button -->
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-envelope-o"></i>
-                  <span class="label label-success">4</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li class="header">You have 4 messages</li>
-                  <li>
-                    <!-- inner menu: contains the messages -->
-                    <ul class="menu">
-                      <li><!-- start message -->
-                        <a href="#">
-                          <div class="pull-left">
-                            <!-- User Image -->
-                            <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                          </div>
-                          <!-- Message title and timestamp -->
-                          <h4>
-                            Support Team
-                            <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                          </h4>
-                          <!-- The message -->
-                          <p>Why not buy a new awesome theme?</p>
-                        </a>
-                      </li><!-- end message -->
-                    </ul><!-- /.menu -->
-                  </li>
-                  <li class="footer"><a href="#">See All Messages</a></li>
-                </ul>
-              </li><!-- /.messages-menu -->
-
-              <!-- Notifications Menu -->
-              <li class="dropdown notifications-menu">
-                <!-- Menu toggle button -->
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-bell-o"></i>
-                  <span class="label label-warning">10</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li class="header">You have 10 notifications</li>
-                  <li>
-                    <!-- Inner Menu: contains the notifications -->
-                    <ul class="menu">
-                      <li><!-- start notification -->
-                        <a href="#">
-                          <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                        </a>
-                      </li><!-- end notification -->
-                    </ul>
-                  </li>
-                  <li class="footer"><a href="#">View all</a></li>
-                </ul>
-              </li>
-              <!-- Tasks Menu -->
-              <!-- User Account Menu -->
-              <li class="dropdown user user-menu">
-                <!-- Menu Toggle Button -->
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <!-- The user image in the navbar-->
-                  <img src="dist/img/avatar.png" class="user-image" alt="User Image">
-                  <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                  <span class="hidden-xs">System Admin</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <!-- The user image in the menu -->
-                  <li class="user-header">
-                    <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                    <p>
-                      System Admin - Web Developer
-                      <small>Member since Nov. 2012</small>
-                    </p>
-                  </li>
-                  <!-- Menu Body -->
-                  <li class="user-body">
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Followers</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Sales</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Friends</a>
-                    </div>
-                  </li>
-                  <!-- Menu Footer-->
-                  <li class="user-footer">
-                    <div class="pull-left">
-                      <a href="#" class="btn btn-default btn-flat">Profile</a>
-                    </div>
-                    <div class="pull-right">
-                      <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                    </div>
-                  </li>
-                </ul>
-              </li>
-              <!-- Control Sidebar Toggle Button -->
-              <li>
-                <a href="#"><i class=""></i></a>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </header>
+      <?php include "include/header.php" ?>
       <!-- Left side column. contains the logo and sidebar -->
       <aside class="main-sidebar">
 
@@ -175,18 +46,18 @@
             <li class="header">MAIN NAVIGATION</li>
             <!-- Optionally, you can add icons to the links -->
             <li class="treeview">
-              <a href="dashboard.html">
+              <a href="home.php">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
               </a>
             </li>
             <li class="active">
-              <a href="message.html">
+              <a href="message.php">
                 <i class="fa fa-envelope"></i> <span>Message</span>
                 <small class="label pull-right bg-yellow">12</small>
               </a>
             </li>
             <li class="treeview">
-              <a href="supplyup.html">
+              <a href="update.php">
                 <i class="fa fa-edit"></i> <span>Update</span>
               </a>
             </li>
@@ -196,8 +67,8 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="sup_reg.php"><i class="fa fa-circle-o"></i> Registation</a></li>
-                <li><a href="supplier_view.php"><i class="fa fa-circle-o"></i> View</a></li>
+                <li><a href="suppliers.php"><i class="fa fa-circle-o"></i> Registation</a></li>
+                <li><a href="view.php"><i class="fa fa-circle-o"></i> View</a></li>
                 <li><a href="#"><i class="fa fa-circle-o"></i> Edit</a></li>
               </ul>
             </li>
@@ -207,8 +78,8 @@
               </a>
             </li>
             <li class="treeview">
-              <a href="#">
-                <i class="fa fa-download"></i> <span>Back-Ups</span>
+              <a href="settings.php">
+                <i class="fa fa-download"></i> <span>Settings</span>
               </a>
             </li>
           </ul><!-- /.sidebar-menu -->
@@ -339,48 +210,59 @@
                       </div><!-- /.pull-right -->
                     </div>
                     <div class="table-responsive mailbox-messages">
+                      <?php
+                      $getdata = $user_home->runQuery("SELECT t.message_id, s.f_name,s.l_name,t.message_code, t.value, t.quantity, t.category, t.date, t.time, t.approve FROM message_temp t,suppliers s WHERE t.supplier_code= s.supplier_code ORDER BY date DESC");
+                      $getdata->execute();
+                      ?>
                       <table class="table table-hover table-striped">
                         <tbody>
+                        <?php 
+                        if($getdata->rowCount() > 0)
+                          {
+                           while($row=$getdata->FETCH(PDO::FETCH_ASSOC)){
+                            $type = $row['message_code'];
+                            switch ($type) {
+                                 case 'fer':
+                                   $lable = 'btn-info';
+                                   $mcode = 'fertilizer';
+                                   break;
+                                 case 'adv':
+                                   $lable = 'btn-warning';
+                                   $mcode = 'advance';
+                                   break;
+                                 case 'bil':
+                                   $lable = 'btn-default';
+                                   $mcode = 'bills';
+                                   break;
+                                 case 'lon':
+                                   $lable = 'btn-primary';
+                                   $mcode = 'loan';
+                                   break;
+                                 default:
+                                   $lable = 'btn-success';
+                                   $mcode = 'chemical';
+                                   break;
+                               }
+                         ?>
                           <tr>
                             <td><input type="checkbox"></td>
-                            <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                            <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                            <td class="mailbox-subject"><b>tsms</b> - supplier requiest</td>
-                            <td class="mailbox-attachment"></td>
-                            <td class="mailbox-date">5 mins ago</td>
+                            <td class="mailbox-star">[<?php print($row['message_id']); ?>]</td>
+                            <td class="mailbox-name"><a href="message.php?id=<?php echo $row['message_id'];?>"><?php print($row['f_name']." ".$row['l_name']); ?></a></td>
+                            <td class="mailbox-subject"><p class="btn <?php echo $lable?> btn-flat btn-xs"><?php echo $mcode; ?></td>
+                            <td class="mailbox-date"><?php print($row['time']); ?></td>
                           </tr>
-                          <tr>
-                            <td><input type="checkbox"></td>
-                            <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                            <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                            <td class="mailbox-subject"><b>tsms</b> - supplier requiest</td>
-                            <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                            <td class="mailbox-date">28 mins ago</td>
-                          </tr>
-                          <tr>
-                            <td><input type="checkbox"></td>
-                            <td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>
-                            <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                            <td class="mailbox-subject"><b>tsms</b> - supplier requiest</td>
-                            <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                            <td class="mailbox-date">11 hours ago</td>
-                          </tr>
-                          <tr>
-                            <td><input type="checkbox"></td>
-                            <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                            <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                            <td class="mailbox-subject"><b>tsms</b> - supplier requiest</td>
-                            <td class="mailbox-attachment"></td>
-                            <td class="mailbox-date">15 hours ago</td>
-                          </tr>
-                          <tr>
-                            <td><input type="checkbox"></td>
-                            <td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>
-                            <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
-                            <td class="mailbox-subject"><b>tsms</b> - supplier requiest</td>
-                            <td class="mailbox-attachment"><i class="fa fa-paperclip"></i></td>
-                            <td class="mailbox-date">Yesterday</td>
-                          </tr>
+                             <?php
+                               }
+                              }
+                              else
+                              {
+                               ?>
+                                  <tr>
+                                  <td><?php print("nothing here...");  ?></td>
+                                  </tr>
+                                  <?php
+                              }
+                              ?>
                         </tbody>
                       </table><!-- /.table -->
                     </div><!-- /.mail-box-messages -->
@@ -405,6 +287,9 @@
                   </div>
                 </div><!-- /. box -->
               </div><!-- /.col -->
+              <?php  
+              if(!empty($id)){
+                ?>
               <div class="col-md-6">
                 <div class="box box-navy">
                   <div class="box-header with-border">
@@ -414,7 +299,7 @@
                          <p>Request message
                          <p>
                          <dt>Supplier Code: </dt>
-                         <dd>supplier_code</dd>
+                         <dd>as</dd>
                          <dt>Supplier Name: </dt>
                          <dd>txt</dd>
                          <dt>ammount: </dt>
@@ -502,6 +387,8 @@
                   </div>
                 </div>
               </div>
+              <?php 
+              } ?>
             </div>
           </section>
          </div> <!-- /.content -->

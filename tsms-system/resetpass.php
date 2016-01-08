@@ -25,10 +25,9 @@ if(isset($_GET['id']) && isset($_GET['code']))
       
       if($cpass!==$pass)
       {
-        $msg = "<div class='alert alert-block'>
-            <button class='close' data-dismiss='alert'>&times;</button>
-            <strong>Sorry!</strong>  Password Doesn't match. 
-            </div>";
+        $msg = '<p class="text-red">
+            <strong>Sorry!</strong>  Password Does not match. 
+            </p>';
       }
       else
       {
@@ -80,11 +79,18 @@ if(isset($_GET['id']) && isset($_GET['code']))
     <body class="hold-transition lockscreen">
     <div class="rbox">
         <div class="row">
+          <br><br>
+          <div class="col-md-offset-3 col-md-6">
+              <div class="box box-solid">
+                <div class="box-body">
+                  <blockquote>
+                    <p><strong>Hello !</strong>  <?php echo $rows['username'] ?> you are here to reset your forgetton password.</p>
+                    <small>Change your password. <cite title="Source Title">Thalapalakanada tea factory</cite></small>
+                  </blockquote>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+            </div><!-- ./col -->
             <div class="col-md-offset-3 col-md-6">
-              <br><br>
-              <div class='alert alert-success'>
-                <strong>Hello !</strong>  <?php echo $rows['username'] ?> you are here to reset your forgetton password.
-              </div>
               <div class="sbox"></div>
               <div class="box box-success">
                 <div class="box-header with-border">
@@ -92,13 +98,13 @@ if(isset($_GET['id']) && isset($_GET['code']))
                 </div><!-- /.box-header -->
                 <!-- form start -->
                 <form class="form-horizontal form-signin" method="post">
-                  <?php
+                  <div class="box-body">
+                    <label class="control-label"><?php
                       if(isset($msg))
                   {
                     echo $msg;
                   }
-                  ?>
-                  <div class="box-body">
+                  ?></label>
                     <div class="form-group">
                       <label for="inputPassword3" class="col-sm-4 control-label">Password</label>
                       <div class="col-sm-6">
@@ -106,15 +112,15 @@ if(isset($_GET['id']) && isset($_GET['code']))
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="inputPassword3" class="col-sm-4 control-label">Password Again</label>
+                      <label for="inputPassword4" class="col-sm-4 control-label">Password Again</label>
                       <div class="col-sm-6">
-                        <input type="password" class="form-control" id="inputPassword3" placeholder="Confirm New Password" name="confirm-pass" required />
+                        <input type="password" class="form-control" id="inputPassword4" placeholder="Confirm New Password" name="confirm-pass" required />
                       </div>
                     </div>
                   </div><!-- /.box-body -->
                   <div class="box-footer">
                     <a href="index.php" type="submit" class="btn btn-primary">Back</a>
-                    <button type="submit" class="btn btn-success pull-right" name="btn-submit" name="btn-reset-pass">Reset Your Password</button>
+                    <button type="submit" class="btn btn-success pull-right" name="btn-reset-pass">Reset Your Password</button>
                   </div><!-- /.box-footer -->
                 </form>
               </div><!-- /.box -->

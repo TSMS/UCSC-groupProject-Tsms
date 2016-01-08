@@ -80,8 +80,7 @@ if(isset($_POST['btn-submit']))
 
     <div class="rbox">
         <div class="row">
-            <div class="col-md-offset-3 col-md-6">
-              <br><br>
+          <br><br>
               <?php
       if(isset($msg))
       {
@@ -90,12 +89,21 @@ if(isset($_POST['btn-submit']))
       else
       {
         ?>
-                <div class='alert alert-warning'>
-        Please enter your email address. You will receive a link to create a new password via email.!
-        </div>  
+        <div class="col-md-offset-3 col-md-6">
+          <div class="box box-solid">
+            <div class="box-body">
+              <blockquote>
+                <p class="text-green"><b>Please enter your email address!</b> <br>You will receive a link to create a new password via email.!.</p>
+                <small>Change your password. <cite title="Source Title">Thalapalakanada tea factory</cite></small>
+              </blockquote>
+            </div><!-- /.box-body -->
+          </div><!-- /.box -->
+        </div><!-- ./col --> 
                 <?php
       }
       ?>
+            <div class="col-md-offset-3 col-md-6">
+              
               <!-- Horizontal Form -->
               <div class="sbox"></div>
               <div class="box box-success">

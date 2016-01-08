@@ -81,7 +81,7 @@
             <!-- The user image in the navbar-->
             <img src="dist/img/avatar.png" class="user-image" alt="User Image">
             <!-- hidden-xs hides the username on small devices so only the image appears. -->
-            <span class="hidden-xs"><?php echo $row['userEmail']; ?></span>
+            <span class="hidden-xs"><?php echo $row['email']; ?></span>
           </a>
           <ul class="dropdown-menu">
             <!-- The user image in the menu -->
