@@ -4247,7 +4247,7 @@ table.text-center th {
   background-color: #39cccc !important;
 }
 .bg-olive {
-  background-color: #3d9970 !important;
+  background-color: #3BB54A !important;
 }
 .bg-lime {
   background-color: #01ff70 !important;
@@ -4758,4 +4758,10 @@ table.text-center th {
 
 .get-top {
   z-index: 100;
+}
+
+.footer{
+  padding: 10px;
+  position:relative;
+  bottom:0;
 }

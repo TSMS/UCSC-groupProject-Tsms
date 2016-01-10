@@ -2,7 +2,8 @@
 session_start();
 require_once 'classes/class.user.php';
 $user_home = new USER();
-
+require_once 'DB/dbsms.php';
+$dbsms=new DBsms();
 if(!$user_home->is_logged_in())
 {
   $user_home->redirect('index.php');
@@ -12,9 +13,83 @@ $stmt = $user_home->runQuery("SELECT * FROM users WHERE id=:uid");
 $stmt->execute(array(":uid"=>$_SESSION['userSession']));
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
+
+
+
+$supcode="";
+$supname="";
+$reqtype="";
+$amount="";
+$qty="";
+$category="";
+
 if(!empty($_GET["id"])){
   $id = $_GET["id"];
-} 
+  
+  
+  $getdata = $user_home->runQuery("SELECT t.supplier_code, s.f_name,s.l_name,t.message_code, t.value, t.quantity, t.category
+  FROM message_temp t,suppliers s,message_info i WHERE (t.supplier_code= s.supplier_code) AND message_id=$id ");
+  $getdata->execute();
+  $data="";
+  while($r=$getdata->FETCH(PDO::FETCH_ASSOC)){
+    $data=$r;
+  }
+  $supcode=$data['supplier_code'];
+  $supname=$data['f_name']." ".$data['l_name'];
+  $reqtype=$data['message_code'];
+  $amount=$data['value'];
+  $qty=$data['quantity'];
+  $category=$data['category'];
+  switch ($reqtype) {
+        case 'fer':$reqtype="Fertilizer";break;
+        case 'adv':$reqtype="Advance";break;
+        case 'bil':$reqtype="Bill";break;
+        case 'lon':$reqtype="Loan";break;
+        default:$reqtype='Chemical';break;
+    }
+  
+  
+  // CHART 1- BAR CHART
+  $mysupply=$dbsms->myTotalSupplyOf6Months($supcode);
+  $strbarchartvalues="[".$mysupply[5].",".$mysupply[4].",".$mysupply[3].",".$mysupply[2].",".$mysupply[1].",".$mysupply[0]."]";
+  $formateddate=date("Y-m-d");
+  $curmonth=substr($formateddate,5,7);
+  $curmonth=($curmonth*1)-5;
+  if($curmonth<0){
+    $curmonth=$curmonth+12;
+  }
+  $strbarchartlabels="[";
+  for($i=0;$i<6;$i++){
+    switch($curmonth){
+      case 1:$strbarchartlabels=$strbarchartlabels.'"January",';$curmonth=$curmonth+1;break;
+      case 2:$strbarchartlabels=$strbarchartlabels.'"February",';$curmonth=$curmonth+1;break;
+      case 3:$strbarchartlabels=$strbarchartlabels.'"March",';$curmonth=$curmonth+1;break;
+      case 4:$strbarchartlabels=$strbarchartlabels.'"April",';$curmonth=$curmonth+1;break;
+      case 5:$strbarchartlabels=$strbarchartlabels.'"May",';$curmonth=$curmonth+1;break;
+      case 6:$strbarchartlabels=$strbarchartlabels.'"June",';$curmonth=$curmonth+1;break;
+      case 7:$strbarchartlabels=$strbarchartlabels.'"July",';$curmonth=$curmonth+1;break;
+      case 8:$strbarchartlabels=$strbarchartlabels.'"August",';$curmonth=$curmonth+1;break;
+      case 9:$strbarchartlabels=$strbarchartlabels.'"September",';$curmonth=$curmonth+1;break;
+      case 10:$strbarchartlabels=$strbarchartlabels.'"October",';$curmonth=$curmonth+1;break;
+      case 11:$strbarchartlabels=$strbarchartlabels.'"November",';$curmonth=$curmonth+1;break;
+      case 12:$strbarchartlabels=$strbarchartlabels.'"December",';$curmonth=$curmonth+1;break;
+      default:$strbarchartlabels=$strbarchartlabels.'"January",';$curmonth=2;break;
+    }
+  }
+  $strbarchartlabels=substr($strbarchartlabels,0,-1);
+  $strbarchartlabels=$strbarchartlabels."]";
+  
+  //LINE CHART
+  $myincome=$dbsms->myIncomeOf6Months($supcode);
+  $strlinechartvalues="[".$myincome[5].",".$myincome[4].",".$myincome[3].",".$myincome[2].",".$myincome[1].",".$myincome[0]."]";  
+  
+  $mymiddlemonthpay=$dbsms->myMiddleMonthPaymentsOf6Months($supcode);
+  $strlinechartvalues2="[".$mymiddlemonthpay[5].",".$mymiddlemonthpay[4].",".$mymiddlemonthpay[3].",".$mymiddlemonthpay[2].",".$mymiddlemonthpay[1].",".$mymiddlemonthpay[0]."]";
+  
+  //$dbsms->setMessageAsRead($id);
+}
+$formateddate=date('Y-m-d');
+
 
 ?>
 <!DOCTYPE html>
@@ -172,11 +247,12 @@ if(!empty($_GET["id"])){
                 </div>
             </div>
             <div class="row">
-              <div class="col-md-3">
+              <div class="col-md-12">
                 <div class="box-body">
                   <p>Send Message to Suppliers</p>
                   <!-- Button HTML (to Trigger Modal) -->
-            <a href="#myModal" role="button" class="btn bg-navy btn-flat" data-toggle="modal"><i class="fa fa-envelope"></i>  Compose</a>
+                  <a href="#myModal" role="button" class="btn bg-navy btn-flat" data-toggle="modal"><i class="fa fa-envelope"></i>  Compose</a>
+                  <a href="message.php" class="btn btn-app pull-right"><i class="fa fa-refresh"></i> Refresh</a>
                 </div>
               </div>
             </div>
@@ -219,7 +295,9 @@ if(!empty($_GET["id"])){
                         <?php 
                         if($getdata->rowCount() > 0)
                           {
+                            $rowNo=0;
                            while($row=$getdata->FETCH(PDO::FETCH_ASSOC)){
+                            $rowNo=$rowNo+1;
                             $type = $row['message_code'];
                             switch ($type) {
                                  case 'fer':
@@ -246,7 +324,7 @@ if(!empty($_GET["id"])){
                          ?>
                           <tr>
                             <td><input type="checkbox"></td>
-                            <td class="mailbox-star">[<?php print($row['message_id']); ?>]</td>
+                            <td class="mailbox-star"><?php print($rowNo); ?>).</td>
                             <td class="mailbox-name"><a href="message.php?id=<?php echo $row['message_id'];?>"><?php print($row['f_name']." ".$row['l_name']); ?></a></td>
                             <td class="mailbox-subject"><p class="btn <?php echo $lable?> btn-flat btn-xs"><?php echo $mcode; ?></td>
                             <td class="mailbox-date"><?php print($row['time']); ?></td>
@@ -298,16 +376,19 @@ if(!empty($_GET["id"])){
                       <dl class="dl-horizontal example1">
                          <p>Request message
                          <p>
-                         <dt>Supplier Code: </dt>
-                         <dd>as</dd>
+                         <dt>Supplier Code:</dt>
+                         <dd><?php echo($supcode); ?> </dd>
                          <dt>Supplier Name: </dt>
-                         <dd>txt</dd>
+                         <dd><?php echo($supname); ?> </dd>
+             <dt>Request Type:</dt>
+             <dd><?php echo($reqtype); ?> </dd>
+             <p>
                          <dt>ammount: </dt>
-                         <dd>value</dd>
+                         <dd><?php echo($amount); ?> </dd>
                          <dt>Quantity: </dt>
-                         <dd>quantity;</dd>
+             <dd><?php echo($qty); ?> </dd>
                          <dt>category: </dt>
-                         <dd>reqtype</dd>
+             <dd><?php echo($category); ?> </dd>
 
                          <div class="supplier-ditails">
                             <!-- Bar Chart Start -->
@@ -377,9 +458,10 @@ if(!empty($_GET["id"])){
                             </div><!-- /.info-box -->
                           </div><!-- /.col -->
                        </div>
+                       <?php $btype = "#advance";?>
                        <div class="input-group">
                          <span class="input-group-btn">
-                            <button type="button" name="accept" class="btn bg-navy btn-flat pull-right">Accept</button>                
+                            <a href="<?php echo $btype;?>" name="accept" class="btn bg-navy btn-flat pull-right" data-toggle="modal">Accept</a>                
                             <button type="reset" name="Reject" class="btn bg-denger btn-flat ">Reject</button>
                          </span>
                        </div>
@@ -394,6 +476,238 @@ if(!empty($_GET["id"])){
          </div> <!-- /.content -->
       </div>
 
+      <!-- Accept button model -->
+      <!-- 1 -->
+        <div id="advance" class="login-dialog modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Accepting Supplier Adavance</h4>
+                    </div>
+                    <div class="modal-body">
+                        
+                      <!-- Advance Start -->
+                              <div class="panel-body ng-scope">
+                                   <form action="" method="POST" name="form_signin" class="form-horizontal form-validation ng-dirty ng-valid ng-valid-required">
+                                      <fieldset>
+                                         <div class="form-group">
+                                            <div class="col-sm-3">
+                                               <label for="">Amount</label>
+                                            </div>
+                                            <div class="input-group">
+                                               <span class="input-group-addon">Rs.</span>
+                                               <input class="form-control" required="" name="total_amount" data-ng-model="" onkeyup="sum();" type="text" value="">
+                                               <span class="input-group-addon">.00</span>
+                                            </div>
+                                         </div>
+                                         <div class="form-group">
+                                            <div class="col-sm-3">
+                                               <label for="">Description</label>
+                                            </div>
+                                            <div class="input-group">
+                                              <textarea class="form-control" rows="5" id="comment" rows="4" cols="35" name="des" placeholder="Comment"></textarea>
+                                            </div>
+                                         </div>
+                                      </fieldset>
+                                   </form>
+                                </div>
+                            <!-- Advance End -->
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
+                        <button type="submit" name="submit_1" class="btn bg-navy btn-flat">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 2 -->
+        <div id="products" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Accepting Factory Products for suppliers</h4>
+                    </div>
+                    <div class="modal-body">
+                        
+                      <!-- products start -->
+                      <div class="panel-body ng-scope">
+                         <form name="form_signin" class="form-horizontal form-validation ng-dirty ng-valid ng-valid-required">
+                            <fieldset>
+                               <div class="form-group">
+                                  <div class="col-sm-4">
+                                     <label for="">Product</label>
+                                  </div>
+                                  <div class="input-group">
+                                    <span class="ui-select">
+                                     <select class="form-control">
+                                        <option>Chemical</option>
+                                        <option>Tea Packet</option>
+                                        <option>Manure</option>
+                                     </select>
+                                  </span>
+                                  </div>
+                               </div>
+                               <div class="form-group">
+                                  <div class="col-sm-4">
+                                     <label for="">Amount of 1 quntity</label>
+                                  </div>
+                                  <div class="input-group">
+                                     <span class="input-group-addon">Rs.</span>
+                                     <input type="text" name="unit_price" class="form-control" required="" data-ng-model="">
+                                  </div>
+                               </div>
+                               <div class="form-group">
+                                  <div class="col-sm-4">
+                                     <label for="">
+                                        Quntity</labl>
+                                  </div>
+                                  <div class="input-group">
+                                  <input type="text" name="units" class="form-control" onkeyup="ProductTotal(this.form)" value="">
+                                  </div>
+                               </div>
+                               <div class="form-group ">
+                               <div class="col-sm-4">
+                               <label for="">Total</label>
+                               </div>
+                               <div class="input-group">
+                               <span class="input-group-addon">Rs.</span>
+                               <input type="text" name="total_product_amount" class="form-control" required="" data-ng-model="" readonly="">
+                               <span class="input-group-addon">.00</span>
+                               </div>
+                               </div>  
+                               <div class="form-group">
+                                  <div class="col-sm-4">
+                                     <label for="">payment months</label>
+                                  </div>
+                                  <div class="input-group">
+                                     <input name="productpaymentmonths" class="form-control" type="text" onkeyup="InstallmentCalculate(this.form)">
+                                  </div>
+                               </div>
+                               <div class="form-group">
+                                  <div class="col-sm-4">
+                                     <label for="">Interest</label>
+                                  </div>
+                                  <div class="input-group">
+                                     <input name="productinterest" class="form-control" required="" data-ng-model="" type="text">
+                                     <span class="input-group-addon">% per month</span>
+                                  </div>
+                               </div>
+                               <div class="form-group">
+                                  <div class="col-sm-4">
+                                     <label for="">Payment for month</label>
+                                  </div>
+                                  <div class="input-group">
+                                     <span class="input-group-addon">Rs.</span>
+                                     <input name="productinstallment" class="form-control" required="" data-ng-model="" type="text" readonly="">
+                                     <span class="input-group-addon">.00</span>
+                                  </div>
+                               </div>
+                               <div class="form-group">
+                                  <div class="col-sm-4">
+                                     <label for="">Description</label>
+                                  </div>
+                                  <div class="input-group">
+                                    <textarea class="form-control" rows="5" id="comment" rows="4" cols="35" name="des" placeholder="Comment"></textarea>
+                                  </div>
+                               </div>
+                            </fieldset>
+                         </form>
+                      </div>
+                      <!-- products End -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn bg-navy btn-flat">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 3 -->
+        <div id="loan" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Accepting loan for suppliers</h4>
+                    </div>
+                    <div class="modal-body">
+                        
+                      <!-- Loan Start -->
+                      <div class="panel-body ng-scope">
+                         <form name="form_signin" class="form-horizontal form-validation ng-dirty ng-valid ng-valid-required">
+                            <fieldset>
+                               <div class="form-group">
+                                  <div class="col-sm-4">
+                                     <label for="">Amount</label>
+                                  </div>
+                                  <div class="input-group col-sm-6">
+                                     <span class="input-group-addon">Rs.</span>
+                                     <input name="loan_amount" class="form-control" required="" data-ng-model="" type="text">
+                                     <span class="input-group-addon">.00</span>
+                                  </div>
+                               </div>
+                               <div class="form-group">
+                                  <div class="col-sm-4">
+                                     <label for="">Payment Months</label>
+                                  </div>
+                                  <div class="input-group">
+                                     <input name="loanpaymentmonths" class="form-control" type="text">
+                                  </div>
+                               </div>
+                               <div class="form-group">
+                                  <div class="col-sm-4">
+                                     <label for="">Interest</label>
+                                  </div>
+                                  <div class="input-group col-sm-4">
+                                     <input class="form-control" type="text">
+                                     <span class="input-group-addon">%</span>
+                                  </div>
+                               </div>
+                               <div class="form-group">
+                                  <div class="col-sm-4">
+                                     <label for="">Total for Pay</label>
+                                  </div>
+                                  <div class="input-group col-sm-6">
+                                     <span class="input-group-addon">Rs.</span>
+                                     <input name="loantotalforpay" class="form-control" required="" data-ng-model="" type="text" readonly="">
+                                     <span class="input-group-addon">.00</span>
+                                  </div>
+                               </div>
+                               <div class="form-group">
+                                  <div class="col-sm-4">
+                                     <label for="">Installment</label>
+                                  </div>
+                                  <div class="input-group col-sm-6">
+                                     <span class="input-group-addon">Rs.</span>
+                                     <input name="loaninstallforpay" class="form-control" required="" data-ng-model="" type="text" readonly="">
+                                     <span class="input-group-addon">.00</span>
+                                  </div>
+                               </div>
+                               <div class="form-group">
+                                  <div class="col-sm-4">
+                                     <label for="">Description</label>
+                                  </div>
+                                  <div class="input-group">
+                                     <input name="des3" class="form-control" type="text">
+                                  </div>
+                               </div>
+                            </fieldset>
+                         </form>
+                      </div>
+                      
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn bg-navy btn-flat">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      <!-- Accept button model END -->
       <!-- Main Footer -->
       <footer class="main-footer">
         <!-- To the right -->
@@ -429,8 +743,8 @@ if(!empty($_GET["id"])){
         //Enable iCheck plugin for checkboxes
         //iCheck for checkbox and radio inputs
         $('.mailbox-messages input[type="checkbox"]').iCheck({
-          checkboxClass: 'icheckbox_flat-blue',
-          radioClass: 'iradio_flat-blue'
+          checkboxClass: 'icheckbox_flat-green',
+          radioClass: 'iradio_flat-green'
         });
 
         //Enable check and uncheck all functionality
@@ -447,33 +761,14 @@ if(!empty($_GET["id"])){
           }
           $(this).data("clicks", !clicks);
         });
-
-        //Handle starring for glyphicon and font awesome
-        $(".mailbox-star").click(function (e) {
-          e.preventDefault();
-          //detect type
-          var $this = $(this).find("a > i");
-          var glyph = $this.hasClass("glyphicon");
-          var fa = $this.hasClass("fa");
-
-          //Switch states
-          if (glyph) {
-            $this.toggleClass("glyphicon-star");
-            $this.toggleClass("glyphicon-star-empty");
-          }
-
-          if (fa) {
-            $this.toggleClass("fa-star");
-            $this.toggleClass("fa-star-o");
-          }
-        });
       });
     </script>
     <!-- Charts javaScript -->
+        <!-- Charts javaScript -->
       <script>
       var ctx = document.getElementById("c").getContext("2d");
       var data = {
-        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        labels: <?php echo($strbarchartlabels);?>,
         datasets: [{
           label: "My First dataset",
           fillColor: "rgba(220,220,220,0.2)",
@@ -482,7 +777,7 @@ if(!empty($_GET["id"])){
           pointStrokeColor: "#fff",
           pointHighlightFill: "#fff",
           pointHighlightStroke: "rgba(220,220,220,1)",
-          data: [65, 59, 80, 81, 56, 55, 40]
+          data: <?php echo($strlinechartvalues);?> 
         }, {
           label: "My Second dataset",
           fillColor: "rgba(151,187,205,0.2)",
@@ -491,7 +786,7 @@ if(!empty($_GET["id"])){
           pointStrokeColor: "#fff",
           pointHighlightFill: "#fff",
           pointHighlightStroke: "rgba(151,187,205,1)",
-          data: [28, 48, 40, 19, 86, 27, 90]
+          data: <?php echo($strlinechartvalues2);?> 
         }]
       };
       var MyNewChart = new Chart(ctx).Line(data);
@@ -500,12 +795,12 @@ if(!empty($_GET["id"])){
     <!-- Bar Chart JavaScript Start -->
     <script type="text/javascript">
       var barData = {
-                labels : ["January","February","March","April","May","June"],
+                labels : <?php echo($strbarchartlabels);?>,
                 datasets : [
                     {
                         fillColor : "#48A497",
                         strokeColor : "#48A4D1",
-                        data : [456,479,324,569,702,600]
+                        data : <?php echo($strbarchartvalues);?>
                     }
                 ]
             }
@@ -514,6 +809,6 @@ if(!empty($_GET["id"])){
             // draw bar chart
             new Chart(income).Bar(barData);
     </script>
-    <!-- Charts Ends -->
+    
   </body>
 </html>

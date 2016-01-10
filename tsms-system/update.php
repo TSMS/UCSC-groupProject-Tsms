@@ -91,13 +91,12 @@
             </li>
             <li class="active treeview">
                <a href="home.html">
-               <i class="fa fa-edit"></i> <span>Suppliers</span>
+               <i class="fa fa-edit"></i> <span>Update</span>
                <i class="fa fa-angle-left pull-right"></i>
                </a>
                <ul class="treeview-menu">
                   <li class="active" ><a href="update.php"><i class="fa fa-circle-o"></i>Daily Update</a></li>
                   <li><a href="service.php"><i class="fa fa-circle-o"></i>Service</a></li>
-                  <li><a href="editupdate.php"><i class="fa fa-circle-o"></i>Edit</a></li>
                </ul>
             </li>
             <li class="treeview">
@@ -145,6 +144,13 @@
         <div class="box-header with-border">
         </div>
          <div class="box-body">
+          <div class="col-md-6" id="info">
+                <?php if(isset($_SESSION["mesage"])) 
+                {
+                  echo $_SESSION["mesage"];
+                  unset($_SESSION['mesage']); 
+                }?>
+               </div>
             <div class="col-md-12">
                <div class="row">
                   <div class="form-group">
@@ -156,7 +162,7 @@
                      <span id="loaderIcon"></span>
                   </div>
                </div>
-               <form role="form">
+               <form role="form" method="post" action="addupdate.php">
                   <div class="row">
                      <div class="col-md-2">
                         <label>Supplier Code: </label>
@@ -168,15 +174,15 @@
                      </div>
                      <div class="col-md-2">
                         <label>Approved kgs: </label>
-                        <input class="form-control" name="approved_kgs" placeholder="kgs" type="text" required onkeypress="return isNumberKey(event)">
+                        <input class="form-control" name="appkgs" placeholder="kgs" type="text" required onkeypress="return isNumberKey(event)">
                      </div>
                      <div class="col-md-2">
                         <label>supplied kgs: </label>
-                        <input class="form-control" name="supplied_kgs" placeholder="sup-kgs" type="text"onkeypress="return isNumberKey(event)">
+                        <input class="form-control" name="supkgs" placeholder="sup-kgs" type="text"onkeypress="return isNumberKey(event)">
                      </div>
                      <div class="col-xs-2">
                         <br>
-                        <button onClick="get();" type="button" name="submit" class="btn bg-navy btn-flat">Submit</button>
+                        <button type="submit" name="submit" class="btn bg-navy btn-flat">Submit</button>
                      </div>
                   </div>
                </form>

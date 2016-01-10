@@ -1,9 +1,7 @@
 <?php 
 include("DB/dbsms.php");
 
-$sms = new DBsms();
 
-$sms->suppliersms();
 
  ?>
 

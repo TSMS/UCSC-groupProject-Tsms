@@ -3,9 +3,9 @@ session_start();
 require_once 'classes/class.user.php';
 $user = new USER();
 
-if($user->is_logged_in()!="")
+if(!$user->is_logged_in()!="")
 {
-  $user->redirect('home.php');
+  $user->redirect('index.php');
 }
 
 if(isset($_POST['btn-submit']))
@@ -26,13 +26,15 @@ if(isset($_POST['btn-submit']))
     $message= "
            Hello , $email
            <br /><br />
-           We got requested to reset your password, if you do this then just click the following link to reset your password, if not just ignore                   this email,
+           We received a request to change your password on Tsms System.<br>
+           click the following link to reset your password, if not just ignore
            <br /><br />
            Click Following Link To Reset Your Password 
            <br /><br />
            <a href='http://localhost/tsms/resetpass.php?id=$id&code=$code'>click here to reset your password</a>
            <br /><br />
            thank you :)
+          Thalapalakanada tea factory, Deniyaya.
            ";
     $subject = "Password Reset";
     
@@ -105,7 +107,7 @@ if(isset($_POST['btn-submit']))
           <div class="box box-solid">
             <div class="box-body">
               <blockquote>
-                <p><b>Please enter your email address!</b> <br>You will receive a link to create a new password via email.!.</p>
+                <p class="text-blue"><b>You Have To enter your email address, To Change Your current Password.</b> <br>You will receive a link to create a new password via email!</p>
                 <small>Change your password. <cite title="Source Title">Thalapalakanada tea factory</cite></small>
               </blockquote>
             </div><!-- /.box-body -->
@@ -120,7 +122,7 @@ if(isset($_POST['btn-submit']))
               <div class="sbox"></div>
               <div class="box box-success">
                 <div class="box-header with-border">
-                   <h2 class="form-signin-heading">Forgot Password</h2>
+                   <h2 class="form-signin-heading">Change Password</h2>
                 </div><!-- /.box-header -->
                 <!-- form start -->
                 <form class="form-horizontal form-signin" method="post">
@@ -133,8 +135,8 @@ if(isset($_POST['btn-submit']))
                     </div>
                   </div><!-- /.box-body -->
                   <div class="box-footer">
-                    <a href="index.php" type="submit" class="btn btn-primary">Back</a>
-                    <button type="submit" class="btn btn-success pull-right" name="btn-submit">Generate new Password</button>
+                    <a href="profile.php" type="submit" class="btn bg-navy btn-flat">Back to profile</a>
+                    <button type="submit" class="btn bg-olive btn-flat pull-right" name="btn-submit">Generate new Password</button>
                   </div><!-- /.box-footer -->
                 </form>
               </div><!-- /.box -->

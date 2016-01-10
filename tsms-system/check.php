@@ -1,6 +1,7 @@
 <?php 
 
-$msg=$_POST['text-msg'];
+$msg=$_POST['fname'];
+//$msg=$_POST['text-msg'];
 
 echo $msg;
 

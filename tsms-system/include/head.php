@@ -17,6 +17,6 @@
 
     <link rel="stylesheet" href="dist/css/skins/skin.css">
     <!-- iCheck -->
-    <link rel="stylesheet" href="plugins/iCheck/flat/blue.css">
+    <link rel="stylesheet" href="plugins/iCheck/flat/green.css">
   </head>
   <body class="hold-transition skin-blue sidebar-mini">

@@ -96,7 +96,7 @@ if(isset($_POST['btn-signup']))
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/TsmsUI.css">
     <!-- iCheck -->
-    <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
+    <link rel="stylesheet" href="plugins/iCheck/square/green.css">
   </head>
   <body class="hold-transition login-page">
       <br>
@@ -140,22 +140,79 @@ if(isset($_POST['btn-signup']))
             <div class="col-xs-8">
               <div class="checkbox icheck">
                 <label>
-                  <input required type="checkbox"> I agree to the <a href="#">terms</a>
+                  <input required type="checkbox"> I agree to the <a href="#myModal" role="button" data-toggle="modal">Terms and Conditions</a>
                 </label>
               </div>
             </div><!-- /.col -->
             <div class="col-xs-4">
-              <button type="submit" class="btn btn-primary btn-block btn-flat" name="btn-signup">Register</button>
+              <button type="submit" class="btn bg-olive btn-flat" name="btn-signup">Register</button>
             </div><!-- /.col -->
           </div>
         </form>
 
-        <div class="social-auth-links text-center">
+        <!-- terms model -->
+        <div id="myModal" class="login-dialog modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Terms and Conditions for System users</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>This acceptable use policy (or AUP) details the sorts of <br>content that a user may - and may not - submit to a website, forum or blog for publication.
+
+The template comes in three different flavours. <br>The contents of each are identical: only the terminology varies.
+
+The publication of user-generated <br>content (UGC) by a website operator may create liabilities for the operator, even where the website operator does not exercise any editorial function and does not moderate the UGC.
+
+The policy may be used to prohibit <br>both unlawful content and offensive content. Unlawful content includes content that is defamatory, obscene, in breach of privacy laws or infringing intellectual property rights. Offensive content may include content that is pornographic, graphically violent, or perhaps just uncivil or unsuitable for your the relevant website, forum or blog.
+
+As well as rules about what UGC can <br><br>and cannot be submitted to the website, this policy includes an express grant from the website user to the website owner of a right to use the UGC. Whilst the provision of content by a user would typically result in the grant of an implied licence to the website operator, it is much better for the website operator to know exactly what can and cannot be done with the content, and that request an express written licence,
+
+This acceptable usage policy is an extended version of the policies on usage contained in our blog terms and conditions template, our social networking terms and conditions and our other website terms of use templates designed to cover user-generated content.
+
+Acceptable use policies in detail<br><br>
+
+Acceptable use policies set out the <br>kinds of website use that are acceptable and the kinds of website use that are unacceptable.
+
+One big area of worry for web publishers<br> whose sites publish user content is the possibility of getting sued because that content is defamatory, infringes someone's copyright, breaches a court order or is otherwise unlawful. Even though a web publisher might not review user content before publication, and might not even be aware that it has been published, the publisher can still be held to be liable in respect of that content.
+
+The harshness of this principle is mitigated<br> in the UK by special rules under the Electronic Commerce (EC Directive) Regulations 2002, the Defamation Act 1996 and the Defamation Act 2013. However, Regulations 17 to 19 of the former include special defences in relation to hosting, caching and acting as a "mere conduit" of unlawful content. The use of a properly drafted acceptable use policy, together with appropriate business policies and mechanisms, could make the difference between the success or failure of a defence under the 2002 Regulations or the 1996 and 2013 Acts.
+
+Each of our acceptable use policies should be <br>used in conjunction with a website terms of use document (or website disclaimer document), which will cover the other legal issues affecting websites, such as limitations of liability and statutory disclosures.
+Most websites that allow the publication of user generated content require registration, and registration almost always involves the collection of personal information. If you collect personal information through a website, you may also need a website privacy policy to aid compliance with the Data Protection Act 1998.
+
+Contents of this AUP <br><br>
+
+The key provision in each policy include the following.<br>
+
+General restrictions: The general restrictions <br>section focuses upon the use of the website generally, rather than the specific nature of the user content. Unlawful, illegal, fraudulent and harmful usage may be prohibited using this section. You may also specify here that user content must be suitable for users of the appropriate age group. This is a subjective criterion but, insofar as children are concerned, there will be clear cases of suitability and unsuitability.
+
+Licence: Some acceptable use policies purport to<br> transfer the copyright in user postings to the web publisher. However, users do not normally expect this to be the effect of posting material to a website, and anyway such a transfer may be ineffective under English law, which requires transfers of copyright to be in writing and signed by the transferor.
+
+Instead, the template policies include a<br> broad licence to use the user content. The licence as drafted is irrevocable and non-exclusive, and covers the use, reproduction, publishing, adaptation, translation and distribution of the user content. It also includes a right to sub-license and a right to bring proceedings for infringement (for instance, against scraper sites). In many context users will find such a licence to be over-broad, and you should therefore consider the ways in which you can limit the licence without unnecessarily inhibiting the usefulness of the user content to your business,
+
+Unlawful and illegal material: A general <br>prohibition on unlawful and illegal content is supplemented here by specific prohibitions covering libel, malicious falsehood, obscenity, indecency, IP infringement, breach of confidence, data protection breaches, negligent misstatement, incitement, contempt, etc.
+
+Marketing and spam: The use of the website <br>for marketing purposes, at least without express permission, is prohibited by this section.
+
+Breaches of this Policy: The acceptable use policy templates<br>provide that a user who breaches the policy terms may suffer any or all of the following consequences: the deletion or editing of the user's content; the issue of formal warnings; the suspension or prohibition of access to the site or service; the blockage of access via IP address; requests to the user's ISP that the user be blocked from accessing the site or service; and/or the issue of court proceedings.</p>
+                    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-navy btn-flat">Accept</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- terms end -->
+        <!-- <div class="social-auth-links text-center">
           <p>- OR -</p>
           <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign up using Facebook</a>
           <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign up using Google+</a>
         </div>
-
+ -->
         <a href="index.php" class="text-center">I already have a membership</a>
       </div><!-- /.form-box -->
         </div><!-- /.login-box -->
@@ -175,19 +232,19 @@ if(isset($_POST['btn-signup']))
                       <div class="item active">
                         <img src="dist/img/image1.png" alt="First slide">
                         <div class="carousel-caption">
-                          First Slide
+                          Thalapalakanada
                         </div>
                       </div>
                       <div class="item">
                         <img src="dist/img/image2.png" alt="Second slide">
                         <div class="carousel-caption">
-                          Second Slide
+                          Tea
                         </div>
                       </div>
                       <div class="item">
                         <img src="dist/img/image3.png" alt="Third slide">
                         <div class="carousel-caption">
-                          Third Slide
+                          Factory
                         </div>
                       </div>
                     </div>
@@ -217,8 +274,8 @@ if(isset($_POST['btn-signup']))
     <script>
       $(function () {
         $('input').iCheck({
-          checkboxClass: 'icheckbox_square-blue',
-          radioClass: 'iradio_square-blue',
+          checkboxClass: 'icheckbox_square-green',
+          radioClass: 'iradio_square-green',
           increaseArea: '20%' // optional
         });
       });

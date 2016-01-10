@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require_once 'classes/class.user.php';
 $user_home = new USER();
@@ -58,16 +59,19 @@ $popup12=$dbdashboard->getThisMonthTotalSupply();
 //POP-UP 2
 $popup21=$dbdashboard->getTodayTotalSupply();
 
+                     
 
 if(!$user_home->is_logged_in())
 {
   $user_home->redirect('index.php');
 }
 
+
+
 $stmt = $user_home->runQuery("SELECT * FROM users WHERE id=:uid");
 $stmt->execute(array(":uid"=>$_SESSION['userSession']));
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
+$userlevel = $user_home->userPermission($row['id']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -75,7 +79,6 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
   <?php include "include/head.php" ?>
   
     <div class="wrapper">
-
       <?php include "include/header.php" ?>
       
       <!-- Left side column. contains the logo and sidebar -->
@@ -120,7 +123,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="suppliers.php"><i class="fa fa-circle-o"></i> Registation</a></li>
+                <li><a href="suppliers.php"><i class="fa fa-circle-o"></i> Registration</a></li>
                 <li><a href="view.php"><i class="fa fa-circle-o"></i> View</a></li>
               </ul>
             </li>
@@ -148,12 +151,12 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
          <!-- Content Header (Page header) -->
          <section class="content-header">
             <h1>
-               Dashboad
+               Dashboard
                <small></small>
             </h1>
             <ol class="breadcrumb">
-               <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-               <li class="active">Dashboad</li>
+               <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+               <li class="active">Dashboard</li>
             </ol>
          </section>
          <!-- Main content -->                                     <!-- 4 .....................BOXes.................................. -->
@@ -325,8 +328,54 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                     </div>
                   </div>
                   <div class="box-body">
-                    <p>Helo user details Helo user details Helo user details Helo user details Helo user details</p>
-                    <p>Helo user details Helo user details Helo user details Helo user details Helo user details</p>
+                    
+                   <?php
+                    switch ($userlevel) {
+                      case 'admin':
+                        echo "<p>Hello, Admin</p>";
+                        break;
+                      case 'user':
+                        echo "<p>Hello, Standed User</p>";
+                        break;
+                      default:
+                        echo "<p>Hello, Normal User</p>";
+                        break;
+                    }
+                    ?>
+                     <table class="table table-bordered table-condensed">
+                           <tr>
+                              <td width='150px'>Users</td>
+                              <td width='150px'>Options</td>
+                              <td width='150px'>Edit</td>
+                           </tr>
+                           <?php 
+                              $list ="SELECT id, username, user_approved, groups, level FROM users";
+                              $getdata = $user_home->runQuery($list);
+                              $getdata->execute();
+                              if($getdata->rowCount() > 0)
+                              {
+                                 while($data=$getdata->FETCH(PDO::FETCH_ASSOC))
+                                 {
+                                      $u_id = $data['id'];
+                                      $u_type =$data['groups'];
+                                      $admin = $data['level'];
+                                      ?>
+                            <tr>
+                              <td><?php echo $data['username'] ?></td>
+                              <td><?php
+                                    if($u_type == '1'){        
+                                        echo "<a href='activated_or_die.php?u_id=$u_id&type=$u_type'>Activate</a>";
+                                    }else{
+                                        echo "<a href='activated_or_die.php?u_id=$u_id&type=$u_type'>Deactivate</a>";
+                                    }
+                                    echo '<td><a href="#">Edit</a></td>';  
+                                 }
+                              }else{
+                                echo 'There is no user to Activate or diactivate';
+                              }
+                              ?>
+                        </table>
+
                   </div><!-- /.box-body -->
                 </div><!-- /.box -->
               </div><!-- /.col -->

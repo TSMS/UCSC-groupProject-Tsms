@@ -71,7 +71,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                   </li>
                   <li class="treeview">
                      <a href="#">
-                     <i class="fa fa-download"></i> <span>Back-Ups</span>
+                     <i class="fa fa-download"></i> <span>Settings</span>
                      </a>
                   </li>
                </ul>
@@ -95,9 +95,6 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
             </section>
             <!-- Main content -->
             <div id="content" class="content">
-              <!-- notification -->
-              <div id="info"></div>
-              <!-- noti end -->
                <style>
                   ul#stepForm, ul#stepForm li {
                   margin: 0;
@@ -109,10 +106,12 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                   label{margin-top: 10px;}
                   .help-inline-error{color:red;}
                </style>
+              <div class="row"> 
                <div class="col-md-8 col-md-offset-2">
+                <!-- notification --><div id="info">
                   <div class="box">
                      <div class="box-body">
-                        <form name="basicform" id="basicform" method="post" action="yourpage.html" class="form-horizontal">
+                        <form name="supplierForm" id="supplierForm" method="post" class="form-horizontal">
                            <div id="sf1" class="frm">
                               <fieldset>
                                  <legend>Step 1 of 3</legend>
@@ -139,6 +138,13 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                                     <label class="col-lg-3 control-label" for="nic">NIC: </label>
                                     <div class="col-lg-6">
                                        <input type="text" placeholder="NIC" id="nic" name="nic" class="form-control" autocomplete="off">
+                                    </div>
+                                 </div>
+                                 <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="sex">Sex: </label>
+                                    <div class="col-lg-6">
+                                       <input type="radio" name="iCheck" value="male"> Male
+                                       <input type="radio" name="iCheck" value="female"> Female
                                     </div>
                                  </div>
                                  <div class="clearfix" style="height: 10px;clear: both;"></div>
@@ -170,6 +176,36 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                                        <input type="text" maxlength="10" name="mobile" id="mobile" value="" autocomplete="off" class="form-control" placeholder="Enter Contact number">
                                     </div>
                                  </div>
+                                 <div class="form-group">
+                                    <label class="col-lg-3 control-label">Esate: </label>
+                                    <div class="col-lg-6">
+                                       <input type="text" name="estate" id="estate" value="" autocomplete="off" class="form-control" placeholder="Enter Estate">
+                                    </div>
+                                 </div>
+                                 <div class="form-group">
+                                    <label class="col-lg-3 control-label">Estate name: </label>
+                                    <div class="col-lg-6">
+                                       <input type="text" name="estate_name" id="estate_name" value="" autocomplete="off" class="form-control" placeholder="Enter Estate">
+                                    </div>
+                                 </div>
+                                 <div class="form-group">
+                                    <label class="col-lg-3 control-label">Registation Number: </label>
+                                    <div class="col-lg-6">
+                                       <input type="text" name="reg_no" id="reg_no" value="" autocomplete="off" class="form-control" placeholder="Enter Registation Number">
+                                    </div>
+                                 </div>
+                                 <div class="form-group">
+                                    <label class="col-lg-3 control-label">Size of Esate: </label>
+                                    <div class="col-lg-6">
+                                       <input type="text" name="size_of_estate" id="size_of_estate" value="" autocomplete="off" class="form-control" placeholder="Enter size of Estate">
+                                    </div>
+                                 </div>
+                                 <div class="form-group">
+                                    <label class="col-lg-3 control-label">Esate Address: </label>
+                                    <div class="col-lg-6">
+                                       <input type="text" name="estate_address" id="estate_address" value="" autocomplete="off" class="form-control" placeholder="Enter Estate address">
+                                    </div>
+                                 </div>
                                  <div class="clearfix" style="height: 10px;clear: both;"></div>
                                  <div class="clearfix" style="height: 10px;clear: both;"></div>
                                  <div class="form-group">
@@ -184,14 +220,26 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                               <fieldset>
                                  <legend>Step 3 of 3</legend>
                                  <div class="form-group">
-                                    <label class="col-lg-3 control-label" for="upass1">Bank Name: </label>
+                                    <label class="col-lg-4 control-label" for="bank">Bank Name: </label>
                                     <div class="col-lg-6">
                                        <input type="text" placeholder="Bank Name" id="bankn" name="bankn" class="form-control" autocomplete="off">
                                     </div>
                                  </div>
+                                 <div class="form-group">
+                                    <label class="col-lg-4 control-label" for="bank">Branch Name: </label>
+                                    <div class="col-lg-6">
+                                       <input type="text" placeholder="Branch Name" id="branch" name="branch" class="form-control" autocomplete="off">
+                                    </div>
+                                 </div>
+                                 <div class="form-group">
+                                    <label class="col-lg-4 control-label" for="bank">Yourv Bank Account Name: </label>
+                                    <div class="col-lg-6">
+                                       <input type="text" placeholder="Account Name" id="branch" name="branch" class="form-control" autocomplete="off">
+                                    </div>
+                                 </div>
                                  <div class="clearfix" style="height: 10px;clear: both;"></div>
                                  <div class="form-group">
-                                    <label class="col-lg-3 control-label" for="bankacc">Bank Account Number: </label>
+                                    <label class="col-lg-4 control-label" for="bankacc">Bank Account Number: </label>
                                     <div class="col-lg-6">
                                        <input type="text" placeholder="Bank account number" id="bankacc" name="bankacc" class="form-control" autocomplete="off">
                                     </div>
@@ -209,8 +257,11 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                         </form>
                      </div>
                   </div>
+                </div>
                </div>
+              </div>
             </div>
+          </div>
             <!-- /.content -->
          </div>
          <!-- Main Footer -->
@@ -237,21 +288,47 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
       <script src="dist/js/app.min.js"></script>
       <!-- AdminLTE for demo purposes -->
       <script src="dist/js/demo.js"></script>
+      <!-- iCheck -->
+      <script src="plugins/iCheck/icheck.min.js"></script>
+
+      <script>
+        $(function () {
+        //Enable iCheck plugin for checkboxes
+        //iCheck for checkbox and radio inputs
+        $('#supplierForm input[type="radio"]').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+          radioClass: 'iradio_flat-green'
+        });
+      });
+        </script>
       <!-- chartjs Scripts -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
       <!-- jQuery validation -->
       <script type="text/javascript" src="plugins/jQuery/jquery.validate.js"></script>
       <!-- Supplier validation -->
       <script type="text/javascript">
+          jQuery.validator.addMethod("nicid",function(value,element,param)
+          {
+            if(this.optional(element))
+              {//This is not a 'required' element and the input is empty
+                return true;
+              }
+            if(/^([0-9]{9})+(v|V)$/.test(value))
+              {
+                return true;
+              }
+              return false;
+          },"Please enter a valid nic Number");
+
          jQuery().ready(function() {
-         
+          
            // validate form on keyup and submit
-           var v = jQuery("#basicform").validate({
+           var v = jQuery("#supplierForm").validate({
              rules: {
                fname: {
                  required: true,
                  minlength: 2,
-                 maxlength: 16
+                 maxlength: 20
                },
                lname: {
                  required: true,
@@ -272,11 +349,21 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                  maxlength: 50
                },
                nic: {
-                 minlength: 10,
-                 maxlength: 10,
+                 nicid: true
                }
          
              },
+             messages: {
+                  fname: "Please enter your firstname",
+                  lname: "Please enter your lastname",
+                  nic: {
+                      required: "Please enter NIC card number",
+                      minlength: "Invalied Nic number",
+                      maxlength: "Invalied Nic number"
+                  },
+                  email: "Please enter a valid email address",
+              },
+
              errorElement: "span",
              errorClass: "help-inline-error",
            });
@@ -298,20 +385,21 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
            $(".open3").click(function() {
              if (v.form()) {
                $("#loader").show();
-                var fname=$("#fname").val();
-                var lname=$("#lname").val();
+                var form=document.getElementById("supplierForm");
+                var dataString = $(form).serialize();
 
                 $.ajax({
                     type:"post",
-                    url:"new.php",
-                    data:"fname="+fname+"&lname="+lname,
+                    url:"addsuppliers.php",
+                    data: dataString,
                     success:function(data){
-                        $("#info").html(data);
+                      $("#info").html(data);
+                      form.reset();
                     }
 
                 });
                 // setTimeout(function(){
-                //   $("#basicform").html('<h2>Thanks for your time.</h2>');
+                //   $("#supplierForm").html('<h2>Thanks for your time.</h2>');
                 // }, 1000);
                return false;
              }

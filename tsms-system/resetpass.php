@@ -25,9 +25,10 @@ if(isset($_GET['id']) && isset($_GET['code']))
       
       if($cpass!==$pass)
       {
-        $msg = '<p class="text-red">
-            <strong>Sorry!</strong>  Password Does not match. 
-            </p>';
+        $msg = '<div class="callout callout-warning">
+                    <h4>Sorry!</h4>
+                    <p>Password Does not match.</p>
+                  </div>';
       }
       else
       {
@@ -39,13 +40,17 @@ if(isset($_GET['id']) && isset($_GET['code']))
             <button class='close' data-dismiss='alert'>&times;</button>
             Password Changed.
             </div>";
+            
         header("refresh:5;index.php");
       }
     } 
   }
   else
   {
-    $msg = "<p>No Account Found, Try again!</p>";
+    $msg = '<div class="callout callout-warning">
+                    <h4>Try again!</h4>
+                    <p>No Account Found.</p>
+                  </div>';
         
   }
   
@@ -93,18 +98,21 @@ if(isset($_GET['id']) && isset($_GET['code']))
             <div class="col-md-offset-3 col-md-6">
               <div class="sbox"></div>
               <div class="box box-success">
-                <div class="box-header with-border">
-                   <h2 class="form-signin-heading">Password Reset</h2>
-                </div><!-- /.box-header -->
-                <!-- form start -->
-                <form class="form-horizontal form-signin" method="post">
-                  <div class="box-body">
-                    <label class="control-label"><?php
+                <?php
                       if(isset($msg))
                   {
                     echo $msg;
+                  }else{
+                    ?>
+                    <div class="box-header with-border">
+                   <h2 class="form-signin-heading">Password Reset</h2>
+                </div><!-- /.box-header -->
+                    <?php
                   }
-                  ?></label>
+                  ?>
+                <form class="form-horizontal form-signin" method="post">
+                  <div class="box-body">
+                    <label class="control-label"></label>
                     <div class="form-group">
                       <label for="inputPassword3" class="col-sm-4 control-label">Password</label>
                       <div class="col-sm-6">
@@ -119,8 +127,8 @@ if(isset($_GET['id']) && isset($_GET['code']))
                     </div>
                   </div><!-- /.box-body -->
                   <div class="box-footer">
-                    <a href="index.php" type="submit" class="btn btn-primary">Back</a>
-                    <button type="submit" class="btn btn-success pull-right" name="btn-reset-pass">Reset Your Password</button>
+                    <a href="index.php" type="submit" class="btn bg-navy btn-flat">Back</a>
+                    <button type="submit" class="btn bg-olive btn-flat pull-right" name="btn-reset-pass">Reset Your Password</button>
                   </div><!-- /.box-footer -->
                 </form>
               </div><!-- /.box -->

@@ -42,7 +42,7 @@ if(isset($_POST['btn-login']))
       <br>
     <div class="row">
       <div class="col-xs-10">
-        <h4 class="pull-right"><a href="thalapalakanada.lk"><b>Vist Us</b></a></h4>
+        <h4 class="pull-right"><a href="webpage.php"><b>Vist Us</b></a></h4>
       </div>
     </div>
     <!-- alert display in here! -->
@@ -105,17 +105,17 @@ if(isset($_POST['btn-login']))
                   </div>
                 </div><!-- /.col -->
                 <div class="col-xs-4">
-                  <button type="submit" class="btn btn-primary btn-block btn-flat" name="btn-login">Sign In</button>
+                  <button type="submit" class="btn bg-olive btn-flat" name="btn-login">Sign In</button>
                 </div><!-- /.col -->
               </div>
             </form>
 
-            <div class="social-auth-links text-center">
+           <!--  <div class="social-auth-links text-center">
               <p>- OR -</p>
               <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using Facebook</a>
               <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using Google+</a>
-            </div><!-- /.social-auth-links -->
-
+            </div>
+ -->
             <a href="fpass.php">I forgot my password</a><br>
             <a href="signup.php" class="text-center">Register a new membership</a>
 
@@ -137,19 +137,19 @@ if(isset($_POST['btn-login']))
                       <div class="item active">
                         <img src="dist/img/image1.png" alt="First slide">
                         <div class="carousel-caption">
-                          First Slide
+                          Thalapalakanada
                         </div>
                       </div>
                       <div class="item">
                         <img src="dist/img/image2.png" alt="Second slide">
                         <div class="carousel-caption">
-                          Second Slide
+                          Tea
                         </div>
                       </div>
                       <div class="item">
                         <img src="dist/img/image3.png" alt="Third slide">
                         <div class="carousel-caption">
-                          Third Slide
+                          Factory
                         </div>
                       </div>
                     </div>
@@ -165,7 +165,7 @@ if(isset($_POST['btn-login']))
           <div class="col-md-6 textcenter">
             <h1><span class="thalapalakanada"><b>THALAPALAKANADA</b></span></h1>
             <h3>Tea Factory</h3>
-            <h5>This is Thalapalakanada tea factory official web site if you have no account Please <a class="link" href="register.html">Register!</a> in here</h5>
+            <h5>This is Thalapalakanada tea factory official web site if you have no account Please <a class="link" href="signup.php">Register!</a> in here</h5>
           </div>
         </div>
       </div>

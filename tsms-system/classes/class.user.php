@@ -121,12 +121,27 @@ class USER
 		$mail->AddAddress($email);
 		$mail->Username="thusitha.4t@gmail.com";  
 		$mail->Password="8206560084it";            
-		$mail->SetFrom('thusitha.4t@gmail.com','Coding Cage');
-		$mail->AddReplyTo("thusitha.4t@gmail.com","Coding Cage");
+		$mail->SetFrom('thusitha.4t@gmail.com','Thalapalakanada Tea Factory');
+		$mail->AddReplyTo("thusitha.4t@gmail.com","Tsms");
 		$mail->Subject    = $subject;
 		$mail->MsgHTML($message);
 		$mail->Send();
 	}
 
+	function userPermission($userid){
+    try{
+        $sql = "SELECT level
+                FROM users 
+                WHERE id = :userId";
+        $s = $this->conn->prepare($sql);
+        $s->bindValue(":userId", $userid);
+        $s->execute();
+        $row=$s->fetch(PDO::FETCH_ASSOC);
+        return $row['level'];
+    } catch(PDOException $e) {
+            error_log("PDOException: " . $e->getMessage());
+            return -1;
+        }   
+}
 		
 }

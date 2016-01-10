@@ -44,7 +44,9 @@ if(isset($_POST['search'])){
 		$paid=($pay);
 		$remainbalance=($totincome-$pay);
 	}else{
-		$code="Supplier Doesn't exist!";
+		$msg='<div class="callout callout-warning">
+                    <h4>Supplier Does not exist!!</h4>
+                  </div>';
 	}
 	
 	
@@ -98,7 +100,7 @@ if(isset($_POST['search'])){
             </li>
             <li class="active treeview">
               <a href="home.html">
-                <i class="fa fa-edit"></i> <span>Suppliers</span>
+                <i class="fa fa-edit"></i> <span>Update</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
@@ -181,7 +183,7 @@ if(isset($_POST['search'])){
                          <!-- /.box-header -->
                          <div class="box-body" id="search_rr">
                             <dl class="dl-horizontal example1">
-
+                              <?php if(!empty($msg)){echo $msg;}?>
                                <p>Supplier details<p>
                                <dt>Code: </dt>
                                <dd><?php echo($code);?></dd>
@@ -204,7 +206,7 @@ if(isset($_POST['search'])){
                          <!-- /.box-body -->
                       </div>
                       <!-- /.box -->
-                      <?php if(!empty($code)){ ?>
+                      <?php if($dbupdates->checkSupplierExist($code)==true){ ?>
                       <div class="supplier-ditails">
                             <!-- Bar Chart Start -->
                               <div class="box box-success">
@@ -242,7 +244,7 @@ if(isset($_POST['search'])){
                          <?php } ?>
                     </div><!-- ./col -->
                     <!-- supplier descriptions END-->
-                    <?php if(!empty($code)){ ?>
+                    <?php if($dbupdates->checkSupplierExist($code)==true){ ?>
                     <!-- loan advance -->
                     <div class="col-md-6">
                       <div class="nav-tabs-custom">
@@ -285,7 +287,7 @@ if(isset($_POST['search'])){
                         <div class="box box-success color-palette-box">   
                           <div class="box-body">
                             <?php
-                              $getdata = $user_home->runQuery("SELECT sup_code,total_amount,description FROM today_service WHERE sup_code=$code ORDER BY date DESC");
+                              $getdata = $user_home->runQuery("SELECT* FROM today_service WHERE sup_code=$code ORDER BY date DESC");
                               $getdata->execute();
                               ?>
                              <table id="advance1" class="table table-bordered table-striped">
@@ -314,11 +316,7 @@ if(isset($_POST['search'])){
                                       }
                                       else
                                       {
-                                       ?>
-                                          <tr>
-                                          <td><?php print("nothing here...");  ?></td>
-                                          </tr>
-                                          <?php
+                                       print("nothing here...");  
                                       }
                                       ?>
                                 </tbody>
@@ -447,12 +445,8 @@ if(isset($_POST['search'])){
                                           }
                                           else
                                           {
-                                           ?>
-                                              <tr>
-                                              <td><?php print("nothing here...");  ?></td>
-                                              </tr>
-                                              <?php
-                                          }
+                                       print("nothing here...");  
+                                      }
                                           ?>
                                     </tbody>
                                 </table>
@@ -558,11 +552,7 @@ if(isset($_POST['search'])){
                                       }
                                       else
                                       {
-                                       ?>
-                                          <tr>
-                                          <td><?php print("nothing here...");  ?></td>
-                                          </tr>
-                                          <?php
+                                       print("nothing here...");  
                                       }
                                       ?>
                                 </tbody>

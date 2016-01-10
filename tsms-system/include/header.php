@@ -88,8 +88,8 @@
             <li class="user-header">
               <img src="dist/img/avatar.png" class="img-circle" alt="User Image">
               <p>
-                System Admin - clark
-                <small>Member since Nov. 2012</small>
+                <?php echo $row['username']; ?>
+                <small>Thalapalakanada tea factory</small>
               </p>
             </li>
             <!-- Menu Footer-->
