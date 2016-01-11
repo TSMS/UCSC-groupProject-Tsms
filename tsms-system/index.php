@@ -42,7 +42,7 @@ if(isset($_POST['btn-login']))
       <br>
     <div class="row">
       <div class="col-xs-10">
-        <h4 class="pull-right"><a href="webpage.php"><b>Vist Us</b></a></h4>
+        <h4 class="pull-right"><a href="page/webpage.php"><b>Vist Us</b></a></h4>
       </div>
     </div>
     <!-- alert display in here! -->
@@ -67,8 +67,22 @@ if(isset($_POST['btn-login']))
       ?>
       <div class="alert alert-danger alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <h4>  <i class="icon fa fa-check"></i> Wrong Details!</h4>
+        <h4>  <i class="icon fa fa-ban"></i> Wrong Details!</h4>
         Please enter the correct details.
+      </div>
+      <!-- <div class='alert alert-success'>
+        <button class='close' data-dismiss='alert'>&times;</button>
+        <strong>Wrong Details!</strong> 
+      </div> -->
+    <?php
+    }
+         if(isset($_GET['notuser']))
+    {
+      ?>
+      <div class="alert alert-warning alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <h4>  <i class="icon fa fa-warning"></i> Wait for admin approved!</h4>
+        You can not login to system until admin approved you.
       </div>
       <!-- <div class='alert alert-success'>
         <button class='close' data-dismiss='alert'>&times;</button>
@@ -83,7 +97,7 @@ if(isset($_POST['btn-login']))
         <div class="login-box">
           <div class="login-logo">
             <br>
-            <a href="login.html"><img src="dist/Llogo.png"></a>
+            <a href="index.php"><img src="dist/Llogo.png"></a>
           </div><!-- /.login-logo -->
           <div class="login-box-body">
             <p class="login-box-msg">Sign in to the system in here</p>

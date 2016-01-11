@@ -1,5 +1,19 @@
+<html>
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="plugins/alert/dist/sweetalert.css">
+  <script type="text/javascript" src="plugins/alert/dist/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript" src="plugins/alert/dist/sweetalert.min.js"></script>
+  <script type="text/javascript" src="plugins/alert/dist/sweetalert-dev.js"></script>
+</head>
+<body>
+
+</body>
+</html>
 <?php
 session_start();
+include_once('message/communication.php');
+
 require_once 'classes/class.user.php';
 $user_home = new USER();
 
@@ -19,12 +33,20 @@ $supplier = new Supplier();
 $scode = trim($_POST['supcode']);
 $fname = trim($_POST['fname']);
 $lname = trim($_POST['lname']);
-$addr1 = trim($_POST['address_1']);
 $nic = trim($_POST['nic']);
-$banka = trim($_POST['bankacc']);
-$bankn = trim($_POST['bankn']);
-$mobile= trim($_POST['mobile']);
+$iCheck = trim($_POST['iCheck']);
 $email  = trim($_POST['uemail']);
+$address_1  = trim($_POST['address_1']);
+$mobile = trim($_POST['mobile']);
+$estate = trim($_POST['estate']);
+$estate_name = trim($_POST['estate_name']);
+$reg_no = trim($_POST['reg_no']);
+$size_of_estate = trim($_POST['size_of_estate']);
+$estate_address = trim($_POST['estate_address']);
+$bankn = trim($_POST['bankn']);
+$branch = trim($_POST['branch']);
+$account = trim($_POST['account']);
+$bankacc = trim($_POST['bankacc']);
 $editor= $row['id'];
 
 $stmt = $supplier->runQuery("SELECT * FROM suppliers WHERE supplier_code=:sup_code");
@@ -47,13 +69,18 @@ if($stmt->rowCount() > 0)
 }
 else
 {
-  if($supplier->register($scode,$fname,$lname,$addr1,$nic,$mobile,$email,$editor))
-  {     
-    echo '<div class="alert alert-success alert-dismissable">
-  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-  <h4>  <i class="icon fa fa-check"></i> Successfuly!</h4>
-  Supplier Successfuly added to the database.
-</div>
+  if($supplier->register($scode, $fname, $lname, $nic, $iCheck, $email, $address_1, $mobile, $estate, $estate_name, 
+    $reg_no, $size_of_estate, $estate_address, $bankn, $branch, $account, $bankacc, $editor))
+  {  
+    $message = "Thalapalakanada Tea factory, username: 0001 password: $nic http://tsms.x10host.com/page/";
+
+  if(!empty($mobile)){
+    $mobileNumber = Communication::prepareNumber($mobile);
+    Communication::sendMessage($message, $mobileNumber);
+  }
+    echo '<script>$(function(){ swal("Success!", "Supplier Successfuly added to the database.","success")}); </script>';
+    echo '
+<div class="row">
 <div class="col-md-12">
   <div class="box">
     <div class="box-header">
@@ -62,22 +89,23 @@ else
     <div class="box-body">
       <p>Supplier Successfuly added to the database. Also You can change Supplier settings.</p>
       <a class="btn btn-app">
-        <i class="fa fa-edit"></i> Edit
+        <i href="view.php" class="fa fa-edit"></i> Edit
       </a>
       <a href="suppliers.php" class="btn btn-app">
         <i class="fa fa-user-plus"></i> Add Another
       </a>
       <a class="btn btn-app">
-        <i class="fa fa-users"></i> View Suppliers
+        <i href="view.php" class="fa fa-users"></i> View Suppliers
       </a>
     </div>
   </div>
+</div>
 </div>
 ';
   }
   else
   {
-    echo "sorry , Query could no execute...";
+    echo '<script>$(function(){ swal("Error!", "Connection error occured.","error")}); </script>';
   }   
 }
 

@@ -26,14 +26,6 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
                <!-- Sidebar user panel (optional) -->
-               <form name="form" class="sidebar-form">
-                  <div class="input-group">
-                     <input type="text" name="name" class="form-control" placeholder="Supplier...">
-                     <span class="input-group-btn">
-                     <button type="button" name="search" onClick="get();" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-                     </span>
-                  </div>
-               </form>
                <!-- sidebar menu: : style can be found in sidebar.less -->
                <ul id="nav" class="sidebar-menu">
                   <li class="header">MAIN NAVIGATION</li>
@@ -191,7 +183,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
          <footer class="main-footer">
             <!-- To the right -->
             <div class="pull-right hidden-xs">
-               Anything you want
+               groups 5 ucsc
             </div>
             <!-- Default to the left -->
             <strong>Copyright &copy; 2015 <a href="#">Company</a>.</strong> All rights reserved.

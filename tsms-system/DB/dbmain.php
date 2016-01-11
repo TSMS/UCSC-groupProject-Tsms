@@ -102,7 +102,7 @@ class DBmain{
 		
 		$set=DBmain::mixingforupdatequery($datafields,$tablefields);
 		try {
-			$sql = "UPDATE ".$tablename." SET ".$set." WHERE ".$condition."";
+			$sql = "UPDATE ".$tablename." SET ".$set." ".$condition."";
 			// use exec() because no results are returned
 			$this->conn->exec($sql);
 		}catch(PDOException $e){
@@ -112,17 +112,12 @@ class DBmain{
 	}
 	public function insert($tablename,$datafields=array(),$tablefields=array()){//insert data
 	
-		$dbconfig = new Database();		
-		$host=$dbconfig->host();
-		$user=$dbconfig->username();
-		$pwd=$dbconfig->pwd();
-		$db=$dbconfig->db();
-		
 		$datafld=DBmain::arraytostr2($datafields);//convert array to a single string separate with ","
 		$tablefld=DBmain::arraytostr($tablefields);
 		try {
 			$sql = "INSERT INTO ".$tablename." (".$tablefld.") VALUES (".$datafld.")";
 			// use exec() because no results are returned
+			
 			$this->conn->exec($sql);
 			return true;
 		}catch(PDOException $e){

@@ -87,16 +87,6 @@ $userlevel = $user_home->userPermission($row['id']);
         <!-- sidebar: style can be found in sidebar.less -->
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
-
-          <!-- Sidebar user panel (optional) -->
-          <form name="form" class="sidebar-form">
-            <div class="input-group">
-              <input type="text" name="name" class="form-control" placeholder="Supplier...">
-              <span class="input-group-btn">
-               <button type="button" name="search" onClick="get();" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-              </span>
-            </div>
-          </form>
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul id="nav" class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
@@ -318,7 +308,8 @@ $userlevel = $user_home->userPermission($row['id']);
 
             <!-- User Details -->
             <div class="row">
-              <div class="col-md-12">
+              <?php if($user_home->admin($row['id'])){?>
+              <div class="col-md-6">
                 <div class="box box-success">
                   <div class="box-header with-border">
                     <h3 class="box-title">User Ditails</h3>
@@ -346,7 +337,7 @@ $userlevel = $user_home->userPermission($row['id']);
                            <tr>
                               <td width='150px'>Users</td>
                               <td width='150px'>Options</td>
-                              <td width='150px'>Edit</td>
+                              <td width="150px">Make Admin</td>
                            </tr>
                            <?php 
                               $list ="SELECT id, username, user_approved, groups, level FROM users";
@@ -358,18 +349,21 @@ $userlevel = $user_home->userPermission($row['id']);
                                  {
                                       $u_id = $data['id'];
                                       $u_type =$data['groups'];
-                                      $admin = $data['level'];
+                                      $level = $data['level'];
+                                      if($level !="admin"){
                                       ?>
                             <tr>
                               <td><?php echo $data['username'] ?></td>
                               <td><?php
-                                    if($u_type == '1'){        
-                                        echo "<a href='activated_or_die.php?u_id=$u_id&type=$u_type'>Activate</a>";
-                                    }else{
+                                    if($u_type == '2'){        
                                         echo "<a href='activated_or_die.php?u_id=$u_id&type=$u_type'>Deactivate</a>";
+                                    }else{
+                                        echo "<a href='activated_or_die.php?u_id=$u_id&type=$u_type' class='btn btn-xs bg-navy btn-flat'>Activate</a>";
                                     }
-                                    echo '<td><a href="#">Edit</a></td>';  
+                                    echo '<td><a href="#request" role="button" data-toggle="modal" class="btn btn-xs bg-olive btn-flat">Set Admin</a></td>';
+                                    echo '<tr>';  
                                  }
+                               }
                               }else{
                                 echo 'There is no user to Activate or diactivate';
                               }
@@ -379,17 +373,39 @@ $userlevel = $user_home->userPermission($row['id']);
                   </div><!-- /.box-body -->
                 </div><!-- /.box -->
               </div><!-- /.col -->
+              <?php 
+              } ?>
             </div>
             <!-- User Details End -->
 
          </div> <!-- /.content -->
       </div>
 
+      <div id="request" class="login-dialog modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Send Service Request</h4>
+                    </div>
+                    <div class="modal-body">
+
+                      <h1>Are You Sure?</h1>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn bg-navy btn-flat">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
       <!-- Main Footer -->
       <footer class="main-footer">
         <!-- To the right -->
         <div class="pull-right hidden-xs">
-          Anything you want
+          Group 5 ucsc
         </div>
         <!-- Default to the left -->
         <strong>Copyright &copy; 2015 <a href="#">Company</a>.</strong> All rights reserved.
@@ -419,8 +435,8 @@ $userlevel = $user_home->userPermission($row['id']);
                 labels : <?php echo($strbarchartlabels); ?>,
                 datasets : [
                     {
-                        fillColor : "#48A497",
-                        strokeColor : "#48A4D1",
+                        fillColor : "#16a085",
+                        strokeColor : "rgba(127, 140, 141,1.0)",
                         data : <?php echo($strbarchartvalues); ?>
                     }
                 ]
@@ -440,8 +456,8 @@ $userlevel = $user_home->userPermission($row['id']);
         datasets: [{
           label: "My First dataset",
           fillColor: "rgba(220,220,220,0.2)",
-          strokeColor: "rgba(220,220,220,1)",
-          pointColor: "rgba(220,220,220,1)",
+          strokeColor: "rgba(52, 152, 219,1.0)",
+          pointColor: "rgba(41, 128, 185,1.0)",
           pointStrokeColor: "#fff",
           pointHighlightFill: "#fff",
           pointHighlightStroke: "rgba(220,220,220,1)",
@@ -449,8 +465,8 @@ $userlevel = $user_home->userPermission($row['id']);
         }, {
           label: "My Second dataset",
           fillColor: "rgba(151,187,205,0.2)",
-          strokeColor: "rgba(151,187,205,1)",
-          pointColor: "rgba(151,187,205,1)",
+          strokeColor: "rgba(26, 188, 156,1.0)",
+          pointColor: "rgba(22, 160, 133,1.0)",
           pointStrokeColor: "#fff",
           pointHighlightFill: "#fff",
           pointHighlightStroke: "rgba(151,187,205,1)",

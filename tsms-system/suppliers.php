@@ -25,15 +25,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
             <!-- sidebar: style can be found in sidebar.less -->
             <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
-               <!-- Sidebar user panel (optional) -->
-               <form name="form" class="sidebar-form">
-                  <div class="input-group">
-                     <input type="text" name="name" class="form-control" placeholder="Supplier...">
-                     <span class="input-group-btn">
-                     <button type="button" name="search" onClick="get();" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-                     </span>
-                  </div>
-               </form>
+               
                <!-- sidebar menu: : style can be found in sidebar.less -->
                <ul id="nav" class="sidebar-menu">
                   <li class="header">MAIN NAVIGATION</li>
@@ -106,6 +98,20 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                   label{margin-top: 10px;}
                   .help-inline-error{color:red;}
                </style>
+
+               <script type="text/javascript">
+                   function checkAvailability() {
+                       jQuery.ajax({
+                       url: "check.php",
+                       data:'supcode='+$("#supcode").val(),
+                       type: "POST",
+                       success:function(data){
+                         $("#user-availability-status").html(data);
+                       },
+                       error:function (){}
+                       });
+                     }
+               </script>
               <div class="row"> 
                <div class="col-md-8 col-md-offset-2">
                 <!-- notification --><div id="info">
@@ -131,13 +137,14 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                                  <div class="form-group">
                                     <label class="col-lg-3 control-label" for="supcode">Supplier Code: </label>
                                     <div class="col-lg-6">
-                                       <input type="text" placeholder="Supplier Code" id="supcode" name="supcode" class="form-control" autocomplete="off">
+                                       <span id="user-availability-status"></span> 
+                                       <input type="text" placeholder="Supplier Code" id="supcode" name="supcode" class="form-control" autocomplete="off" onBlur="checkAvailability()" >
                                     </div>
                                  </div>
                                  <div class="form-group">
                                     <label class="col-lg-3 control-label" for="nic">NIC: </label>
                                     <div class="col-lg-6">
-                                       <input type="text" placeholder="NIC" id="nic" name="nic" class="form-control" autocomplete="off">
+                                       <input type="text" maxlength="10" placeholder="NIC" id="nic" name="nic" class="form-control" autocomplete="off">
                                     </div>
                                  </div>
                                  <div class="form-group">
@@ -173,7 +180,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                                  <div class="form-group">
                                     <label class="col-lg-3 control-label">Phone: </label>
                                     <div class="col-lg-6">
-                                       <input type="text" maxlength="10" name="mobile" id="mobile" value="" autocomplete="off" class="form-control" placeholder="Enter Contact number">
+                                       <input type="text"  maxlength="10" name="mobile" id="mobile" value="" autocomplete="off" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Enter Contact number">
                                     </div>
                                  </div>
                                  <div class="form-group">
@@ -232,9 +239,9 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                                     </div>
                                  </div>
                                  <div class="form-group">
-                                    <label class="col-lg-4 control-label" for="bank">Yourv Bank Account Name: </label>
+                                    <label class="col-lg-4 control-label" for="account">Yourv Bank Account Name: </label>
                                     <div class="col-lg-6">
-                                       <input type="text" placeholder="Account Name" id="branch" name="branch" class="form-control" autocomplete="off">
+                                       <input type="text" placeholder="Account Name" id="branch" name="account" class="form-control" autocomplete="off">
                                     </div>
                                  </div>
                                  <div class="clearfix" style="height: 10px;clear: both;"></div>
@@ -268,7 +275,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
          <footer class="main-footer">
             <!-- To the right -->
             <div class="pull-right hidden-xs">
-               Anything you want
+               groups 5 ucsc
             </div>
             <!-- Default to the left -->
             <strong>Copyright &copy; 2015 <a href="#">Company</a>.</strong> All rights reserved.
@@ -349,6 +356,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                  maxlength: 50
                },
                nic: {
+                 required: true,
                  nicid: true
                }
          
@@ -416,6 +424,14 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
            });
          
          });
+      </script>
+      <script type="text/javascript">
+      function isNumberKey(evt){
+      var charCode = (evt.which) ? evt.which : event.keyCode
+      if (charCode > 31 && (charCode != 46 &&(charCode < 48 || charCode > 57)))
+         return false;
+      return true;
+   }
       </script>
    </body>
 </html>

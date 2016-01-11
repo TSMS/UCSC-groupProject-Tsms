@@ -57,22 +57,28 @@ class USER
 			
 			if($stmt->rowCount() == 1)
 			{
-				if($userRow['user_approved']=="Y")
-				{
-					if($userRow['password']==md5($upass))
+				if($userRow['groups']==2){
+
+					if($userRow['user_approved']=="Y")
 					{
-						$_SESSION['userSession'] = $userRow['id'];
-						return true;
+						if($userRow['password']==md5($upass))
+						{
+							$_SESSION['userSession'] = $userRow['id'];
+							return true;
+						}
+						else
+						{
+							header("Location: index.php?error");
+							exit;
+						}
 					}
 					else
 					{
-						header("Location: index.php?error");
+						header("Location: index.php?inactive");
 						exit;
 					}
-				}
-				else
-				{
-					header("Location: index.php?inactive");
+				}else{
+					header("Location: index.php?notuser");
 					exit;
 				}	
 			}
@@ -128,7 +134,7 @@ class USER
 		$mail->Send();
 	}
 
-	function userPermission($userid){
+	function userPermission($userid){	
     try{
         $sql = "SELECT level
                 FROM users 
@@ -142,6 +148,26 @@ class USER
             error_log("PDOException: " . $e->getMessage());
             return -1;
         }   
-}
+	}
+
+	function admin($userid){	
+    try{
+        $sql = "SELECT level
+                FROM users 
+                WHERE id = :userId";
+        $s = $this->conn->prepare($sql);
+        $s->bindValue(":userId", $userid);
+        $s->execute();
+        $row=$s->fetch(PDO::FETCH_ASSOC);
+        if($row['level']=="admin"){
+        	return true;	
+        }else{
+        	return false;
+        }
+    } catch(PDOException $e) {
+            error_log("PDOException: " . $e->getMessage());
+            return -1;
+        }   
+	}
 		
 }

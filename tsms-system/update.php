@@ -56,8 +56,12 @@
    ?>
 <!DOCTYPE html>
 <html>
+
    <title>Daily Update</title>
    <?php include "include/head.php" ?>
+     <script type="text/javascript" src="plugins/alert/dist/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript" src="plugins/alert/dist/sweetalert.min.js"></script>
+  <script type="text/javascript" src="plugins/alert/dist/sweetalert-dev.js"></script>
    <div class="wrapper">
    <?php include "include/header.php" ?>
    <!-- Left side column. contains the logo and sidebar -->
@@ -65,15 +69,6 @@
       <!-- sidebar: style can be found in sidebar.less -->
       <!-- sidebar: style can be found in sidebar.less -->
       <section class="sidebar">
-         <!-- Sidebar user panel (optional) -->
-         <form name="form" class="sidebar-form">
-            <div class="input-group">
-               <input type="text" name="name" class="form-control" placeholder="Supplier...">
-               <span class="input-group-btn">
-               <button type="button" name="search" onClick="get();" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-               </span>
-            </div>
-         </form>
          <!-- sidebar menu: : style can be found in sidebar.less -->
          <ul id="nav" class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
@@ -131,11 +126,11 @@
    <section class="content-header">
       <h1>
          Update Area
-         <small>Supply andService Update</small>
+         <small>Supply and Service Update</small>
       </h1>
       <ol class="breadcrumb">
-         <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-         <li class="active">Dashboad</li>
+         <li><a href="home.php"><i class="fa fa-dashboard"></i> Dashboad</a></li>
+         <li class="active">Update</li>
       </ol>
    </section>
    <!-- Main content -->
@@ -160,6 +155,10 @@
                      </div>
                      <div id="update"></div>
                      <span id="loaderIcon"></span>
+                  </div>
+                  <div class="col-md-3">
+                      <label>Supplier name: </label><br>
+                      <span  class="form-control" id="user-availability-status"></span>
                   </div>
                </div>
                <form role="form" method="post" action="addupdate.php">
@@ -208,14 +207,14 @@
                         <?php 
                         if($getdata->rowCount() > 0)
                           {
-                           while($row=$getdata->FETCH(PDO::FETCH_ASSOC)){
+                           while($r=$getdata->FETCH(PDO::FETCH_ASSOC)){
                             ?>
                            <tr>
-                              <td><?php print($row['f_name']." ".$row['l_name']); ?></td>
-                              <td><?php print($row['units']); ?></td>
-                              <td><?php print($row['approved_kgs']); ?></td>
-                              <td><?php print($row['supplied_kgs']); ?></td>
-                              <td>Status</td>
+                              <td><?php print($r['f_name']." ".$r['l_name']); ?></td>
+                              <td><?php print($r['units']); ?></td>
+                              <td><?php print($r['approved_kgs']); ?></td>
+                              <td><?php print($r['supplied_kgs']); ?></td>
+                              <td><button onclick="not(<?php echo $r['supplier_code']; ?>)"><i class="fa fa-trash"></i></button></td>
                            </tr>
                            <?php
                                }
@@ -241,11 +240,36 @@
       </div>
     </div>
   </div>
+
+  <script type="text/javascript">
+      function not(data){
+ 
+        swal({   title: "Are you sure?",   
+          text: "You will not be able to recover this supply data!",   
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Yes, delete it!",   
+          cancelButtonText: "No, cancel plx!",   
+          closeOnConfirm: false,   
+          closeOnCancel: false }, 
+          function(isConfirm){   
+            if(isConfirm) {
+            window.location.href="delete.php?delete_id="+data;     
+              swal("Deleted!", "Supply data has been deleted.", "success");
+            } else {     
+              swal("Cancelled", "Supply data is safe :)", "error");   
+            } 
+          });
+
+
+  }
+  </script>
       <!-- Main Footer -->
       <footer class="main-footer">
          <!-- To the right -->
          <div class="pull-right hidden-xs">
-            Anything you want
+            groups 5 ucsc
          </div>
          <!-- Default to the left -->
          <strong>Copyright &copy; 2015 <a href="#">Company</a>.</strong> All rights reserved.
@@ -266,6 +290,17 @@
    <!-- AdminLTE for demo purposes -->
    <script src="dist/js/demo.js"></script>
    <!-- DataTables -->
+     <script type="text/javascript">
+     $(document).ready(function () {
+      
+     window.setTimeout(function() {
+         $(".alert").fadeTo(1500, 0).slideUp(500, function(){
+             $(this).remove(); 
+         });
+     }, 5000);
+      
+     });
+  </script>
    <script src="plugins/datatables/jquery.dataTables.min.js"></script>
    <script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
    <!-- Data tabale JavaScript -->

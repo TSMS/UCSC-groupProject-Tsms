@@ -5,10 +5,29 @@ class DBsms{
 
 	function setMessageAsRead($id){
 		$dbmain = new DBmain();
-		$condition="WHERE message_id='".$id."'";
-		$res=$dbmain->edit("message_temp",array('1'),array("approve"),$condition);		
+		$condition="WHERE message_id={$id}";
+		$res=$dbmain->edit("message_temp",array(1),array("approve"),$condition);		
 	}
-
+	function checkSupplierExist($supcode){
+		$dbmain = new DBmain();
+		$condition=" WHERE supplier_code= '".$supcode."'";
+		$boolres=$dbmain->checkDataExist("suppliers",$condition);
+		if($boolres==true){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	function addTodayService($datafields){
+		$dbmain = new DBmain();
+		$arrfields=array("date", "sup_code", "loan_code", "unit_price", "units", "total_amount", "no_of_installment", "amount_of_installment", "description", "editor");
+		$boolres=$dbmain->insert("today_service",$datafields,$arrfields);
+		if($boolres==true){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	function getTodayMySupply($supcode){
 		$dbmain = new DBmain();
 		$condition=" WHERE supplier_code='".$supcode."'";
@@ -204,4 +223,3 @@ class DBsms{
 }
 ?> 
 
- 

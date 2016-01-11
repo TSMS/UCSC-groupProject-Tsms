@@ -3103,6 +3103,10 @@ table.text-center th {
  * -----------------
  */
 /* ADD THIS CLASS TO THE <BODY> TAG */
+.supplier{
+  background: #ecf0f1;
+}
+
 .lockscreen {
   background: #d2d6de;
 }
@@ -4764,4 +4768,10 @@ table.text-center th {
   padding: 10px;
   position:relative;
   bottom:0;
+}
+
+.color {
+-webkit-box-shadow: -1px 0px 12px 1px rgba(0,0,0,0.75);
+-moz-box-shadow: -1px 0px 12px 1px rgba(0,0,0,0.75);
+box-shadow: -1px 0px 12px 1px rgba(0,0,0,0.75);
 }

@@ -63,7 +63,8 @@ if(isset($_POST['btn-signup']))
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <h4>  <i class="icon fa fa-check"></i> Success!</h4>
                     We have sent an email to '.$email.' Please click on the confirmation link in the email to create your account.
-                  </div></div>'; 
+                  </div></div>';
+              header("refresh:5;index.php"); 
       // $msg = "
       //     <div class='alert alert-success'>
       //       <button class='close' data-dismiss='alert'>&times;</button>
@@ -97,6 +98,19 @@ if(isset($_POST['btn-signup']))
     <link rel="stylesheet" href="dist/css/TsmsUI.css">
     <!-- iCheck -->
     <link rel="stylesheet" href="plugins/iCheck/square/green.css">
+    <script type="text/javascript">
+    function checkAvailability() {
+        jQuery.ajax({
+        url: "check.php",
+        data:'username='+$("#txtuname").val(),
+        type: "POST",
+        success:function(data){
+          $("#user-availability-status").html(data);
+        },
+        error:function (){}
+        });
+      }
+    </script>
   </head>
   <body class="hold-transition login-page">
       <br>
@@ -125,7 +139,8 @@ if(isset($_POST['btn-signup']))
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
-            <input type="text" class="form-control" placeholder="Username" name="txtuname" required />
+            <span id="user-availability-status"></span> 
+            <input type="text" class="form-control" placeholder="Username" name="txtuname" id="txtuname" required onBlur="checkAvailability()"/>
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">

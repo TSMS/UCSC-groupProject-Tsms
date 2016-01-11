@@ -1,5 +1,6 @@
 <?php
 session_start();
+include_once('message/communication.php');
 require_once 'classes/class.user.php';
 $user_home = new USER();
 require_once 'DB/dbsms.php';
@@ -26,7 +27,11 @@ $category="";
 if(!empty($_GET["id"])){
   $id = $_GET["id"];
   
-  
+  ?>
+  <script type="text/javascript" src="plugins/alert/dist/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript" src="plugins/alert/dist/sweetalert.min.js"></script>
+  <script type="text/javascript" src="plugins/alert/dist/sweetalert-dev.js"></script>
+  <?php
   $getdata = $user_home->runQuery("SELECT t.supplier_code, s.f_name,s.l_name,t.message_code, t.value, t.quantity, t.category
   FROM message_temp t,suppliers s,message_info i WHERE (t.supplier_code= s.supplier_code) AND message_id=$id ");
   $getdata->execute();
@@ -86,10 +91,103 @@ if(!empty($_GET["id"])){
   $mymiddlemonthpay=$dbsms->myMiddleMonthPaymentsOf6Months($supcode);
   $strlinechartvalues2="[".$mymiddlemonthpay[5].",".$mymiddlemonthpay[4].",".$mymiddlemonthpay[3].",".$mymiddlemonthpay[2].",".$mymiddlemonthpay[1].",".$mymiddlemonthpay[0]."]";
   
-  //$dbsms->setMessageAsRead($id);
+  $dbsms->setMessageAsRead($id);
 }
 $formateddate=date('Y-m-d');
 
+/*Form submits -- start*/
+//advance 
+if(isset($_POST['submit_1'])){
+	$supcode1=($_POST['hiddensupcode1']);
+	$total_amount=($_POST['total_amount']);
+	$des=($_POST['des']);
+	$editor=$row['id'];
+	if($dbsms->checkSupplierExist($supcode1)== true){
+		$datafields=array($formateddate,$supcode1,"adv","","",$total_amount,"1",$total_amount,$des,$editor);
+		$res=$dbsms->addTodayService($datafields);
+		if($res==true){
+			echo '<script>$(function(){ swal("Success!", "Successfully  Accepted","success")}); </script>';
+		}else{
+			echo "<script>alert ('Error of Connection !') </script>";
+		}
+		//echo($res);</script>
+	}	
+}
+if(isset($_POST['submit_2'])){
+	$supcode2=($_POST['hiddensupcode2']);	
+	$loancode=($_POST['selectdd']);		
+	$unit_price=($_POST['amountofaqty']);
+	$qty=($_POST['qty']);
+	$p_total_amount=($_POST['producttotal']);
+	$p_installments=($_POST['productpaymentmonths']);
+	$p_amountofinstallment=($_POST['productinstallment']);
+	$des=($_POST['des']);
+	if($dbsms->checkSupplierExist($supcode2)==true){
+		$res=true;
+		$dateMula=substr($formateddate,0,5);
+		$dateMada=substr($formateddate,5,7);
+		$dateAga=substr($formateddate,7);		
+		for($i=0;$i<$p_installments;$i++){
+			$dateMada=($dateMada/1)+$i;
+			if(strlen($dateMada)<2){
+				$dateMada="0".$dateMada;
+			}
+			if($dateMada==13){
+				$dateMada="12";
+				$dateMula=((substr($formateddate,0,4))+1)."-";
+			}
+			$dte=$dateMula.$dateMada.$dateAga;
+			$datafields=array($dte,$supcode2,$loancode,$unit_price,$qty,$p_total_amount,$p_installments,$p_amountofinstallment,$des,$row['id']);
+			$retres=$dbsms->addTodayService($datafields);
+			if($res==false){
+				$res=false;
+			}				
+		}
+		if($res==true){
+			echo '<script>$(function(){ swal("Success!", "Successfully Accepted","success")}); </script>';
+		}else{
+			echo '<script>$(function(){ swal("Error!",""Error of Connection...",error")}); </script>';
+		}		
+	}
+}
+if(isset($_POST['submit_3'])){
+	
+	$supcode3=($_POST['hiddensupcode3']);	
+	$total_amount=($_POST['loanamount']);
+	$installments=($_POST['loanmonths']);
+	$amountofinstallment=($_POST['loanpay']);
+	$des=($_POST['des']);
+	
+	if($dbsms->checkSupplierExist($supcode3)==true){
+		$res=true;
+		$dateMula=substr($formateddate,0,5);
+		$dateMada=substr($formateddate,5,7);
+		$dateAga=substr($formateddate,7);		
+		for($i=0;$i<$installments;$i++){
+			$dateMada=($dateMada/1)+$i;
+			if(strlen($dateMada)<2){
+				$dateMada="0".$dateMada;
+			}
+			if($dateMada==13){
+				$dateMada="12";
+				$dateMula=((substr($formateddate,0,4))+1)."-";
+			}
+			$dte=$dateMula.$dateMada.$dateAga;
+			$datafields=array($dte,$supcode3,"lon","","",$total_amount,$installments,$amountofinstallment,$des,$row['id']);
+			$retres=$dbsms->addTodayService($datafields);
+			if($res==false){
+				$res=false;
+			}				
+		}
+		if($res==true){
+			echo '<script>$(function(){ swal("Success!", "Successfully Accepted","success")}); </script>';
+		}else{
+			echo '<script>$(function(){ swal("Error!",""Error of Connection...",error")}); </script>';
+		}		
+	}
+	
+}
+/*Form submits -- end*/
 
 ?>
 <!DOCTYPE html>
@@ -106,16 +204,6 @@ $formateddate=date('Y-m-d');
         <!-- sidebar: style can be found in sidebar.less -->
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
-
-          <!-- Sidebar user panel (optional) -->
-          <form name="form" class="sidebar-form">
-            <div class="input-group">
-              <input type="text" name="name" class="form-control" placeholder="Supplier...">
-              <span class="input-group-btn">
-               <button type="button" name="search" onClick="get();" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-              </span>
-            </div>
-          </form>
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul id="nav" class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
@@ -175,8 +263,8 @@ $formateddate=date('Y-m-d');
                <small>Request Accepting</small>
             </h1>
             <ol class="breadcrumb">
-               <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-               <li class="active">Dashboad</li>
+               <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+               <li class="active">Message</li>
             </ol>
          </section>
          <!-- Main content -->
@@ -188,6 +276,12 @@ $formateddate=date('Y-m-d');
                   width: 400px;
               }
           </style>
+<?php 
+  if(!empty($_POST['number']) && !empty($_POST['send_message']) && $_POST['send'] == "send message"){
+    $mobileNumber = Communication::prepareNumber($_POST['number']);
+    Communication::sendMessage($_POST['send_message'], $mobileNumber);
+  }
+ ?>
             <!-- Modal For Send message -->
             <div id="myModal" class="login-dialog modal fade">
                 <div class="modal-dialog">
@@ -197,22 +291,22 @@ $formateddate=date('Y-m-d');
                             <h4 class="modal-title">Send message</h4>
                         </div>
                         <div class="modal-body">
-                            <form role="form">
+                            <form role="form" method="post">
                               <!-- text input -->
                               <div class="form-group">
                                 <label>Mobile Number</label>
-                                <input type="text" class="form-control" placeholder="Enter Mobile number like 0772376512.">
+                                <input type="text" class="form-control" name="number" placeholder="Enter Mobile number like 0772376512.">
                               </div>
                               <!-- textarea -->
                               <div class="form-group">
                                 <label>Textarea</label>
-                                <textarea class="form-control" rows="3" placeholder="Enter your message in here"></textarea>
+                                <textarea class="form-control" rows="3" name="send_message" placeholder="Enter your message in here"></textarea>
+                              </div>
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
+                                  <button type="submit" name="send" class="btn bg-navy btn-flat" value="send message">Send message</button>
                               </div>
                             </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn bg-navy btn-flat">Send</button>
                         </div>
                     </div>
                 </div>
@@ -261,12 +355,6 @@ $formateddate=date('Y-m-d');
                 <div class="box box-navy">
                   <div class="box-header with-border">
                     <h3 class="box-title">Inbox</h3>
-                    <div class="box-tools pull-right">
-                      <div class="has-feedback">
-                        <input type="text" class="form-control input-sm" placeholder="Search Mail">
-                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                      </div>
-                    </div><!-- /.box-tools -->
                   </div><!-- /.box-header -->
                   <div class="box-body no-padding">
                     <div class="mailbox-controls">
@@ -287,7 +375,7 @@ $formateddate=date('Y-m-d');
                     </div>
                     <div class="table-responsive mailbox-messages">
                       <?php
-                      $getdata = $user_home->runQuery("SELECT t.message_id, s.f_name,s.l_name,t.message_code, t.value, t.quantity, t.category, t.date, t.time, t.approve FROM message_temp t,suppliers s WHERE t.supplier_code= s.supplier_code ORDER BY date DESC");
+                      $getdata = $user_home->runQuery("SELECT t.message_id, s.f_name,s.l_name,t.message_code, t.value, t.quantity, t.category, t.date, t.time, t.approve FROM message_temp t,suppliers s WHERE (t.supplier_code= s.supplier_code) AND t.approve=0 ORDER BY date DESC");
                       $getdata->execute();
                       ?>
                       <table class="table table-hover table-striped">
@@ -303,10 +391,12 @@ $formateddate=date('Y-m-d');
                                  case 'fer':
                                    $lable = 'btn-info';
                                    $mcode = 'fertilizer';
+                                  
                                    break;
                                  case 'adv':
                                    $lable = 'btn-warning';
                                    $mcode = 'advance';
+                                
                                    break;
                                  case 'bil':
                                    $lable = 'btn-default';
@@ -315,10 +405,12 @@ $formateddate=date('Y-m-d');
                                  case 'lon':
                                    $lable = 'btn-primary';
                                    $mcode = 'loan';
+                                   $msgcode = "#loan";
                                    break;
                                  default:
                                    $lable = 'btn-success';
                                    $mcode = 'chemical';
+                                  
                                    break;
                                }
                          ?>
@@ -424,45 +516,65 @@ $formateddate=date('Y-m-d');
                               </div><!-- /.box -->
                               <!-- Line Chart End -->
                          </div>
-                         <div class="is-accept">
-                          <!-- here you can get idea about are you going to give this or not -->
-                          <div class="col-md-6">
-                            <div class="info-box bg-green">
-                              <span class="info-box-icon"><i class="fa fa-thumbs-o-up"></i></span>
-                              <div class="info-box-content">
-                                <span class="info-box-text">Likes</span>
-                                <span class="info-box-number">41,410</span>
-                                <div class="progress">
-                                  <div class="progress-bar" style="width: 70%"></div>
+                        
+
+                         <!-- <div class="is-accept">
+                            <div class="col-md-6">
+                              <div class="info-box bg-green">
+                                <span class="info-box-icon"><i class="fa fa-thumbs-o-up"></i></span>
+                                <div class="info-box-content">
+                                  <span class="info-box-text">Acceptability</span>
+                                  <div class="progress">
+                                    <div class="progress-bar" style="width: 70%"></div>
+                                  </div>
+                                  <span class="progress-description">
+                                    70% Increase in 30 Days
+                                  </span>
                                 </div>
-                                <span class="progress-description">
-                                  70% Increase in 30 Days
-                                </span>
-                              </div><!-- /.info-box-content -->
-                            </div><!-- /.info-box -->
-                          </div><!-- /.col -->
-                          <!-- if this mark apear then that means you can not offer anything to the supplier -->
-                          <div class="col-md-6">
-                            <div class="info-box bg-red">
-                              <span class="info-box-icon"><i class="fa fa-thumbs-o-down"></i></span>
-                              <div class="info-box-content">
-                                <span class="info-box-text">Likes</span>
-                                <span class="info-box-number">41,410</span>
-                                <div class="progress">
-                                  <div class="progress-bar" style="width: 30%"></div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-6">
+                              <div class="info-box bg-red">
+                                <span class="info-box-icon"><i class="fa fa-thumbs-o-down"></i></span>
+                                <div class="info-box-content">
+                                  <span class="info-box-text">Acceptability</span>
+                                  <div class="progress">
+                                    <div class="progress-bar" style="width: 30%"></div>
+                                  </div>
+                                  <span class="progress-description">
+                                    23% Increase in 30 Days
+                                  </span>
                                 </div>
-                                <span class="progress-description">
-                                  70% Increase in 30 Days
-                                </span>
-                              </div><!-- /.info-box-content -->
-                            </div><!-- /.info-box -->
-                          </div><!-- /.col -->
-                       </div>
-                       <?php $btype = "#advance";?>
-                       <div class="input-group">
+                              </div>
+                            </div>
+                         </div> -->
+
+
+
+                       <?php 
+                       switch ($reqtype) {
+                                 case 'Fertilizer':
+                                   $ecode = '#products';
+                                   break;
+                                 case 'Advance':
+                                   $ecode = '#advance';
+                                   break;
+                                 case 'lon':
+                                   $ecode = '#loan';
+                                   break;
+                                 case 'Chemical':
+                                   $ecode = '#products';
+                                   break;
+                                 default:
+                                   $ecode = 'null';
+                                   break;
+                               }
+                        ?>
+                      <div class="input-group">
                          <span class="input-group-btn">
-                            <a href="<?php echo $btype;?>" name="accept" class="btn bg-navy btn-flat pull-right" data-toggle="modal">Accept</a>                
-                            <button type="reset" name="Reject" class="btn bg-denger btn-flat ">Reject</button>
+                            <a href="<?php echo $ecode;?>" name="accept" class="btn bg-navy btn-flat pull-right" data-toggle="modal">Accept</a>                
+                            <a href="http://localhost/tsms/message.php" type="reset" name="Reject" class="btn bg-denger btn-flat ">Reject</a>
                          </span>
                        </div>
                     </div>
@@ -487,37 +599,38 @@ $formateddate=date('Y-m-d');
                     </div>
                     <div class="modal-body">
                         
-                      <!-- Advance Start -->
-                              <div class="panel-body ng-scope">
+						<!-- Advance Start -->
+                         <div class="panel-body ng-scope">
                                    <form action="" method="POST" name="form_signin" class="form-horizontal form-validation ng-dirty ng-valid ng-valid-required">
                                       <fieldset>
                                          <div class="form-group">
-                                            <div class="col-sm-3">
+                                            <div class="col-sm-2">
                                                <label for="">Amount</label>
                                             </div>
-                                            <div class="input-group">
+                                            <div class="input-group col-sm-6">
                                                <span class="input-group-addon">Rs.</span>
-                                               <input class="form-control" required="" name="total_amount" data-ng-model="" onkeyup="sum();" type="text" value="">
+                                               <input class="form-control" required="" name="total_amount" data-ng-model=""  type="text" value="" onkeypress="return isNumberKey(event)" maxlength="8">
                                                <span class="input-group-addon">.00</span>
+											   <input type="hidden" value="<?php echo $supcode;?>" id="hiddensupcode1" name="hiddensupcode1" >
                                             </div>
                                          </div>
                                          <div class="form-group">
-                                            <div class="col-sm-3">
-                                               <label for="">Description</label>
+                                            <div class="col-sm-2">
+                                               <label for="">Des</label>
                                             </div>
                                             <div class="input-group">
-                                              <textarea class="form-control" rows="5" id="comment" rows="4" cols="35" name="des" placeholder="Comment"></textarea>
+                                              <textarea class="form-control" rows="5"  id="des" rows="4" cols="35" name="des" placeholder="Comment"></textarea>
                                             </div>
                                          </div>
+                                         <button type="submit" name="submit_1" class="btn bg-navy btn-flat">Submit</button>
                                       </fieldset>
                                    </form>
-                                </div>
-                            <!-- Advance End -->
+                                </div>     
+						<!-- Advance End -->
 
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
-                        <button type="submit" name="submit_1" class="btn bg-navy btn-flat">Submit</button>
                     </div>
                 </div>
             </div>
@@ -534,93 +647,93 @@ $formateddate=date('Y-m-d');
                         
                       <!-- products start -->
                       <div class="panel-body ng-scope">
-                         <form name="form_signin" class="form-horizontal form-validation ng-dirty ng-valid ng-valid-required">
-                            <fieldset>
-                               <div class="form-group">
-                                  <div class="col-sm-4">
-                                     <label for="">Product</label>
-                                  </div>
-                                  <div class="input-group">
-                                    <span class="ui-select">
-                                     <select class="form-control">
-                                        <option>Chemical</option>
-                                        <option>Tea Packet</option>
-                                        <option>Manure</option>
-                                     </select>
-                                  </span>
-                                  </div>
-                               </div>
-                               <div class="form-group">
-                                  <div class="col-sm-4">
-                                     <label for="">Amount of 1 quntity</label>
-                                  </div>
-                                  <div class="input-group">
-                                     <span class="input-group-addon">Rs.</span>
-                                     <input type="text" name="unit_price" class="form-control" required="" data-ng-model="">
-                                  </div>
-                               </div>
-                               <div class="form-group">
-                                  <div class="col-sm-4">
-                                     <label for="">
-                                        Quntity</labl>
-                                  </div>
-                                  <div class="input-group">
-                                  <input type="text" name="units" class="form-control" onkeyup="ProductTotal(this.form)" value="">
-                                  </div>
-                               </div>
-                               <div class="form-group ">
-                               <div class="col-sm-4">
-                               <label for="">Total</label>
-                               </div>
-                               <div class="input-group">
-                               <span class="input-group-addon">Rs.</span>
-                               <input type="text" name="total_product_amount" class="form-control" required="" data-ng-model="" readonly="">
-                               <span class="input-group-addon">.00</span>
-                               </div>
-                               </div>  
-                               <div class="form-group">
-                                  <div class="col-sm-4">
-                                     <label for="">payment months</label>
-                                  </div>
-                                  <div class="input-group">
-                                     <input name="productpaymentmonths" class="form-control" type="text" onkeyup="InstallmentCalculate(this.form)">
-                                  </div>
-                               </div>
-                               <div class="form-group">
-                                  <div class="col-sm-4">
-                                     <label for="">Interest</label>
-                                  </div>
-                                  <div class="input-group">
-                                     <input name="productinterest" class="form-control" required="" data-ng-model="" type="text">
-                                     <span class="input-group-addon">% per month</span>
-                                  </div>
-                               </div>
-                               <div class="form-group">
-                                  <div class="col-sm-4">
-                                     <label for="">Payment for month</label>
-                                  </div>
-                                  <div class="input-group">
-                                     <span class="input-group-addon">Rs.</span>
-                                     <input name="productinstallment" class="form-control" required="" data-ng-model="" type="text" readonly="">
-                                     <span class="input-group-addon">.00</span>
-                                  </div>
-                               </div>
-                               <div class="form-group">
-                                  <div class="col-sm-4">
-                                     <label for="">Description</label>
-                                  </div>
-                                  <div class="input-group">
-                                    <textarea class="form-control" rows="5" id="comment" rows="4" cols="35" name="des" placeholder="Comment"></textarea>
-                                  </div>
-                               </div>
-                            </fieldset>
-                         </form>
-                      </div>
+                               <form action="" method="POST" name="form_signin" class="form-horizontal form-validation ng-dirty ng-valid ng-valid-required">
+                                  <fieldset>
+                                     <div class="form-group">
+										<div class="col-sm-4">
+                                           <label for="">Product</label>
+                                        </div>
+											<span class="ui-select col-sm-4">
+                                            <select name="selectdd" class="form-control">
+										
+												<option value="che">Chemical</option>
+												<option value="fer">Fertilizer</option>
+												<option value="tea">Tea Packets</option>
+											
+                                           </select>
+                                        </span>
+                                     </div>
+                                     <div class="form-group">
+										<div class="col-sm-2">
+											<label for="">Amount of 1 qty</label>
+										</div>
+										<div class="input-group col-sm-4">
+											<span class="input-group-addon">Rs.</span>
+											<input type="text" id="amountofaqty" name="amountofaqty" class="form-control" onkeyup="call()" required="" data-ng-model="" onkeypress="return isNumberKey(event)" maxlength="8">
+										</div>
+									</div>
+									<input type="hidden" value="<?php echo $supcode;?>" id="hiddensupcode2" name="hiddensupcode2" >
+									<div class="form-group">
+										<div class="col-sm-2">
+											<label for="">Qty</labl>
+										</div>
+										<div class="input-group">
+											<input type="text" id="qty" name="qty" class="form-control" onkeyup="call()" onkeypress="return isNumberKey(event)" maxlength="6" required="">
+										</div>
+									</div>
+																		
+									<div class="form-group ">
+										<div class="col-sm-2">
+											<label for="">Total</label>
+										</div>
+										<div class="input-group col-sm-6">
+											<span class="input-group-addon">Rs.</span>
+											<input type="text" id="producttotal" name="producttotal" class="form-control" required="" data-ng-model="" readonly="">
+										</div>
+									</div>	
+
+									<div class="form-group">
+										<div class="col-sm-2">
+											<label for="">payment months</label>
+										</div>
+										<div class="input-group">
+											<input id="productpaymentmonths" name="productpaymentmonths" class="form-control" type="text" onkeyup="ProductInstallmentCalculate()" maxlength="2" required="" onkeypress="return isNumberKey(event)">
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-sm-2">
+											<label for="">Interest</label>
+										</div>
+										<div class="input-group col-sm-6">
+											<input id="productinterest" name="productinterest" class="form-control" required="" onkeyup="ProductInstallmentCalculate()" data-ng-model="" type="text" maxlength="2" onkeypress="return isNumberKey(event)">
+											<span class="input-group-addon">% per month</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-sm-2">
+											<label for="">Payment for month</label>
+										</div>
+										<div class="input-group col-sm-6">
+											<span class="input-group-addon">Rs.</span>
+											<input id="productinstallment" name="productinstallment" class="form-control" required="" data-ng-model="" type="text" readonly="">
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-sm-2">
+											<label for="">Des</label>
+										</div>
+										<div class="input-group">
+											<input class="form-control" type="text" name="des">
+										</div>
+									</div>
+                                     <button type="submit" name="submit_2" class="btn bg-navy btn-flat">Submit</button>
+                                  </fieldset>
+                               </form>
+						</div>
                       <!-- products End -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn bg-navy btn-flat">Submit</button>
                     </div>
                 </div>
             </div>
@@ -636,73 +749,65 @@ $formateddate=date('Y-m-d');
                     <div class="modal-body">
                         
                       <!-- Loan Start -->
-                      <div class="panel-body ng-scope">
-                         <form name="form_signin" class="form-horizontal form-validation ng-dirty ng-valid ng-valid-required">
-                            <fieldset>
-                               <div class="form-group">
-                                  <div class="col-sm-4">
-                                     <label for="">Amount</label>
-                                  </div>
-                                  <div class="input-group col-sm-6">
-                                     <span class="input-group-addon">Rs.</span>
-                                     <input name="loan_amount" class="form-control" required="" data-ng-model="" type="text">
-                                     <span class="input-group-addon">.00</span>
-                                  </div>
-                               </div>
-                               <div class="form-group">
-                                  <div class="col-sm-4">
-                                     <label for="">Payment Months</label>
-                                  </div>
-                                  <div class="input-group">
-                                     <input name="loanpaymentmonths" class="form-control" type="text">
-                                  </div>
-                               </div>
-                               <div class="form-group">
-                                  <div class="col-sm-4">
-                                     <label for="">Interest</label>
-                                  </div>
-                                  <div class="input-group col-sm-4">
-                                     <input class="form-control" type="text">
-                                     <span class="input-group-addon">%</span>
-                                  </div>
-                               </div>
-                               <div class="form-group">
-                                  <div class="col-sm-4">
-                                     <label for="">Total for Pay</label>
-                                  </div>
-                                  <div class="input-group col-sm-6">
-                                     <span class="input-group-addon">Rs.</span>
-                                     <input name="loantotalforpay" class="form-control" required="" data-ng-model="" type="text" readonly="">
-                                     <span class="input-group-addon">.00</span>
-                                  </div>
-                               </div>
-                               <div class="form-group">
-                                  <div class="col-sm-4">
-                                     <label for="">Installment</label>
-                                  </div>
-                                  <div class="input-group col-sm-6">
-                                     <span class="input-group-addon">Rs.</span>
-                                     <input name="loaninstallforpay" class="form-control" required="" data-ng-model="" type="text" readonly="">
-                                     <span class="input-group-addon">.00</span>
-                                  </div>
-                               </div>
-                               <div class="form-group">
-                                  <div class="col-sm-4">
-                                     <label for="">Description</label>
-                                  </div>
-                                  <div class="input-group">
-                                     <input name="des3" class="form-control" type="text">
-                                  </div>
-                               </div>
-                            </fieldset>
-                         </form>
-                      </div>
-                      
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn bg-navy btn-flat">Submit</button>
-                    </div>
+						<div class="panel-body ng-scope">
+                                 <form action="" method="POST" name="form_signin" class="form-horizontal form-validation ng-dirty ng-valid ng-valid-required">
+                                    <fieldset>
+                                       <div class="form-group">
+										<div class="col-sm-2">
+											<label for="">Amount</label>
+										</div>
+										<div class="input-group col-sm-6">
+											<span class="input-group-addon">Rs.</span>
+											<input id="loanamount" name="loanamount" class="form-control" required="" data-ng-model="" type="text" maxlength="8" onkeypress="return isNumberKey(event)" onkeyup="LoanInstallmentCalculate()">
+											<input type="hidden" value="<?php echo $supcode;?>" id="hiddensupcode3" name="hiddensupcode3">
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-sm-2">
+											<label for="">Payment Months</label>
+										</div>
+										<div class="input-group">
+											<input id="loanmonths" name="loanmonths" class="form-control" type="text" onkeypress="return isNumberKey(event)" onkeyup="LoanInstallmentCalculate()" maxlength="2"  required="">
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-sm-2">
+											<label for="">Interest</label>
+										</div>
+										<div class="input-group col-sm-6">
+											<input id="loanintrst" name="loanintrst" class="form-control" type="text" onkeypress="return isNumberKey(event)" onkeyup="LoanInstallmentCalculate()" maxlength="2" required="">
+											<span class="input-group-addon">% per year</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-sm-2">
+											<label for="">Total for Pay</label>
+										</div>
+										<div class="input-group col-sm-6">
+											<span class="input-group-addon">Rs.</span>
+											<input id="loantot" name="loantot" class="form-control" required="" data-ng-model="" type="text" readonly="">
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-sm-2">
+											<label for="">Installment</label>
+										</div>
+										<div class="input-group col-sm-6">
+											<span class="input-group-addon">Rs.</span>
+											<input id="loanpay" name="loanpay" class="form-control" required="" data-ng-model="" type="text" readonly="">
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-sm-2">
+											<label for="">Des</label>
+										</div>
+										<div class="input-group">
+											<input class="form-control" type="text" name="des">
+										</div>
+									</div>
+                                       <button type="submit" name="submit_3" class="btn bg-navy btn-flat">Submit</button>
+                                    </fieldset>
+                                 </form>
                 </div>
             </div>
         </div>
@@ -712,7 +817,7 @@ $formateddate=date('Y-m-d');
       <footer class="main-footer">
         <!-- To the right -->
         <div class="pull-right hidden-xs">
-          Anything you want
+          groups 5 ucsc
         </div>
         <!-- Default to the left -->
         <strong>Copyright &copy; 2015 <a href="#">Company</a>.</strong> All rights reserved.
@@ -738,6 +843,17 @@ $formateddate=date('Y-m-d');
      <!-- chartjs Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
     <!-- Page Script -->
+      <script type="text/javascript">
+     $(document).ready(function () {
+      
+     window.setTimeout(function() {
+         $(".alert").fadeTo(1500, 0).slideUp(500, function(){
+             $(this).remove(); 
+         });
+     }, 5000);
+      
+     });
+  </script>
     <script>
       $(function () {
         //Enable iCheck plugin for checkboxes
@@ -809,6 +925,51 @@ $formateddate=date('Y-m-d');
             // draw bar chart
             new Chart(income).Bar(barData);
     </script>
-    
+    <script>
+	//scripts for calculations
+		
+    function isNumberKey(evt){
+		var charCode = (evt.which) ? evt.which : event.keyCode
+		if (charCode > 31 && (charCode != 46 &&(charCode < 48 || charCode > 57)))
+			return false;
+		return true;
+	}
+	
+	function call(){
+		var q=parseInt(document.getElementById("amountofaqty").value);
+		var w=parseInt(document.getElementById("qty").value);
+		var result=q*w;
+		   if(isNaN(q)||isNaN(w)){
+			   var ansD = document.getElementById("producttotal");
+                ansD.value = result;
+			}else{
+				var ansD = document.getElementById("producttotal");
+                ansD.value = result;
+			}
+	}
+	function LoanInstallmentCalculate(){
+		var p=parseInt(document.getElementById("loanamount").value);
+		var q=parseInt(document.getElementById("loanintrst").value);
+		var r=parseInt(document.getElementById("loanmonths").value);
+		var totalinterest = (p*q*r)/1200;
+		
+		var lamount = parseInt(document.getElementById("loanamount").value);
+		var loantot = document.getElementById("loantot");
+		loantot.value = ((lamount/1) + (totalinterest/1)).toFixed(2);
+		
+		var loanpay = document.getElementById("loanpay");
+		loanpay.value = (((lamount/1)+ (totalinterest/1))/r).toFixed(2) ;
+	}
+	
+	function ProductInstallmentCalculate(){
+		var p=parseInt(document.getElementById("producttotal").value);
+		var q=parseInt(document.getElementById("productpaymentmonths").value);
+		var monthinstall = (p/q).toFixed(2);
+		var r=document.getElementById("productinstallment");
+		var s=parseInt(document.getElementById("productinterest").value);
+		r.value = (((monthinstall*s)/100) + (monthinstall/1)).toFixed(2);
+	}
+
+	</script>
   </body>
 </html>
