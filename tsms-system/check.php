@@ -27,9 +27,10 @@ if(!empty($_POST["username"])) {
 	$userRow=$s->fetch(PDO::FETCH_ASSOC);	
 	if($s->rowCount() == 1){
 		echo "<span class='status-not-available'> Username Not Available.</span>";
-	}else{
-		echo "<span class='status-available'> Username is Available.</span>";
-  }
+	}
+	// else{
+	// 	echo "<span class='status-available'> Username is Available.</span>";
+ //  }
 }
 
 // $msg=$_POST['fname'];
@@ -41,7 +42,8 @@ if(!empty($_POST["username"])) {
 <style type="text/css">
 
 .status-not-available{
-  color: red;
+  color: #a94442;
+  font-size: 0.8em;
 }
 .status-available{
   color: green;

@@ -81,7 +81,7 @@
             <li class="treeview">
                <a href="message.php">
                <i class="fa fa-envelope"></i> <span>Message</span>
-               <small class="label pull-right bg-yellow">12</small>
+               <small class="label pull-right bg-yellow"></small>
                </a>
             </li>
             <li class="active treeview">
@@ -156,16 +156,12 @@
                      <div id="update"></div>
                      <span id="loaderIcon"></span>
                   </div>
-                  <div class="col-md-3">
-                      <label>Supplier name: </label><br>
-                      <span  class="form-control" id="user-availability-status"></span>
-                  </div>
                </div>
                <form role="form" method="post" action="addupdate.php">
                   <div class="row">
                      <div class="col-md-2">
                         <label>Supplier Code: </label>
-                        <input class="form-control" name="supcode" placeholder="Suplier Code" type="text" >
+                        <input class="form-control" name="supcode" placeholder="Suplier Code" type="text" required>
                      </div>
                      <div class="col-md-2">
                         <label>Quantity: </label>
@@ -205,16 +201,19 @@
                         </thead>
                         <tbody>
                         <?php 
+
                         if($getdata->rowCount() > 0)
                           {
                            while($r=$getdata->FETCH(PDO::FETCH_ASSOC)){
+                            $idd = $r['supplier_code'];
                             ?>
-                           <tr>
+                           <tr class="success">
                               <td><?php print($r['f_name']." ".$r['l_name']); ?></td>
                               <td><?php print($r['units']); ?></td>
                               <td><?php print($r['approved_kgs']); ?></td>
                               <td><?php print($r['supplied_kgs']); ?></td>
-                              <td><button onclick="not(<?php echo $r['supplier_code']; ?>)"><i class="fa fa-trash"></i></button></td>
+                              <td><button><a href="#<?php echo $idd?>" data-toggle="modal" ><i class="fa fa-edit"></i></a></button><button onclick="not(<?php echo $r['supplier_code']; ?>)"><i class="fa fa-trash"></i></button></td>
+                              <!-- <button><a href="update.php?id=<?php// echo $r['supplier_code']; ?>"><i  class="fa fa-edit"></i></a></button> -->
                            </tr>
                            <?php
                                }
@@ -240,6 +239,48 @@
       </div>
     </div>
   </div>
+
+            
+<div id="<?php echo $idd?>" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+         <form role="form" method="post" action="addupdate.php">
+            <div class="row">
+               <div class="col-md-4">
+                  <label>Supplier Code: </label>
+                  <input class="form-control" name="supcode" placeholder="Suplier Code" type="text" value="<?php print($r['f_name']." ".$r['l_name']); ?>" readonly>
+               </div>
+               <div class="col-md-4">
+                  <label>Quantity: </label>
+                  <input class="form-control" name="units" placeholder="units" type="text" onkeypress="return isNumberKey(event)" value="<?php print($r['units']); ?>">
+               </div>
+               <div class="col-md-4">
+                  <label>Approved kgs: </label>
+                  <input class="form-control" name="appkgs" placeholder="kgs" type="text" required onkeypress="return isNumberKey(event)" value="<?php print($r['approved_kgs']); ?>">
+               </div>
+               <div class="col-md-4">
+                  <label>supplied kgs: </label>
+                  <input class="form-control" name="supkgs" placeholder="sup-kgs" type="text"onkeypress="return isNumberKey(event)" value="<?php print($r['supplied_kgs']); ?>">
+               </div>
+               <div class="col-md-4 pull-right">
+                  <br>
+                  <button type="button" class="btn bg-olive btn-flat" data-dismiss="modal">Close</button>
+                  <button type="submit" name="submit" class="btn bg-navy btn-flat">Submit</button>
+               </div>
+            </div>
+         </form>
+      </div>
+    </div>
+
+  </div>
+</div>
 
   <script type="text/javascript">
       function not(data){

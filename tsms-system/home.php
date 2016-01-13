@@ -92,14 +92,14 @@ $userlevel = $user_home->userPermission($row['id']);
             <li class="header">MAIN NAVIGATION</li>
             <!-- Optionally, you can add icons to the links -->
             <li class="active">
-              <a href="dashboard.html">
+              <a href="home.php">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span>
               </a>
             </li>
             <li class="treeview">
               <a href="message.php">
                 <i class="fa fa-envelope"></i> <span>Message</span>
-                <small class="label pull-right bg-yellow">12</small>
+                <small class="label pull-right bg-yellow"></small>
               </a>
             </li>
             <li class="treeview">
@@ -108,7 +108,7 @@ $userlevel = $user_home->userPermission($row['id']);
               </a>
             </li>
             <li class="treeview">
-              <a href="Supreg.html">
+              <a href="suppliers.php">
                 <i class="fa fa-group"></i> <span>Suppliers</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
@@ -165,13 +165,14 @@ $userlevel = $user_home->userPermission($row['id']);
                      <div class="icon">
                         <i class="fa fa-shopping-cart"></i>
                      </div>
-                     <a href="home.php" class="small-box-footer">
+
+                     <a href="<?php if($user_home->admin($row['id'])){echo 'settings.php';}else{echo 'home.php';}?>" class="small-box-footer">
                      More info <i class="fa fa-arrow-circle-right"></i>
                      </a>
                   </div>
                </div>
                <!-- ./col -->
-               <div class="col-lg-3 col-xs-6">
+               <div class="col-md-3">
                   <!-- small box -->
                   <div class="small-box bg-green">
                      <div class="inner">
@@ -187,7 +188,7 @@ $userlevel = $user_home->userPermission($row['id']);
                   </div>
                </div>
                <!-- ./col -->
-               <div class="col-lg-3 col-xs-6">
+               <div class="col-md-3">
                   <!-- small box -->
                   <div class="small-box bg-olive">
 					<div class="inner">
@@ -203,7 +204,7 @@ $userlevel = $user_home->userPermission($row['id']);
                   </div>
                </div>
                <!-- ./col -->
-               <div class="col-lg-3 col-xs-6">
+               <div class="col-md-3">
                   <!-- small box -->
                   <div class="small-box bg-blue">
                      <div class="inner">
@@ -303,16 +304,11 @@ $userlevel = $user_home->userPermission($row['id']);
                 </div><!-- /.box -->
                 <!-- Line Chart End -->
               </div>
-            </div>
-            <!-- Supply rates charts END -->
-
-            <!-- User Details -->
-            <div class="row">
-              <?php if($user_home->admin($row['id'])){?>
+               <?php if($user_home->admin($row['id'])){?>
               <div class="col-md-6">
                 <div class="box box-success">
                   <div class="box-header with-border">
-                    <h3 class="box-title">User Ditails</h3>
+                    <h3 class="box-title">User Details</h3>
                     <div class="box-tools pull-right">
                       <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                       <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -337,7 +333,6 @@ $userlevel = $user_home->userPermission($row['id']);
                            <tr>
                               <td width='150px'>Users</td>
                               <td width='150px'>Options</td>
-                              <td width="150px">Make Admin</td>
                            </tr>
                            <?php 
                               $list ="SELECT id, username, user_approved, groups, level FROM users";
@@ -360,7 +355,6 @@ $userlevel = $user_home->userPermission($row['id']);
                                     }else{
                                         echo "<a href='activated_or_die.php?u_id=$u_id&type=$u_type' class='btn btn-xs bg-navy btn-flat'>Activate</a>";
                                     }
-                                    echo '<td><a href="#request" role="button" data-toggle="modal" class="btn btn-xs bg-olive btn-flat">Set Admin</a></td>';
                                     echo '<tr>';  
                                  }
                                }
@@ -375,6 +369,12 @@ $userlevel = $user_home->userPermission($row['id']);
               </div><!-- /.col -->
               <?php 
               } ?>
+            </div>
+            <!-- Supply rates charts END -->
+
+            <!-- User Details -->
+            <div class="row">
+             
             </div>
             <!-- User Details End -->
 

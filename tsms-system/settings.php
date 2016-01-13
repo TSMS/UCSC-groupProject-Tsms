@@ -3,6 +3,7 @@ session_start();
 require_once 'classes/class.user.php';
 $user_home = new USER();
 require_once 'DB/dbupdates.php';
+include_once('backup.php');
 $dbupdates=new DBupdates();
 if(!$user_home->is_logged_in())
 {
@@ -32,6 +33,11 @@ if(isset($_POST['submit_1'])){
 	}
 	
 }
+
+//backup creating
+if(isset($_POST['backup'])){
+    Backup::backup_tables("localhost","root","","tsms",$tables = '*');
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -59,7 +65,7 @@ if(isset($_POST['submit_1'])){
                   <li class="treeview">
                      <a href="message.php">
                      <i class="fa fa-envelope"></i> <span>Message</span>
-                     <small class="label pull-right bg-yellow">12</small>
+                     <small class="label pull-right bg-yellow"></small>
                      </a>
                   </li>
                   <li class="treeview">
@@ -107,116 +113,141 @@ if(isset($_POST['submit_1'])){
                </ol>
             </section>
             <!-- Main content -->
-			<!-- About Me Box -->
-      <div class="col-md-offset-2" >
-        <div class="row">
-          <br>
-        <div class="col-md-8">
-          <div class="info-box">
-                    <div class="box-header with-border">
-                      <h3 class="box-title">Set Tea Rates</h3>
-                    </div><!-- /.box-header -->
-                    <div class="box-body">
-            <form action="" method="POST" name="form_signin" class="form-horizontal form-validation ng-dirty ng-valid ng-valid-required">
-                             
-                   <div class="form-group">
-                    <div class="col-sm-2">
-                      <label for="">Approximation Tea rate</label>
-                    </div>
-                    <div class="input-group col-sm-4">
-                      <span class="input-group-addon">Rs.</span>
-                      <input type="text" id="amountofaqty" name="tr1" class="form-control" onkeyup="call()" required="" data-ng-model="" onkeypress="return isNumberKey(event)" maxlength="8">
-                    </div>
-                  </div>
-                                    
-                  <div class="form-group ">
-                    <div class="col-sm-2">
-                      <label for="">Fixed tea rate</label>
-                    </div>
-                    <div class="input-group col-sm-6">
-                      <span class="input-group-addon">Rs.</span>
-                      <input type="text" id="producttotal" name="tr2" class="form-control" required="" data-ng-model="">
-                    </div>
-                  </div>  
-                  <div class="form-group">
-                    <div class="col-sm-2">
-                      <label for="">Max Loan Amount per supplier</label>
-                    </div>
-                    <div class="input-group col-sm-6">
-                      <span class="input-group-addon">Rs.</span>
-                      <input id="productinstallment" name="tr3" class="form-control" required="" data-ng-model="" type="text">
-                    </div>
-                  </div>
-                   <button type="submit" name="submit_1" class="btn bg-navy btn-flat">Submit</button>
-                    </fieldset>
-            </form>
-
-                    </div><!-- /.box-body -->
-                  </div><!-- /.box -->
-        </div>
-        <div class="col-md-6">
-            <!-- Backup Box -->
+            <br>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="col-md-12">
                   <div class="info-box">
-                    <div class="box-header with-border">
-                      <h3 class="box-title">Backup</h3>
-                    </div><!-- /.box-header -->
-                    <div class="box-body">
-            <strong><i class="glyphicon glyphicon-download-alt"></i>Send Backup</strong>
-            <p class="text-muted">
-            <div class="btn-group">
-                          <button class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-                        </div><!-- /.btn-group -->
-                        <?php echo("Your own code"); ?>
-            </p>
-                      <hr>
-                    </div><!-- /.box-body -->
-                  </div><!-- /.box -->
-        </div>
-
-      </div>
-
-      <div class="row">
-          
-                     <div class="col-md-10">
-                        <?php 
-                         $s = "SELECT * FROM `ticket_machine` WHERE 1";
-
-                          $smgt = $user_home->runQuery($s);
-                          $smgt->execute();
-                          ?>
-                          <div class="info-box">
-                          <div class="table-responsive">          
-                            <table class="table">
-                              <thead>
-                                <tr>
-                                  <th>Serial No</th>
-                                  <th>Registered Date</th>
-                                  <th>User of Machine</th>
-                                  <th>GSM No of Machine</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <?php
-                                if($smgt->rowCount() > 0)
-                                  {
-                                    while($roww=$smgt->FETCH(PDO::FETCH_ASSOC))
-                                    {?>
-                                <tr>
-                                  <td><?php echo $roww['serial_number'];?></td>
-                                  <td><?php echo $roww['reg_date'];?></td>
-                                  <td><?php echo $roww['user_name'];?></td>
-                                  <td><?php echo $roww['phone_number'];?></td>
-                                </tr>
-                                <?php
-                                }
-                                  } 
-                                 ?>
-                              </tbody>
-                            </table>
+                    <span class="info-box-icon bg-olive"><i class="fa fa-gear"></i></span>
+                    <div class="row">
+                      <br>
+                      <div class="col-md-2">
+                        <a href="suppliersedit.php" class="btn btn-app"><i class="fa fa-edit"></i> Edit Suppliers</a>
+                      </div>
+                       <div class="col-md-2">
+                        <a class="btn btn-app"><i class="fa fa-edit"></i> Edit Users</a>
+                      </div>
+                       <div class="col-md-2">
+                        <a class="btn btn-app"><i class="fa fa-edit"></i> Supply and Services</a>
+                      </div>
+                    </div>
+                    
+                  </div><!-- /.info-box-content -->
+                </div><!-- /.info-box -->
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="col-md-8">
+                   <div class="info-box">
+                      <div class="box-header with-border">
+                         <h3 class="box-title">Set Tea Rates</h3>
+                      </div>
+                      <!-- /.box-header -->
+                      <div class="box-body">
+                         <form action="" method="POST" name="form_signin" class="form-horizontal form-validation ng-dirty ng-valid ng-valid-required">
+                            <div class="form-group">
+                               <div class="col-sm-4">
+                                  <label for="">Approximation Tea rate</label>
+                               </div>
+                               <div class="input-group col-sm-6">
+                                  <span class="input-group-addon">Rs.</span>
+                                  <input type="text" id="amountofaqty" name="tr1" class="form-control" onkeyup="call()" required="" data-ng-model="" onkeypress="return isNumberKey(event)" maxlength="8">
+                               </div>
                             </div>
+                            <div class="form-group ">
+                               <div class="col-sm-4">
+                                  <label for="">Fixed tea rate</label>
+                               </div>
+                               <div class="input-group col-sm-6">
+                                  <span class="input-group-addon">Rs.</span>
+                                  <input type="text" id="producttotal" name="tr2" class="form-control" required="" data-ng-model="">
+                               </div>
                             </div>
-                        </div>
-        <div class="col-md-10">
+                            <div class="form-group">
+                               <div class="col-sm-4">
+                                  <label for="">Max Loan Amount per supplier</label>
+                               </div>
+                               <div class="input-group col-sm-6">
+                                  <span class="input-group-addon">Rs.</span>
+                                  <input id="productinstallment" name="tr3" class="form-control" required="" data-ng-model="" type="text">
+                               </div>
+                            </div>
+                            <button type="submit" name="submit_1" class="btn bg-navy btn-flat">Submit</button>
+                            </fieldset>
+                         </form>
+                      </div>
+                      <!-- /.box-body -->
+                   </div>
+                   <!-- /.box -->
+                </div>
+                <div class="col-md-4">
+                   <!-- Backup Box -->
+                   <form method="post" action="">
+                   <div class="info-box">
+                      <div class="box-header with-border">
+                         <h3 class="box-title">Make System Backup</h3>
+                      </div>
+                      <!-- /.box-header -->
+                      <div class="box-body">
+                         <strong><i class="glyphicon glyphicon-download-alt"></i>Send Backup</strong>
+                         <p class="text-muted">
+                         <div class="btn-group">
+                            <input type="submit" name="backup" value="backup" class="btn bg-navy btn-flat">
+                         </div>
+                         <!-- /.btn-group -->
+                         </p>
+                         <hr>
+                      </div>
+                    </form>
+                      <!-- /.box-body -->
+                   </div>
+                   <!-- /.box -->
+                </div>
+
+                <div class="col-md-12">
+                  <?php 
+                   $s = "SELECT * FROM `ticket_machine` WHERE 1";
+
+                    $smgt = $user_home->runQuery($s);
+                    $smgt->execute();
+                    ?>
+                    <div class="box box-primary">
+                      <div class="box-header with-border">
+                        <h3 class="box-title">Registered Ticket Machine</h3>
+                      </div><!-- /.box-header -->
+                    <div class="table-responsive">          
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Serial No</th>
+                            <th>Registered Date</th>
+                            <th>User of Machine</th>
+                            <th>GSM No of Machine</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php
+                          if($smgt->rowCount() > 0)
+                            {
+                              while($roww=$smgt->FETCH(PDO::FETCH_ASSOC))
+                              {?>
+                          <tr>
+                            <td><?php echo $roww['serial_number'];?></td>
+                            <td><?php echo $roww['reg_date'];?></td>
+                            <td><?php echo $roww['user_name'];?></td>
+                            <td><?php echo $roww['phone_number'];?></td>
+                          </tr>
+                          <?php
+                          }
+                            } 
+                           ?>
+                        </tbody>
+                      </table>
+                      </div>
+                      </div>
+                  </div>
+                  <div class="col-md-12">
                         <?php 
                          $s = "SELECT * FROM `settings` WHERE 1";
 
@@ -224,6 +255,9 @@ if(isset($_POST['submit_1'])){
                           $smgt->execute();
                           ?>
                           <div class="info-box">
+                            <div class="box-header with-border">
+                               <h3 class="box-title">Tea rate</h3>
+                            </div>
                           <div class="table-responsive">          
                             <table class="table">
                               <thead>
@@ -255,8 +289,10 @@ if(isset($_POST['submit_1'])){
                             </div>
                             </div>
                         </div>
-      </div>
-      </div>
+
+              </div>
+            </div>
+
       </div>
 			 
             

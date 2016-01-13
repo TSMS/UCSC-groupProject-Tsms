@@ -47,6 +47,16 @@
       <body class="supplier">
          <div class="container">
          <div class="form-container">
+          <br>
+          <div class="box box-widget widget-user">
+                <!-- Add the bg color to the header using any of the bg-* classes -->
+                <div class="widget-user-header bg-black" style="background: url('../dist/img/image1.png') center center;">
+                  <!-- <h3 class="widget-user-username">Elizabeth Pierce</h3> -->
+                  <h1><span class="thalapalakanada"><b>THALAPALAKANADA</b></span></h1>
+                  <h4 class="widget-user-desc">Tea Factory-deniyaya</h4>
+                </div>
+              </div><!-- /.widget-user -->
+              <div class="box-footer">
           <div class="row">
                <div class="col-md-5">
                   <div class="login-box">
@@ -56,7 +66,6 @@
                      </div>
                      <!-- /.login-logo -->
                      <div class="login-box-body">
-                        <p class="login-box-msg">Sign in to the system in here</p>
                         <form method="post">
                            <h2>Sign in.</h2>
                            <hr />
@@ -71,7 +80,7 @@
                               }
                               ?>
                            <div class="form-group">
-                              <input type="text" class="form-control" name="txt_uname_email" placeholder="Username or E mail ID" required />
+                              <input type="text" class="form-control" name="txt_uname_email" placeholder="Supplier Code" required />
                            </div>
                            <div class="form-group">
                               <input type="password" class="form-control" name="txt_password" placeholder="Your Password" required />
@@ -89,7 +98,7 @@
                            <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using Google+</a>
                            </div>
                            -->
-                        <a href="fpass.php">I forgot my password</a><br>
+                        <a href="#inform" role="button" data-toggle="modal">I forgot my password</a><br>
                      </div>
                      <!-- /.login-box-body -->
                   </div>
@@ -135,13 +144,12 @@
                 </div><!-- /.box-body -->
             </div><!-- /.col -->
           <div class="col-md-6 textcenter">
-            <h1><span class="thalapalakanada"><b>THALAPALAKANADA</b></span></h1>
-            <h3>Tea Factory</h3>
-            <h5>This is Thalapalakanada tea factory official web site if you have no account Please <a class="link" data-toggle="modal" href="#inform">inform Us!</a> in here</h5>
+            <h4>This is Thalapalakanada tea factory official web site if you have no account Please <a class="link" data-toggle="modal" href="#inform">inform Us!</a> in here</h4>
           </div>
         </div>
       </div>
            </div> 
+         </div>
          </div>
 
          <!-- Modal For Send message -->
@@ -173,6 +181,7 @@
                     </div>
                 </div>
             </div>
+
          <script src="../plugins/jQuery/jQuery-2.1.4.min.js"></script>
          <!-- Bootstrap 3.3.5 -->
          <script src="../bootstrap/js/bootstrap.min.js"></script>

@@ -38,7 +38,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                   <li class="treeview">
                      <a href="message.php">
                      <i class="fa fa-envelope"></i> <span>Message</span>
-                     <small class="label pull-right bg-yellow">12</small>
+                     <small class="label pull-right bg-yellow"></small>
                      </a>
                   </li>
                   <li class="treeview">
@@ -78,7 +78,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
             <section class="content-header">
                <h1>
                   Suppliers
-                  <small>ADD/ EDIT/ DELETE</small>
+                  <small>ADD</small>
                </h1>
                <ol class="breadcrumb">
                   <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
@@ -314,13 +314,25 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
       <script type="text/javascript" src="plugins/jQuery/jquery.validate.js"></script>
       <!-- Supplier validation -->
       <script type="text/javascript">
-          jQuery.validator.addMethod("nicid",function(value,element,param)
+          jQuery.validator.addMethod("mobi",function(value,element,param) {
+            if(this.optional(element))
+              {//This is not a 'required' element and the input is empty
+                return true;
+              }
+            if(/^[0-9-+]+$/.test(value))
+              {
+                return true;
+              }
+              return false;
+          },"Please enter a valid nic Number");
+
+          jQuery.validator.addMethod("nicid",function(value,element,param)  
           {
             if(this.optional(element))
               {//This is not a 'required' element and the input is empty
                 return true;
               }
-            if(/^([0-9]{9})+(v|V)$/.test(value))
+            if(/^([0-9]{9})+(v|V|x|X)$/.test(value))
               {
                 return true;
               }
@@ -358,7 +370,12 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                nic: {
                  required: true,
                  nicid: true
-               }
+               },
+               mobile:{
+                 minlength:9,
+                 maxlength:10,
+                 number: true
+                 }
          
              },
              messages: {

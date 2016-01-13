@@ -78,7 +78,6 @@ else
     $mobileNumber = Communication::prepareNumber($mobile);
     Communication::sendMessage($message, $mobileNumber);
   }
-    echo '<script>$(function(){ swal("Success!", "Supplier Successfuly added to the database.","success")}); </script>';
     echo '
 <div class="row">
 <div class="col-md-12">
@@ -89,7 +88,7 @@ else
     <div class="box-body">
       <p>Supplier Successfuly added to the database. Also You can change Supplier settings.</p>
       <a class="btn btn-app">
-        <i href="view.php" class="fa fa-edit"></i> Edit
+        <i href="supplieredit.php" class="fa fa-edit"></i> Edit
       </a>
       <a href="suppliers.php" class="btn btn-app">
         <i class="fa fa-user-plus"></i> Add Another
@@ -105,7 +104,7 @@ else
   }
   else
   {
-    echo '<script>$(function(){ swal("Error!", "Connection error occured.","error")}); </script>';
+    echo "Error!", "Connection error occured.","error";
   }   
 }
 

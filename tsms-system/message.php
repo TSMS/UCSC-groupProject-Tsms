@@ -216,7 +216,7 @@ if(isset($_POST['submit_3'])){
             <li class="active">
               <a href="message.php">
                 <i class="fa fa-envelope"></i> <span>Message</span>
-                <small class="label pull-right bg-yellow">12</small>
+                <small class="label pull-right bg-yellow"></small>
               </a>
             </li>
             <li class="treeview">
@@ -225,7 +225,7 @@ if(isset($_POST['submit_3'])){
               </a>
             </li>
             <li class="treeview">
-              <a href="Supreg.html">
+              <a href="suppliers.php">
                 <i class="fa fa-group"></i> <span>Suppliers</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
@@ -295,7 +295,7 @@ if(isset($_POST['submit_3'])){
                               <!-- text input -->
                               <div class="form-group">
                                 <label>Mobile Number</label>
-                                <input type="text" class="form-control" name="number" placeholder="Enter Mobile number like 0772376512.">
+                                <input type="text" maxlength="10" class="form-control" name="number" placeholder="Enter Mobile number like 0772376512.">
                               </div>
                               <!-- textarea -->
                               <div class="form-group">
@@ -303,7 +303,7 @@ if(isset($_POST['submit_3'])){
                                 <textarea class="form-control" rows="3" name="send_message" placeholder="Enter your message in here"></textarea>
                               </div>
                               <div class="modal-footer">
-                                  <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
+                                  <button type="button" class="btn bg-olive btn-flat" data-dismiss="modal">Close</button>
                                   <button type="submit" name="send" class="btn bg-navy btn-flat" value="send message">Send message</button>
                               </div>
                             </form>
@@ -324,7 +324,7 @@ if(isset($_POST['submit_3'])){
                               <!-- text input -->
                               <div class="form-group">
                                 <label>Mobile Number</label>
-                                <input type="text" class="form-control" placeholder="Enter Mobile number like 0772376512.">
+                                <input type="text" maxlength="10" class="form-control" placeholder="Enter Mobile number like 0772376512.">
                               </div>
                               <!-- textarea -->
                               <div class="form-group">
@@ -334,7 +334,7 @@ if(isset($_POST['submit_3'])){
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn bg-olive btn-flat" data-dismiss="modal">Close</button>
                             <button type="button" class="btn bg-navy btn-flat">Send</button>
                         </div>
                     </div>
@@ -622,15 +622,14 @@ if(isset($_POST['submit_3'])){
                                               <textarea class="form-control" rows="5"  id="des" rows="4" cols="35" name="des" placeholder="Comment"></textarea>
                                             </div>
                                          </div>
-                                         <button type="submit" name="submit_1" class="btn bg-navy btn-flat">Submit</button>
-                                      </fieldset>
+                                          <button type="button" class="btn bg-olive btn-flat" data-dismiss="modal">Close</button>
+                                          <button type="submit" name="submit_1" class="btn bg-navy btn-flat">Submit</button>
+      
+                                         </fieldset>
                                    </form>
                                 </div>     
 						<!-- Advance End -->
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -726,14 +725,15 @@ if(isset($_POST['submit_3'])){
 											<input class="form-control" type="text" name="des">
 										</div>
 									</div>
-                                     <button type="submit" name="submit_2" class="btn bg-navy btn-flat">Submit</button>
-                                  </fieldset>
-                               </form>
+                  <div>
+                     <button type="button" class="btn bg-olive btn-flat" data-dismiss="modal">Close</button>
+                     <button type="submit" name="submit_2" class="btn bg-navy btn-flat">Submit</button>
+                  </div>
+                 
+                    </fieldset>
+                 </form>
 						</div>
                       <!-- products End -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
